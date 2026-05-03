@@ -56,6 +56,14 @@
   let placeModeActive = false;
   let placeGhost      = null;
 
+  // Logo handle
+  let logoEl        = null;
+  let logoTextEl    = null; // .hero-text container
+  let logoHandleS   = null;
+  let logoHandleM   = null; // move handle
+  let logoH0, logoHY0;
+  let logoMoveX0, logoMoveY0, logoMoveL0, logoMoveT0, logoMoving = false;
+
   // Photo handles
   let photoEl       = null;
   let photoHandleW  = null;
@@ -86,11 +94,13 @@
       setTool('rects');
       enableSplitters();
       enablePhotoHandles();
+      enableLogoHandle();
       updatePanel();
     } else {
       disableSplitters();
       disableTextMode();
       disablePhotoHandles();
+      disableLogoHandle();
       exitPlaceMode();
       document.querySelectorAll('.sheer-rect').forEach(disableRect);
     }
@@ -557,6 +567,125 @@
   }
 
   // ══════════════════════════════════════════════════════════════════════
+  //  LOGO HANDLE
+  // ══════════════════════════════════════════════════════════════════════
+
+  function enableLogoHandle() {
+    logoEl     = document.querySelector('.logo-img--hero');
+    logoTextEl = document.querySelector('.hero-name'); // just the logo, not the subtitle
+    if (!logoEl || !logoTextEl) return;
+    logoEl.style.outline = '1px dashed rgba(140,129,149,0.4)';
+
+    // Use transform: translate so we don't need to reparent or recalculate offsets
+    if (!logoTextEl._dragTx) { logoTextEl._dragTx = 0; logoTextEl._dragTy = 0; }
+
+    function syncHandles() {
+      const r2 = logoEl.getBoundingClientRect();
+      css(logoHandleS, {
+        left: (r2.left + r2.width / 2 - 5) + 'px',
+        top:  (r2.bottom - 5) + 'px',
+      });
+      css(logoHandleM, {
+        left: (r2.left + r2.width / 2 - 14) + 'px',
+        top:  (r2.top - 22) + 'px',
+      });
+    }
+
+    // Size handle — bottom centre dot (drag up = bigger)
+    logoHandleS = document.createElement('div');
+    css(logoHandleS, {
+      position:'fixed', width:'10px', height:'10px',
+      cursor:'ns-resize', zIndex:'9997',
+      background:'rgba(140,129,149,0.15)',
+      border:'2px dashed rgba(140,129,149,0.6)',
+      borderRadius:'50%',
+    });
+    const sLbl = makeSplitterLabel('size ↕');
+    css(sLbl, { bottom:'14px', left:'50%', transform:'translateX(-50%)' });
+    logoHandleS.appendChild(sLbl);
+    logoHandleS.addEventListener('mouseenter', () => { logoHandleS.style.background='rgba(140,129,149,0.28)'; });
+    logoHandleS.addEventListener('mouseleave', () => { logoHandleS.style.background='rgba(140,129,149,0.15)'; });
+    logoHandleS.addEventListener('mousedown', onLogoSizeStart);
+
+    // Move handle — top centre bar (drag to reposition)
+    logoHandleM = document.createElement('div');
+    css(logoHandleM, {
+      position:'fixed', width:'28px', height:'10px',
+      cursor:'move', zIndex:'9997',
+      background:'rgba(140,129,149,0.15)',
+      border:'2px dashed rgba(140,129,149,0.6)',
+      borderRadius:'3px',
+    });
+    const mLbl = makeSplitterLabel('move');
+    css(mLbl, { top:'14px', left:'50%', transform:'translateX(-50%)' });
+    logoHandleM.appendChild(mLbl);
+    logoHandleM.addEventListener('mouseenter', () => { logoHandleM.style.background='rgba(140,129,149,0.28)'; });
+    logoHandleM.addEventListener('mouseleave', () => { logoHandleM.style.background='rgba(140,129,149,0.15)'; });
+    logoHandleM.addEventListener('mousedown', onLogoMoveStart);
+
+    logoHandleS._sync = syncHandles;
+    logoHandleM._sync = syncHandles;
+    syncHandles();
+
+    document.body.appendChild(logoHandleS);
+    document.body.appendChild(logoHandleM);
+  }
+
+  function disableLogoHandle() {
+    if (logoHandleS) { logoHandleS.remove(); logoHandleS = null; }
+    if (logoHandleM) { logoHandleM.remove(); logoHandleM = null; }
+    if (logoEl)      { logoEl.style.outline = ''; logoEl = null; }
+    if (logoTextEl)  { logoTextEl = null; }
+  }
+
+  function onLogoMoveStart(e) {
+    e.preventDefault(); e.stopPropagation();
+    logoMoveX0 = e.clientX;
+    logoMoveY0 = e.clientY;
+    logoMoveL0 = logoTextEl._dragTx || 0;
+    logoMoveT0 = logoTextEl._dragTy || 0;
+    logoMoving = true;
+    on(window, 'mousemove', onLogoMoveMove);
+    on(window, 'mouseup',   onLogoMoveEnd);
+  }
+  function onLogoMoveMove(e) {
+    if (!logoMoving) return;
+    logoTextEl._dragTx = logoMoveL0 + (e.clientX - logoMoveX0);
+    logoTextEl._dragTy = logoMoveT0 + (e.clientY - logoMoveY0);
+    logoTextEl.style.transform = `translate(${logoTextEl._dragTx.toFixed(1)}px, ${logoTextEl._dragTy.toFixed(1)}px)`;
+    if (logoHandleS && logoHandleS._sync) logoHandleS._sync();
+    updatePanel();
+  }
+  function onLogoMoveEnd() {
+    logoMoving = false;
+    off(window, 'mousemove', onLogoMoveMove);
+    off(window, 'mouseup',   onLogoMoveEnd);
+  }
+
+  function onLogoSizeStart(e) {
+    e.preventDefault(); e.stopPropagation();
+    const cur = getComputedStyle(document.documentElement).getPropertyValue('--logo-hero-h').trim();
+    const rootPx = parseFloat(getComputedStyle(document.documentElement).fontSize);
+    logoH0  = parseFloat(cur) * (cur.endsWith('rem') ? rootPx : 1);
+    logoHY0 = e.clientY;
+    on(window, 'mousemove', onLogoSizeMove);
+    on(window, 'mouseup',   onLogoSizeEnd);
+  }
+  function onLogoSizeMove(e) {
+    const rootPx = parseFloat(getComputedStyle(document.documentElement).fontSize);
+    const dy     = logoHY0 - e.clientY; // drag up = bigger
+    const newPx  = Math.max(12, logoH0 + dy * 0.8);
+    const newRem = (newPx / rootPx).toFixed(2);
+    document.documentElement.style.setProperty('--logo-hero-h', newRem + 'rem');
+    if (logoHandleS && logoHandleS._positionHandle) logoHandleS._positionHandle();
+    updatePanel();
+  }
+  function onLogoSizeEnd() {
+    off(window, 'mousemove', onLogoSizeMove);
+    off(window, 'mouseup',   onLogoSizeEnd);
+  }
+
+  // ══════════════════════════════════════════════════════════════════════
   //  PHOTO HANDLES
   // ══════════════════════════════════════════════════════════════════════
 
@@ -953,6 +1082,19 @@
       textLines.push(`.${cls} {\n  ${parts.join(';\n  ')};\n}`);
     });
     if (textLines.length) lines.push('/* text */\n' + textLines.join('\n'));
+
+    // Logo
+    const logoHVal = getComputedStyle(document.documentElement).getPropertyValue('--logo-hero-h').trim();
+    const heroTextEl = document.querySelector('.hero-text');
+    const logoLines = [];
+    if (logoHVal) logoLines.push(`--logo-hero-h: ${logoHVal};`);
+    const heroNameEl = document.querySelector('.hero-name');
+    if (heroNameEl && (heroNameEl._dragTx || heroNameEl._dragTy)) {
+      const tx = (heroNameEl._dragTx || 0).toFixed(1);
+      const ty = (heroNameEl._dragTy || 0).toFixed(1);
+      logoLines.push(`.hero-name {\n  transform: translate(${tx}px, ${ty}px);\n}`);
+    }
+    if (logoLines.length) lines.push('/* logo */\n' + logoLines.join('\n'));
 
     // About photo
     const photoWVal  = getComputedStyle(document.documentElement).getPropertyValue('--about-photo-w').trim();

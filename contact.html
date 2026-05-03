@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Emily Nguyen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;1,6..96,300;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Outfit:wght@200;300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { overflow: hidden; }
+    .contact-page {
+      height: 100vh;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .contact-photo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1in;
+      min-height: 100vh;
+    }
+    .contact-photo-inner {
+      width: 100%;
+      aspect-ratio: 2 / 3;
+      overflow: hidden;
+      position: relative;
+    }
+    .contact-photo-inner .img-placeholder {
+      position: absolute;
+      inset: 0;
+      min-height: 100%;
+    }
+    .contact-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 4rem 3.5rem;
+      border-left: 1px solid var(--border);
+    }
+    .contact-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+    .contact-eyebrow {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.48rem;
+      font-weight: 200;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      display: block;
+      margin-bottom: 0.8rem;
+    }
+    .contact-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .contact-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.44rem;
+      font-weight: 200;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+    .contact-value {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      font-size: 0.82rem;
+      color: var(--text-mid);
+      transition: color 0.25s;
+    }
+    a.contact-value:hover { color: var(--text-dark); }
+    .contact-divider {
+      width: 24px;
+      height: 1px;
+      background: var(--border);
+    }
+    @media (max-width: 700px) {
+      .contact-page { grid-template-columns: 1fr; }
+      .contact-photo { min-height: 50vh; }
+      .contact-right { padding: 3rem 2rem; border-left: none; border-top: 1px solid var(--border); }
+    }
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar" id="sidebar">
+    <a href="index.html" class="sidebar-brand">
+      <img src="logo.png" alt="Emily Nguyen logo" class="sidebar-logo" />
+      <span class="sidebar-name">emily nguyen.</span>
+    </a>
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="speak-nearby.html">Speak Nearby</a></li>
+        <li><a href="archive.html">Archive</a></li>
+        <li><a href="illustrations.html">Illustrations</a></li>
+        <li><a href="other-works.html">Other Works</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://instagram.com/sp1ritdancr" target="_blank" rel="noopener">@sp1ritdancr</a>
+    </div>
+  </aside>
+
+  <button class="sidebar-toggle" aria-label="menu" onclick="toggleSidebar()">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="content">
+    <div class="contact-page">
+
+      <div class="contact-photo">
+        <div class="contact-photo-inner">
+          <div class="img-placeholder"></div>
+        </div>
+      </div>
+
+      <div class="contact-right">
+        <div class="contact-inner">
+
+          <span class="contact-eyebrow">contact</span>
+
+          <div class="contact-item">
+            <span class="contact-label">email</span>
+            <a href="mailto:emilytnguyen99@gmail.com" class="contact-value">emilytnguyen99@gmail.com</a>
+          </div>
+
+          <div class="contact-divider"></div>
+
+          <div class="contact-item">
+            <span class="contact-label">linkedin</span>
+            <a href="https://www.linkedin.com/in/emily-nguyen-657a72312" target="_blank" rel="noopener" class="contact-value">emily-nguyen-657a72312</a>
+          </div>
+
+          <div class="contact-divider"></div>
+
+          <div class="contact-item">
+            <span class="contact-label">phone</span>
+            <a href="tel:+19125741570" class="contact-value">(912) 574-1570</a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="editor.js"></script>
+</body>
+</html>

@@ -9,10 +9,10 @@
    ════════════════════════════════════════════ */
 :root {
   /* HOME — name rect */
-  --hv-left:    10.4%;     /* how far from the left edge   */
-  --hv-bottom:  14.2%;     /* how far from the bottom      */
-  --hv-width:   95.4%;     /* width of the rectangle       */
-  --hv-height:  83.3%;     /* height of the rectangle      */
+  --hv-left:    12.6%;     /* how far from the left edge   */
+  --hv-bottom:  10.0%;     /* how far from the bottom      */
+  --hv-width:   89.4%;     /* width of the rectangle       */
+  --hv-height:  85.8%;     /* height of the rectangle      */
   --hv-rotate:  -0.2deg;   /* tilt — negative = left lean  */
 
   /* HOME — color preview panel rect */
@@ -30,11 +30,14 @@
   --sv-rotate:  0.0deg;
 
   /* HERO BLOCK widths */
-  --hero-split:      80.9%; /* home hero right block  */
+  --hero-split:      81.8%; /* home hero right block  */
   --page-hero-split: 10.0%; /* subpage hero right block */
 
   /* PROJECTS SECTION — column split (list / color panel) */
   --proj-split: 19.0%;
+
+  /* LOGO */
+  --logo-hero-h: 6.05rem;
 
   /* ABOUT PHOTO */
   --about-photo-w:       323px;
@@ -290,6 +293,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   line-height: 1;
   color: var(--text-dark);
   letter-spacing: -0.01em;
+  transform: translate(31.0px, 37.0px);
 }
 .hero-sub {
   font-family: 'Outfit', sans-serif;
@@ -505,6 +509,20 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   font-size: 0.48rem;
   letter-spacing: 0.1em;
   color: var(--text-light);
+}
+
+/* ── LOGO IMAGE replacements ── */
+.logo-img {
+  display: inline-block;
+  width: auto;
+  filter: none;
+}
+.logo-img--hero {
+  height: var(--logo-hero-h);
+}
+.logo-img--footer {
+  height: 1.15rem;
+  opacity: 0.55;
 }
 
 /* ── FADE IN ── */
