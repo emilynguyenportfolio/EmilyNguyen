@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>emily nguyen. — portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;1,6..96,300;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Outfit:wght@200;300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <a href="index.html" class="sidebar-brand">
+      <img src="logo.png" alt="Emily Nguyen" class="sidebar-logo" />
+      <span class="sidebar-name">emily nguyen.</span>
+    </a>
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="speak-nearby.html">Speak Nearby</a></li>
+        <li><a href="archive.html">Archive</a></li>
+        <li><a href="illustrations.html">Illustrations</a></li>
+        <li><a href="other-works.html">Other Works</a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://instagram.com/sp1ritdancr" target="_blank" rel="noopener">@sp1ritdancr</a>
+    </div>
+  </aside>
+
+  <button class="sidebar-toggle" onclick="toggleSidebar()">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="content">
+
+    <!-- HERO — asymmetric, color block right -->
+    <section class="hero">
+      <div class="hero-block">
+        <!-- replace with <img> when ready -->
+        <div class="img-placeholder" style="background: var(--gray-1);"></div>
+      </div>
+
+      <!-- sheer veil crosses into text, partial cover -->
+      <div class="sheer-rect hero-veil"></div>
+
+      <!-- text sits under the veil -->
+      <div class="hero-text">
+        <h1 class="hero-name">emily nguyen.</h1>
+        <p class="hero-sub">fashion design &nbsp;·&nbsp; visual arts &nbsp;·&nbsp; savannah, georgia</p>
+      </div>
+
+    </section>
+
+    <!-- ABOUT — offset text block -->
+    <section id="about" class="about-strip">
+      <div class="about-photo fade-up">
+        <img src="me.png" alt="Emily Nguyen" />
+      </div>
+      <div class="about-inner fade-up">
+        <span class="eyebrow">about</span>
+        <p class="about-bio">
+          Hello! I'm Emily, a Vietnamese American designer born and raised in Savannah, Georgia. My work centers on themes of hybridity, displacement, and the quiet beauty that emerges from living between cultures. Drawing from the nostalgic experiences of diaspora, I explore the spaces where identities overlap and evolve.
+        </p>
+        <p class="about-bio">
+          I often work through layering of materials, imagery, and references to build whimsical, textured worlds that reflect the fluid nature of memory and belonging. Through my practice, I seek to visually translate the cultural nostalgia that has shaped my life and many others, honoring the tenderness, complexity, and beauty found within these in-between spaces.
+        </p>
+        <a href="https://instagram.com/sp1ritdancr" target="_blank" rel="noopener" class="insta-link">@sp1ritdancr</a>
+      </div>
+    </section>
+
+    <!-- PROJECTS — hover to reveal color block -->
+    <section class="projects-section">
+      <div class="projects-list">
+        <a href="speak-nearby.html" class="proj-row"
+           data-color="#c4b5b9" data-label="senior thesis · 2026">
+          <span class="proj-num">01</span>
+          <span class="proj-name">Speak Nearby</span>
+        </a>
+        <a href="archive.html" class="proj-row"
+           data-color="#b6bab2" data-label="further collections &amp; works">
+          <span class="proj-num">02</span>
+          <span class="proj-name">Archive</span>
+        </a>
+        <a href="illustrations.html" class="proj-row"
+           data-color="#bdb9c8" data-label="fashion &amp; visual arts">
+          <span class="proj-num">03</span>
+          <span class="proj-name">Illustrations</span>
+        </a>
+        <a href="other-works.html" class="proj-row"
+           data-color="#c8c0b8" data-label="jewelry &amp; photography">
+          <span class="proj-num">04</span>
+          <span class="proj-name">Other Works</span>
+        </a>
+      </div>
+
+      <!-- color preview panel — fills on hover -->
+      <div class="preview-panel" id="previewPanel">
+        <div class="preview-block" id="previewBlock"></div>
+<div class="preview-label" id="previewLabel"></div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span class="footer-name">emily nguyen.</span>
+      <div class="footer-links">
+        <a href="https://instagram.com/sp1ritdancr" target="_blank" rel="noopener">@sp1ritdancr</a>
+        <a href="mailto:">contact</a>
+      </div>
+      <span class="footer-copy">© 2026 Emily Nguyen</span>
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
+  <script src="editor.js"></script>
+</body>
+</html>
