@@ -36,55 +36,102 @@
 
   <div class="content">
 
-    <section class="page-hero">
-      <div class="page-hero-block">
-        <div class="img-placeholder"></div>
+    <!-- LINEUP HERO — full bleed -->
+    <section class="sn-hero">
+      <div class="sn-hero-photo">
+        <div class="img-placeholder sn-hero-placeholder"></div>
+        <div class="sn-lineup-label">lineup</div>
       </div>
-      <div class="sheer-rect page-veil"></div>
-      <div class="page-hero-content fade-up">
+      <div class="sn-hero-overlay"></div>
+      <div class="sn-hero-text fade-up">
         <span class="eyebrow">senior thesis · fw 2026</span>
-        <h1 class="page-title">Speak Nearby</h1>
-        <p class="page-subtitle">~ translation is a fantasy</p>
+        <h1 class="sn-title">Speak Nearby</h1>
+        <p class="sn-subtitle">~ translation is a fantasy</p>
       </div>
     </section>
 
-    <div class="page-body">
-
-      <div class="page-quote fade-up">
+    <!-- CONCEPT -->
+    <div class="sn-concept fade-up">
+      <div class="sn-concept-quote">
         <blockquote>
           "Whereas content and language form a certain unity in the original, like a fruit and its skin,
           the language of the translation envelops its content like a royal robe with ample folds.
           For it signifies a more exalted language than its own and thus remains unsuited to its content,
-          overpowering and alien. This disjunction prevents translation and at the same time makes it superfluous."
+          overpowering and alien."
         </blockquote>
         <cite>— Walter Benjamin, <em>The Task of the Translator</em></cite>
       </div>
-
-      <div class="gallery-grid cols-3 fade-up">
-        <div class="g-item wide"><div class="img-placeholder"></div></div>
-        <div class="g-item tall"><div class="img-placeholder"></div></div>
-        <div class="g-item"><div class="img-placeholder"></div></div>
-        <div class="g-item"><div class="img-placeholder"></div></div>
-        <div class="g-item tall"><div class="img-placeholder"></div></div>
-        <div class="g-item wide"><div class="img-placeholder"></div></div>
-        <div class="g-item"><div class="img-placeholder"></div></div>
-        <div class="g-item"><div class="img-placeholder"></div></div>
-        <div class="g-item"><div class="img-placeholder"></div></div>
-        <div class="g-item wide"><div class="img-placeholder"></div></div>
-        <div class="g-item"><div class="img-placeholder"></div></div>
+      <div class="sn-concept-text">
+        <span class="eyebrow">concept</span>
+        <p>
+          Inspired by Walter Benjamin's essay <em>The Task of the Translator</em>, Speak Nearby visualizes
+          translation through the metaphor of fruit and skin, where meaning is peeled from its original
+          language and layered with a foreign one. Although the fruit's essence may remain, the new skin
+          will never fit the same way as its former. Each act of translation coexists with subtle
+          displacement, creating something new and hybrid, rather than perfectly transferring it.
+        </p>
       </div>
-
-      <div class="page-quote fade-up" style="margin-top: 4.5rem; margin-bottom: 0;">
-        <blockquote>
-          <em>Speak Nearby</em> explores the untranslatability of cultural memory — the ways language
-          fails to hold what the body already knows. The collection moves through sheer layers,
-          worn materiality, and the quiet vocabulary of diaspora, asking what is lost and what
-          quietly remains when we speak between tongues.
-        </blockquote>
-        <cite>— Emily Nguyen, 2026</cite>
-      </div>
-
     </div>
+
+    <!-- EDITORIAL FILM STRIP -->
+    <div class="sn-strip-section">
+      <div class="sn-strip-rows">
+        <div class="sn-strip-row">
+          <div class="sn-strip-perf-wrap">
+            <div class="sn-strip-perf"></div>
+            <div class="sn-strip-holes"></div>
+          </div>
+          <div class="sn-strip-gate"></div>
+          <div class="sn-strip-track" id="stripTrack1"></div>
+          <div class="sn-strip-gate"></div>
+          <div class="sn-strip-perf-wrap">
+            <div class="sn-strip-perf"></div>
+            <div class="sn-strip-holes"></div>
+          </div>
+        </div>
+        <div class="sn-strip-row">
+          <div class="sn-strip-perf-wrap">
+            <div class="sn-strip-perf"></div>
+            <div class="sn-strip-holes"></div>
+          </div>
+          <div class="sn-strip-gate"></div>
+          <div class="sn-strip-track sn-strip-track--reverse" id="stripTrack2"></div>
+          <div class="sn-strip-gate"></div>
+          <div class="sn-strip-perf-wrap">
+            <div class="sn-strip-perf"></div>
+            <div class="sn-strip-holes"></div>
+          </div>
+        </div>
+      </div>
+      <p class="sn-strip-credit">Photography by Taren Wang</p>
+    </div>
+
+    <!-- LIGHTBOX -->
+    <div class="sn-lightbox" id="snLightbox">
+      <button class="sn-lightbox-close" id="snLightboxClose">close</button>
+      <button class="sn-lightbox-prev" id="snLightboxPrev">&#8592;</button>
+      <img class="sn-lightbox-img" id="snLightboxImg" alt="" />
+      <button class="sn-lightbox-next" id="snLightboxNext">&#8594;</button>
+    </div>
+
+    <!-- SECTION NAV -->
+    <nav class="sn-sections">
+      <a href="speak-nearby-ideation.html" class="sn-section-link">
+        <span class="eyebrow">section 01</span>
+        <span class="sn-section-name">Ideation</span>
+        <span class="sn-section-arrow">&#8594;</span>
+      </a>
+      <a href="speak-nearby-process.html" class="sn-section-link">
+        <span class="eyebrow">section 02</span>
+        <span class="sn-section-name">Process</span>
+        <span class="sn-section-arrow">&#8594;</span>
+      </a>
+      <a href="speak-nearby-studio.html" class="sn-section-link">
+        <span class="eyebrow">section 03</span>
+        <span class="sn-section-name">Studio</span>
+        <span class="sn-section-arrow">&#8594;</span>
+      </a>
+    </nav>
 
     <footer class="footer">
       <span class="footer-name"><img src="emily%20nguyen%20transparent.png" alt="emily nguyen." class="logo-img logo-img--footer" /></span>
@@ -97,7 +144,98 @@
 
   </div>
 
+  <!-- SVG filter for worn film edges — applied only to perf strips, not photos -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+    <defs>
+      <filter id="film-worn" x="-4%" y="-60%" width="108%" height="220%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.06 0.35" numOctaves="5" seed="17" result="noise"/>
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+    </defs>
+  </svg>
+
   <script src="script.js"></script>
   <script src="editor.js"></script>
+  <script>
+    (function() {
+      var FOLDER = 'speak%20nearby/photos/';
+      var FILES = [
+        'IMG_6912.JPG','IMG_6914.JPG','IMG_6916.JPG','IMG_6917.JPG','IMG_6918.JPG',
+        'P1148269.jpg','P1148270.jpg','P1148308-已增强-SR.jpg','P1148313.jpg','P1148349.jpg',
+        'P1148449.jpg','P1148462.jpg','P1148512.JPG','P1148632.jpg','P1148639.jpg',
+        'P1148648.JPG','P1148659.JPG','P1148692.JPG','P1148755.jpg','P1148799.jpg',
+        'P1148904.jpg','P1148934.jpg','P1148937.jpg','P1148949.JPG','P1148967.JPG',
+        'P1172907.jpg','P1172912.jpg','P1172976.jpg','P1172991.jpg','P1173007.jpg',
+        'P1173026.jpg','P1173051.jpg','P1173061.jpg','P1173065.JPG','P1173068.jpg',
+        'P1173078.JPG','P1173144.jpg','P1173158.jpg','P1173178.jpg','P1173221.jpg',
+        'P1173224.jpg','P1173242.jpg','P1173244.jpg','P1173264.jpg','P1173267.jpg',
+        'P1173302.jpeg','P1173415.jpg','P1173426.jpg','P1173449.jpg','P1173464.jpg',
+        'P1173552.jpg','P1173571.jpg','P1173594.jpg','P1173667.jpg','P1173689.jpg',
+        'P1173706.jpg','P1173739.jpg'
+      ];
+
+      var allSrcs = FILES.map(function(f) { return FOLDER + encodeURIComponent(f); });
+      var currentIdx = 0;
+
+      var track1 = document.getElementById('stripTrack1');
+      var track2 = document.getElementById('stripTrack2');
+      var lightbox = document.getElementById('snLightbox');
+      var lbImg    = document.getElementById('snLightboxImg');
+      var lbClose  = document.getElementById('snLightboxClose');
+      var lbPrev   = document.getElementById('snLightboxPrev');
+      var lbNext   = document.getElementById('snLightboxNext');
+
+      // split into two rows
+      var half = Math.ceil(FILES.length / 2);
+      var row1 = FILES.slice(0, half).map(function(_, i) { return i; });
+      var row2 = FILES.slice(half).map(function(_, i) { return half + i; });
+
+      function buildRow(track, indices) {
+        // duplicate for seamless infinite loop
+        var doubled = indices.concat(indices);
+        doubled.forEach(function(globalIdx) {
+          var div = document.createElement('div');
+          div.className = 'sn-strip-photo';
+          var img = document.createElement('img');
+          img.src = allSrcs[globalIdx];
+          img.alt = '';
+          img.loading = 'lazy';
+          div.appendChild(img);
+          div.addEventListener('click', function() { openLightbox(globalIdx); });
+          track.appendChild(div);
+        });
+      }
+
+      buildRow(track1, row1);
+      buildRow(track2, row2);
+
+      // lightbox
+      function openLightbox(idx) {
+        currentIdx = idx;
+        lbImg.src = allSrcs[idx];
+        lightbox.classList.add('active');
+      }
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+      }
+      function navigate(dir) {
+        currentIdx = (currentIdx + dir + FILES.length) % FILES.length;
+        lbImg.src = allSrcs[currentIdx];
+      }
+
+      lbClose.addEventListener('click', closeLightbox);
+      lbPrev.addEventListener('click', function() { navigate(-1); });
+      lbNext.addEventListener('click', function() { navigate(1); });
+      lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox) closeLightbox();
+      });
+      document.addEventListener('keydown', function(e) {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') navigate(-1);
+        if (e.key === 'ArrowRight') navigate(1);
+      });
+    })();
+  </script>
 </body>
 </html>

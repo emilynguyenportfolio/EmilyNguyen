@@ -521,7 +521,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   height: var(--logo-hero-h);
 }
 .logo-img--footer {
-  height: 1.15rem;
+  height: 2rem;
   opacity: 0.55;
 }
 
@@ -646,6 +646,45 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   letter-spacing: 0.07em;
 }
 
+/* ── FRUIT CONCEPT SECTION ── */
+.fruit-concept {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 4rem;
+  align-items: start;
+  margin: 4rem 0 5rem;
+}
+
+
+.fruit-text {
+  padding-top: 1rem;
+}
+
+.fruit-text .eyebrow {
+  display: block;
+  margin-bottom: 1.2rem;
+}
+
+.fruit-text p {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+  line-height: 1.85;
+  color: var(--text-mid);
+  max-width: 42ch;
+}
+
+.fruit-text p em {
+  font-style: normal;
+}
+
+@media (max-width: 700px) {
+  .fruit-concept { grid-template-columns: 1fr; gap: 2.5rem; }
+  .fruit-visual { position: static; }
+  .fruit-scroll-wrap { height: 55vw; }
+}
+
 .sub-divider { height: 1px; background: var(--border); margin: 4rem 0; }
 .sub-heading { margin-bottom: 2rem; }
 .sub-heading .eyebrow { margin-bottom: 0.3rem; }
@@ -657,6 +696,377 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   color: var(--text-dark);
   line-height: 1.05;
   letter-spacing: -0.01em;
+}
+
+/* ════════════════════
+   SPEAK NEARBY PAGE
+   ════════════════════ */
+
+/* full-bleed lineup hero */
+.sn-hero {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+.sn-hero-photo {
+  position: absolute;
+  inset: 0;
+}
+.sn-hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+.sn-hero-placeholder {
+  position: absolute;
+  inset: 0;
+  display: none;
+}
+.sn-lineup-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cadogan', 'Bodoni Moda', 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  letter-spacing: 0.18em;
+  color: var(--text-light);
+  pointer-events: none;
+  z-index: 1;
+}
+.sn-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 45%, rgba(242,241,238,0.72) 100%);
+  z-index: 1;
+}
+.sn-hero-text {
+  position: absolute;
+  bottom: 3.5rem;
+  left: 3rem;
+  z-index: 2;
+}
+.sn-hero-text .eyebrow { color: rgba(242,241,238,0.7); margin-bottom: 0.7rem; }
+.sn-title {
+  font-family: 'Cadogan', 'Bodoni Moda', 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  line-height: 1;
+  color: var(--bg);
+  letter-spacing: -0.01em;
+  text-shadow: 0 2px 18px rgba(74,71,70,0.18);
+}
+.sn-subtitle {
+  font-size: 0.78rem;
+  font-style: italic;
+  color: rgba(242,241,238,0.7);
+  margin-top: 0.6rem;
+}
+
+/* concept section — two column */
+.sn-concept {
+  padding: 5rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  border-top: 1px solid var(--border);
+  align-items: start;
+}
+.sn-concept-quote blockquote {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.88rem;
+  font-style: italic;
+  color: var(--text-mid);
+  line-height: 1.95;
+  border-left: 1px solid var(--border);
+  padding-left: 1.1rem;
+}
+.sn-concept-quote cite {
+  display: block;
+  margin-top: 0.9rem;
+  padding-left: 1.1rem;
+  font-size: 0.63rem;
+  color: var(--text-light);
+  font-style: normal;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 200;
+  letter-spacing: 0.07em;
+}
+.sn-concept-text .eyebrow { margin-bottom: 1.1rem; }
+.sn-concept-text p {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(0.88rem, 1.2vw, 1.05rem);
+  line-height: 1.9;
+  color: var(--text-mid);
+  max-width: 42ch;
+}
+
+/* editorial scatter zone */
+.sn-scatter-section {
+  border-top: 1px solid var(--border);
+  padding: 4rem 3rem 2rem;
+}
+.sn-scatter-label { margin-bottom: 2.5rem; }
+.sn-scatter-zone {
+  position: relative;
+  min-height: 600px;
+  overflow: hidden;
+}
+
+
+/* ── FILM STRIP ── */
+.sn-strip-section {
+  border-top: 1px solid var(--border);
+  padding: 4rem 0 3rem;
+}
+.sn-strip-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  overflow-x: clip; /* clips horizontal scroll bleed without cutting vertical scale */
+  overflow-y: visible;
+}
+.sn-strip-row {
+  overflow: visible; /* allows photo to scale up vertically */
+  background: transparent;
+}
+/* perf-wrap holds both the worn film layer and the clean holes layer */
+.sn-strip-perf-wrap {
+  position: relative;
+  height: 26px;
+  overflow: visible;
+  z-index: 1;
+}
+/* dark worn film — desaturated, low opacity, gets distress filter */
+.sn-strip-perf {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #1a1a1a 0%, #242424 45%, #1c1c1c 100%);
+  filter: none;
+  opacity: 0.28;
+}
+/* clean holes — full opacity so they stay white */
+.sn-strip-holes {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='26'%3E%3Crect x='3' y='4' width='12' height='18' rx='3' ry='3' fill='%23f2f1ee'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+}
+.sn-strip-gate {
+  height: 4px;
+  background: linear-gradient(90deg, #1a1a1a 0%, #242424 50%, #1a1a1a 100%);
+  filter: none;
+  opacity: 0.28;
+}
+/* fade left and right edges of the whole strip section */
+.sn-strip-section {
+  position: relative;
+}
+.sn-strip-section::before,
+.sn-strip-section::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 80px;
+  z-index: 2;
+  pointer-events: none;
+}
+.sn-strip-section::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg), transparent);
+}
+.sn-strip-section::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg), transparent);
+}
+.sn-strip-track {
+  display: flex;
+  gap: 2px;
+  width: max-content;
+  animation: sn-scroll-left 65s linear infinite;
+  will-change: transform;
+  background: linear-gradient(180deg, #1a1a1a 0%, #242424 50%, #1c1c1c 100%);
+  position: relative;
+  z-index: 2;
+}
+.sn-strip-track--reverse {
+  animation-name: sn-scroll-right;
+  animation-duration: 78s;
+}
+.sn-strip-row:has(.sn-strip-photo:hover) .sn-strip-track {
+  animation-play-state: paused;
+}
+@keyframes sn-scroll-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes sn-scroll-right {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+.sn-strip-photo {
+  height: clamp(220px, 28vh, 340px);
+  flex-shrink: 0;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  z-index: 1;
+}
+.sn-strip-photo:hover {
+  transform: scale(1.6);
+  z-index: 30;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.28);
+}
+.sn-strip-photo img {
+  height: 100%;
+  width: auto;
+  display: block;
+  object-fit: cover;
+  transition: filter 0.5s ease, transform 0.4s ease;
+  filter: sepia(0.18) contrast(0.96) brightness(0.9) saturate(0.82);
+}
+.sn-strip-photo:hover img {
+  filter: sepia(0.06) contrast(1) brightness(1) saturate(1);
+  transform: scale(1.03);
+}
+.sn-strip-credit {
+  text-align: center;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.46rem;
+  font-weight: 200;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-top: 2.2rem;
+  padding: 0 3rem;
+}
+
+/* lightbox */
+.sn-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(242, 241, 238, 0.97);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.sn-lightbox.active {
+  opacity: 1;
+  pointer-events: all;
+}
+.sn-lightbox-img {
+  max-height: 84vh;
+  max-width: 80vw;
+  object-fit: contain;
+  display: block;
+}
+.sn-lightbox-close {
+  position: absolute;
+  top: 2rem; right: 2.5rem;
+  background: none; border: none;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.5rem;
+  font-weight: 200;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.sn-lightbox-close:hover { color: var(--text-dark); }
+.sn-lightbox-prev,
+.sn-lightbox-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none; border: none;
+  font-size: 1.1rem;
+  color: var(--text-light);
+  cursor: pointer;
+  padding: 1.2rem;
+  transition: color 0.2s;
+}
+.sn-lightbox-prev { left: 1.5rem; }
+.sn-lightbox-next { right: 1.5rem; }
+.sn-lightbox-prev:hover,
+.sn-lightbox-next:hover { color: var(--text-dark); }
+
+/* section nav links */
+.sn-sections {
+  border-top: 1px solid var(--border);
+  margin-top: 5rem;
+}
+.sn-section-link {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2.8rem 3rem;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.35s var(--ease), padding-left 0.35s var(--ease);
+}
+.sn-section-link:hover {
+  background: var(--bg-alt);
+  padding-left: 4rem;
+}
+.sn-section-link .eyebrow { transition: color 0.3s; }
+.sn-section-name {
+  font-family: 'Cadogan', 'Bodoni Moda', 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.7rem, 3.2vw, 3rem);
+  color: var(--text-dark);
+  letter-spacing: -0.01em;
+  transition: color 0.3s;
+  line-height: 1;
+}
+.sn-section-link:hover .sn-section-name { color: var(--accent); }
+.sn-section-arrow {
+  font-size: 1.4rem;
+  color: var(--text-light);
+  transition: transform 0.35s var(--ease), color 0.3s;
+  line-height: 1;
+}
+.sn-section-link:hover .sn-section-arrow {
+  transform: translateX(10px);
+  color: var(--accent);
+}
+
+/* sub-page breadcrumb */
+.sn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.48rem;
+  font-weight: 200;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 3rem;
+  transition: color 0.25s;
+}
+.sn-back:hover { color: var(--text-dark); }
+.sn-back::before { content: '←'; font-size: 0.6rem; }
+
+/* responsive */
+@media (max-width: 700px) {
+  .sn-concept { grid-template-columns: 1fr; gap: 2.5rem; }
+  .sn-section-link { grid-template-columns: 60px 1fr auto; padding: 2rem 1.5rem; }
+  .sn-hero-text { left: 1.5rem; bottom: 2.5rem; }
 }
 
 /* ── RESPONSIVE ── */
