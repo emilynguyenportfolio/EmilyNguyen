@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Speak Nearby — Emily Nguyen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;1,6..96,300;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Outfit:wght@200;300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <a href="index.html" class="sidebar-brand">
+      <img src="logo.png" alt="Emily Nguyen logo" class="sidebar-logo" />
+      <span class="sidebar-name">emily nguyen.</span>
+    </a>
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="speak-nearby.html" class="active">Senior Thesis</a></li>
+        <li><a href="archive.html">Archive</a></li>
+        <li><a href="illustrations.html">Illustrations</a></li>
+        <li><a href="other-works.html">Other Works</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://instagram.com/sp1ritdancr" target="_blank" rel="noopener">@sp1ritdancr</a>
+    </div>
+  </aside>
+  <button class="sidebar-toggle" aria-label="menu" onclick="toggleSidebar()">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="content">
+
+    <!-- FILM STRIP -->
+    <div class="sn-strips-wrap">
+      <button class="sn-strip-arrow sn-strip-arrow--left" id="snArrowLeft" aria-label="Scroll left">&#8592;</button>
+      <button class="sn-strip-arrow sn-strip-arrow--right" id="snArrowRight" aria-label="Scroll right">&#8594;</button>
+      <section class="sn-strips">
+        <div class="sn-strip-row">
+          <div class="sn-strip-track sn-strip-track--fwd" id="snStrip1"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- TITLE -->
+    <div class="sn-title-block fade-up">
+      <span class="eyebrow">senior thesis · fw 2026</span>
+      <h1 class="sn-title">Speak Nearby</h1>
+      <p class="sn-subtitle">~ translation is a fantasy</p>
+    </div>
+
+    <!-- CONCEPT -->
+    <div class="sn-concept fade-up">      <div class="sn-concept-quote">
+        <blockquote>
+          "Whereas content and language form a certain unity in the original, like a fruit and its skin,
+          the language of the translation envelops its content like a royal robe with ample folds.
+          For it signifies a more exalted language than its own and thus remains unsuited to its content,
+          overpowering and alien."
+        </blockquote>
+        <cite>— Walter Benjamin, <em>The Task of the Translator</em></cite>
+      </div>
+      <div class="sn-concept-text">
+        <span class="eyebrow">concept</span>
+        <p>
+          Inspired by Walter Benjamin's essay <em>The Task of the Translator</em>, Speak Nearby visualizes
+          translation through the metaphor of fruit and skin, where meaning is peeled from its original
+          language and layered with a foreign one. Although the fruit's essence may remain, the new skin
+          will never fit the same way as its former. Each act of translation coexists with subtle
+          displacement, creating something new and hybrid, rather than perfectly transferring it.
+        </p>
+      </div>
+    </div>
+
+    <!-- SECTION NAV -->
+    <nav class="sn-sections">
+      <a href="speak-nearby-ideation.html" class="sn-section-link">
+        <span class="eyebrow">section 01</span>
+        <span class="sn-section-name">Ideation</span>
+        <span class="sn-section-arrow">&#8594;</span>
+      </a>
+      <a href="speak-nearby-process.html" class="sn-section-link">
+        <span class="eyebrow">section 02</span>
+        <span class="sn-section-name">Process</span>
+        <span class="sn-section-arrow">&#8594;</span>
+      </a>
+      <a href="speak-nearby-photos.html" class="sn-section-link">
+        <span class="eyebrow">section 03</span>
+        <span class="sn-section-name">Final</span>
+        <span class="sn-section-arrow">&#8594;</span>
+      </a>
+    </nav>
+
+    <footer class="footer">
+      <span class="footer-name"><img src="emily%20nguyen%20transparent.png" alt="emily nguyen." class="logo-img logo-img--footer" /></span>
+      <div class="footer-links">
+        <a href="https://instagram.com/sp1ritdancr" target="_blank" rel="noopener">@sp1ritdancr</a>
+        <a href="index.html">home</a>
+      </div>
+      <span class="footer-copy">© 2026 Emily Nguyen</span>
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
+  <script src="editor.js"></script>
+  <script>
+  (function () {
+    var FOLDER = 'speak-nearby/photos/';
+    var FILES = [
+      'IMG_6914.JPG','IMG_6912.JPG','IMG_6916.JPG','IMG_6917.JPG','IMG_6918.JPG',
+      'P1148269.jpg','P1148270.jpg','P1148313.jpg','P1148349.jpg',
+      'P1148449.jpg','P1148462.jpg','P1148512.JPG','P1148632.jpg','P1148639.jpg',
+      'P1148648.JPG','P1148659.JPG','P1148692.JPG','P1148755.jpg','P1148799.jpg',
+      'P1148904.jpg','P1148934.jpg','P1148937.jpg','P1148949.JPG','P1148967.JPG',
+      'P1172907.jpg','P1172912.jpg','P1172976.jpg','P1172991.jpg','P1173007.jpg',
+      'P1173026.jpg','P1173051.jpg','P1173061.jpg','P1173065.JPG','P1173068.jpg',
+      'P1173078.JPG','P1173144.jpg','P1173158.jpg','P1173178.jpg','P1173221.jpg',
+      'P1173224.jpg','P1173242.jpg','P1173244.jpg','P1173267.jpg',
+      'P1173302.jpeg','P1173415.jpg','P1173426.jpg','P1173449.jpg','P1173464.jpg',
+      'P1173552.jpg','P1173571.jpg','P1173594.jpg','P1173667.jpg','P1173689.jpg',
+      'P1173706.jpg','P1173739.jpg'
+    ];
+
+    function buildStrip(id, files) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      // Duplicate for seamless infinite loop
+      var doubled = files.concat(files);
+      doubled.forEach(function (f) {
+        var item = document.createElement('a');
+        item.className = 'sn-strip-item';
+        item.href = 'speak-nearby-photos.html';
+        var img = document.createElement('img');
+        img.src = FOLDER + encodeURIComponent(f);
+        img.alt = '';
+        img.loading = 'lazy';
+        item.appendChild(img);
+        el.appendChild(item);
+      });
+    }
+
+    buildStrip('snStrip1', FILES);
+
+    // ── JS-driven scroll — arrows steer it ───────────────────────────────
+    (function () {
+      var track = document.getElementById('snStrip1');
+      var row   = track && track.parentElement;
+      var btnL  = document.getElementById('snArrowLeft');
+      var btnR  = document.getElementById('snArrowRight');
+      if (!track || !btnL || !btnR) return;
+
+      // Kill the CSS animation — we drive translateX in JS instead
+      track.style.animation = 'none';
+
+      var ANIM_SECS  = 140;  // baseline duration matches CSS
+      var FAST_PX_S  = 600;  // px/s while arrow held
+
+      var posX     = 0;
+      var lastT    = null;
+      var holdDir  = 0;   // 0 = auto, -1 = right (fwd fast), +1 = left (backward)
+      var hovering = false;
+
+      if (row) {
+        row.addEventListener('mouseenter', function () { hovering = true;  });
+        row.addEventListener('mouseleave', function () { hovering = false; });
+      }
+
+      function step(t) {
+        if (lastT === null) lastT = t;
+        var dt   = Math.min((t - lastT) / 1000, 0.05); // seconds, capped
+        lastT    = t;
+
+        var half = track.scrollWidth / 2;
+
+        if (holdDir !== 0) {
+          posX += holdDir * FAST_PX_S * dt;
+        } else if (!hovering && half > 0) {
+          posX -= (half / ANIM_SECS) * dt; // normal forward
+        }
+
+        // Wrap within [−half, 0)
+        if (half > 0) {
+          posX = posX % half;
+          if (posX > 0) posX -= half;
+        }
+
+        track.style.transform = 'translateX(' + posX + 'px)';
+        requestAnimationFrame(step);
+      }
+
+      requestAnimationFrame(step);
+
+      // Right = forward faster (-1), Left = backward (+1)
+      function press(dir)  { holdDir = dir; }
+      function release()   { holdDir = 0;   }
+
+      btnR.addEventListener('mousedown',   function (e) { e.preventDefault(); press(-1); });
+      btnL.addEventListener('mousedown',   function (e) { e.preventDefault(); press(1);  });
+      btnR.addEventListener('touchstart',  function (e) { e.preventDefault(); press(-1); }, { passive: false });
+      btnL.addEventListener('touchstart',  function (e) { e.preventDefault(); press(1);  }, { passive: false });
+
+      ['mouseup','mouseleave'].forEach(function (ev) {
+        btnR.addEventListener(ev, release);
+        btnL.addEventListener(ev, release);
+      });
+      ['touchend','touchcancel'].forEach(function (ev) {
+        btnR.addEventListener(ev, release);
+        btnL.addEventListener(ev, release);
+      });
+    })();
+  })();
+  </script>
+</body>
+</html>

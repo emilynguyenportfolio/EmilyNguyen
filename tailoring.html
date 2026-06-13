@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tailoring — Emily Nguyen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;1,6..96,300;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Outfit:wght@200;300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── TAILORING PAGE ── */
+    .tw-hero {
+      position: relative;
+      height: 100vh;
+      min-height: 560px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+    .tw-hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: grayscale(0.1) contrast(1.03);
+    }
+    .tw-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(20,19,18,0.84) 0%, rgba(20,19,18,0.22) 55%, transparent 100%);
+    }
+    .tw-hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 3rem 4rem;
+      max-width: 680px;
+    }
+    .tw-hero-content .eyebrow {
+      color: rgba(242,241,238,0.55);
+      margin-bottom: 0.8rem;
+    }
+    .tw-hero-title {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(2.8rem, 7vw, 6rem);
+      font-weight: 300;
+      font-style: italic;
+      color: #f2f1ee;
+      line-height: 1;
+      margin: 0 0 1.2rem;
+      letter-spacing: -0.01em;
+    }
+    .tw-hero-sub {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 200;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(242,241,238,0.6);
+    }
+
+    /* ── INTRO ── */
+    .tw-intro {
+      padding: 6rem 3rem 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .tw-intro-label {
+      padding-top: 0.3rem;
+    }
+    .tw-intro-label .eyebrow {
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .tw-intro-label h2 {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 300;
+      line-height: 1.2;
+      margin: 0;
+    }
+    .tw-intro-text p {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 200;
+      line-height: 1.85;
+      color: var(--text);
+      margin: 0 0 1.2em;
+    }
+    .tw-intro-text p:last-child { margin: 0; }
+
+    /* ── PROCESS SECTIONS ── */
+    .tw-process {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 5rem 3rem;
+    }
+    .tw-process-header {
+      display: flex;
+      align-items: baseline;
+      gap: 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .tw-process-header .eyebrow { flex-shrink: 0; }
+    .tw-process-header h2 {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 300;
+      font-style: italic;
+      margin: 0;
+    }
+
+    .tw-scatter-section {
+      border-top: 1px solid var(--border);
+      padding: 5rem 3rem;
+    }
+    .tw-scatter-header {
+      display: flex;
+      align-items: baseline;
+      gap: 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .tw-scatter-header .eyebrow { flex-shrink: 0; }
+    .tw-scatter-header h2 {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 300;
+      font-style: italic;
+      margin: 0;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .tw-hero-content { padding: 0 1.5rem 3rem; }
+      .tw-intro { grid-template-columns: 1fr; gap: 2rem; padding: 4rem 1.5rem; }
+      .tw-process { padding: 4rem 1.5rem; }
+      .tw-scatter-section { padding: 4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <a href="index.html" class="sidebar-brand">
+      <img src="logo.png" alt="Emily Nguyen logo" class="sidebar-logo" />
+      <span class="sidebar-name">emily nguyen.</span>
+    </a>
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="speak-nearby.html">Senior Thesis</a></li>
+        <li><a href="archive.html" class="active">Archive</a></li>
+        <li><a href="illustrations.html">Illustrations</a></li>
+        <li><a href="other-works.html">Other Works</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://instagram.com/sp1ritdancr" target="_blank" rel="noopener">@sp1ritdancr</a>
+    </div>
+  </aside>
+  <button class="sidebar-toggle" aria-label="menu" onclick="toggleSidebar()">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="content">
+
+    <!-- HERO -->
+    <section class="tw-hero">
+      <img class="tw-hero-img" src="tailoring/finalwip.jpeg" alt="Tailoring — Bespoke Blazer" />
+      <div class="tw-hero-overlay"></div>
+      <div class="tw-hero-content fade-up">
+        <span class="eyebrow">specialty · menswear tailoring</span>
+        <h1 class="tw-hero-title">Tailoring.</h1>
+        <p class="tw-hero-sub">a bespoke blazer in plum wool</p>
+      </div>
+    </section>
+
+    <!-- INTRO -->
+    <div class="tw-intro fade-up">
+      <div class="tw-intro-label">
+        <span class="eyebrow">about</span>
+        <h2>The craft,<br>first and foremost.</h2>
+      </div>
+      <div class="tw-intro-text">
+        <p>A traditional bespoke tailored jacket, built from the ground up using classic construction methods — hand-pad stitching, a full chest canvas, carefully shaped shoulders, and a silk lining. The focus here is entirely on the craft itself: learning and executing the discipline of tailoring as it has always been done.</p>
+        <p>The only departure from tradition is color — a deep plum wool in place of the expected neutral.</p>
+      </div>
+    </div>
+
+    <!-- DRAFTING & CUTTING -->
+    <div class="tw-process fade-up">
+      <div class="tw-process-header">
+        <span class="eyebrow">process 01</span>
+        <h2>Drafting &amp; Cutting</h2>
+      </div>
+    </div>
+
+    <!-- ASSEMBLY -->
+    <div class="tw-scatter-section fade-up">
+      <div class="tw-scatter-header">
+        <span class="eyebrow">process 02</span>
+        <h2>Assembly</h2>
+      </div>
+    </div>
+
+    <!-- DETAILS -->
+    <div class="tw-scatter-section fade-up">
+      <div class="tw-scatter-header">
+        <span class="eyebrow">process 03</span>
+        <h2>Details</h2>
+      </div>
+    </div>
+
+    <!-- ON THE FORM -->
+    <div class="tw-scatter-section fade-up">
+      <div class="tw-scatter-header">
+        <span class="eyebrow">fitting</span>
+        <h2>On the Form</h2>
+      </div>
+    </div>
+
+    <!-- LINING -->
+    <div class="tw-scatter-section fade-up">
+      <div class="tw-scatter-header">
+        <span class="eyebrow">lining</span>
+        <h2>Lining</h2>
+      </div>
+    </div>
+
+    <!-- FINAL -->
+    <div class="tw-scatter-section fade-up">
+      <div class="tw-scatter-header">
+        <span class="eyebrow">final</span>
+        <h2>Final</h2>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <span class="footer-name"><img src="emily%20nguyen%20transparent.png" alt="emily nguyen." class="logo-img logo-img--footer" /></span>
+      <div class="footer-links">
+        <a href="https://instagram.com/sp1ritdancr" target="_blank" rel="noopener">@sp1ritdancr</a>
+        <a href="index.html">home</a>
+      </div>
+      <span class="footer-copy">© 2026 Emily Nguyen</span>
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
+  <script src="editor.js"></script>
+</body>
+</html>

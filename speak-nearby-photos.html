@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Speak Nearby — Photos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;1,6..96,300;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Outfit:wght@200;300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .sn-photos-header {
+      padding: 5rem 4rem 3rem;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+    .sn-photos-header-left .eyebrow { display: block; margin-bottom: 0.8rem; }
+    .sn-photos-header-left h1 {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(1.8rem, 3.5vw, 3rem);
+      font-weight: 300;
+      font-style: italic;
+      margin: 0;
+      line-height: 1.1;
+    }
+    .sn-photos-credit {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 200;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      white-space: nowrap;
+    }
+
+    /* ── EDIT BAR ── */
+    .sn-edit-bar {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.7rem 4rem;
+      background: rgba(242,241,238,0.97);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--border);
+    }
+    .sn-edit-bar button {
+      background: none;
+      border: 1px solid var(--border);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 300;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      padding: 0.4rem 0.9rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .sn-edit-bar button:hover { background: var(--text-dark); color: var(--bg); }
+    .sn-edit-bar button.active-edit {
+      background: var(--text-dark);
+      color: var(--bg);
+      border-color: var(--text-dark);
+    }
+    .sn-edit-hint {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.58rem;
+      font-weight: 200;
+      letter-spacing: 0.1em;
+      color: var(--text-mid);
+    }
+
+    /* ── FLEX LAYOUT (default) ── */
+    .sn-photos-canvas {
+      padding: 0 4rem 10rem;
+    }
+    .sn-photo-row {
+      display: flex;
+      align-items: flex-start;
+    }
+    .sn-photo-item {
+      flex: 0 0 auto;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .sn-photo-item img {
+      display: block;
+      width: 100%;
+      height: auto;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .sn-photo-item:hover img { opacity: 0.82; }
+
+    /* ── ABSOLUTE LAYOUT (after edit / saved state) ── */
+    .sn-photos-canvas.abs-mode {
+      position: relative;
+      padding: 0;
+    }
+    .sn-photo-abs {
+      position: absolute;
+      cursor: pointer;
+    }
+    .sn-photo-abs img {
+      display: block;
+      width: 100%;
+      height: auto;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .sn-photo-abs:hover img { opacity: 0.82; }
+
+    /* ── EDIT HANDLES ── */
+    .sn-photos-canvas.editing .sn-photo-abs {
+      cursor: grab;
+      outline: 1px solid rgba(80,120,255,0.35);
+    }
+    .sn-photos-canvas.editing .sn-photo-abs:active { cursor: grabbing; }
+    .sn-photo-abs .edit-resize {
+      display: none;
+      position: absolute;
+      right: -5px;
+      bottom: -5px;
+      width: 14px;
+      height: 14px;
+      background: #5070ff;
+      border-radius: 2px;
+      cursor: se-resize;
+      z-index: 10;
+    }
+    .sn-photos-canvas.editing .sn-photo-abs .edit-resize { display: block; }
+    .sn-photo-abs .edit-badge {
+      display: none;
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      background: rgba(0,0,0,0.65);
+      color: #fff;
+      font-family: monospace;
+      font-size: 9px;
+      padding: 2px 5px;
+      pointer-events: none;
+      z-index: 10;
+      white-space: nowrap;
+    }
+    .sn-photos-canvas.editing .sn-photo-abs .edit-badge { display: block; }
+
+    /* ── LIGHTBOX ── */
+    /* Click-catcher: invisible full-screen layer, below the floating image */
+    .sn-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      pointer-events: none;
+    }
+    .sn-lightbox.active { pointer-events: all; }
+
+    /* Controls: above the floating image (z-index 1002 > floatImg 1001) */
+    .sn-lightbox-close {
+      position: fixed; top: 2rem; right: 2.5rem;
+      z-index: 1002;
+      background: none; border: none;
+      color: rgba(20,19,18,0.4);
+      font-family: 'Outfit', sans-serif; font-size: 0.62rem; font-weight: 200;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      cursor: pointer; padding: 0;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s ease, color 0.2s;
+    }
+    .sn-lightbox.active .sn-lightbox-close { opacity: 1; pointer-events: all; }
+    .sn-lightbox-close:hover { color: rgba(20,19,18,0.85); }
+
+    .sn-lightbox-prev, .sn-lightbox-next {
+      position: fixed; top: 50%; transform: translateY(-50%);
+      z-index: 1002;
+      background: none; border: none;
+      color: rgba(20,19,18,0.28); font-size: 1.1rem;
+      cursor: pointer; padding: 1.2rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s ease, color 0.2s;
+    }
+    .sn-lightbox.active .sn-lightbox-prev,
+    .sn-lightbox.active .sn-lightbox-next { opacity: 1; pointer-events: all; }
+    .sn-lightbox-prev:hover, .sn-lightbox-next:hover { color: rgba(20,19,18,0.75); }
+    .sn-lightbox-prev { left: 1rem; }
+    .sn-lightbox-next { right: 1rem; }
+
+    .sn-lightbox-counter {
+      position: fixed; bottom: 1.8rem; left: 50%; transform: translateX(-50%);
+      z-index: 1002;
+      font-family: 'Outfit', sans-serif; font-size: 0.58rem; font-weight: 200;
+      letter-spacing: 0.15em; color: rgba(20,19,18,0.3);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .sn-lightbox.active .sn-lightbox-counter { opacity: 1; }
+
+    @media (max-width: 768px) {
+      .sn-photos-header { padding: 3rem 1.5rem 2rem; flex-direction: column; gap: 0.5rem; }
+      .sn-photos-canvas { padding: 0 1.5rem 6rem; }
+      .sn-edit-bar { padding: 0.7rem 1.5rem; }
+      .sn-photo-row { flex-wrap: wrap; gap: 4px !important; margin-top: 1.5rem !important; }
+      .sn-photo-item { width: 48% !important; margin-left: 0 !important; }
+    }
+  </style>
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <a href="index.html" class="sidebar-brand">
+      <img src="logo.png" alt="Emily Nguyen logo" class="sidebar-logo" />
+      <span class="sidebar-name">emily nguyen.</span>
+    </a>
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="speak-nearby.html" class="active">Senior Thesis</a></li>
+        <li><a href="archive.html">Archive</a></li>
+        <li><a href="illustrations.html">Illustrations</a></li>
+        <li><a href="other-works.html">Other Works</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://instagram.com/sp1ritdancr" target="_blank" rel="noopener">@sp1ritdancr</a>
+    </div>
+  </aside>
+  <button class="sidebar-toggle" aria-label="menu" onclick="toggleSidebar()">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="content">
+
+    <div class="sn-photos-header fade-up">
+      <div class="sn-photos-header-left">
+        <span class="eyebrow">speak nearby · fw 2026</span>
+      </div>
+      <span class="sn-photos-credit">Photography by Taren Wang</span>
+    </div>
+
+    <!-- EDIT BAR — only visible with ?edit in URL -->
+    <div class="sn-edit-bar" id="snEditBar" style="display:none">
+      <button id="snEditBtn" onclick="startEdit()">Edit Layout</button>
+      <span class="sn-edit-hint" id="snEditHint" style="display:none">Drag to move &nbsp;·&nbsp; drag corner handle to resize</span>
+      <button id="snDoneBtn" style="display:none" onclick="finishEdit()">Done</button>
+      <button id="snResetBtn" style="display:none" onclick="resetLayout()">Reset</button>
+      <button id="snExportBtn" onclick="exportLayout()" style="display:none">Copy layout code</button>
+    </div>
+
+    <div class="sn-photos-canvas" id="photosCanvas"></div>
+
+    <div class="sn-lightbox" id="snLightbox">
+      <button class="sn-lightbox-close" id="snLightboxClose">close</button>
+      <button class="sn-lightbox-prev" id="snLightboxPrev">&#8592;</button>
+      <button class="sn-lightbox-next" id="snLightboxNext">&#8594;</button>
+      <span class="sn-lightbox-counter" id="snLightboxCounter"></span>
+    </div>
+
+    <footer class="footer">
+      <span class="footer-name"><img src="emily%20nguyen%20transparent.png" alt="emily nguyen." class="logo-img logo-img--footer" /></span>
+      <div class="footer-links">
+        <a href="https://instagram.com/sp1ritdancr" target="_blank" rel="noopener">@sp1ritdancr</a>
+        <a href="speak-nearby.html">&#8592; back</a>
+      </div>
+      <span class="footer-copy">© 2026 Emily Nguyen</span>
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
+  <script src="editor.js"></script>
+  <script>
+  (function () {
+    var FOLDER = 'speak-nearby/photos/';
+    var FILES = [
+      'IMG_6914.JPG','IMG_6912.JPG','IMG_6916.JPG','IMG_6917.JPG','IMG_6918.JPG',
+      'P1148269.jpg','P1148270.jpg','P1148308-已增强-SR.jpg','P1148313.jpg','P1148349.jpg',
+      'P1148449.jpg','P1148462.jpg','P1148512.JPG','P1148632.jpg','P1148639.jpg',
+      'P1148648.JPG','P1148659.JPG','P1148692.JPG','P1148755.jpg','P1148799.jpg',
+      'P1148904.jpg','P1148934.jpg','P1148937.jpg','P1148949.JPG','P1148967.JPG',
+      'P1172907.jpg','P1172912.jpg','P1172976.jpg','P1172991.jpg','P1173007.jpg',
+      'P1173026.jpg','P1173051.jpg','P1173061.jpg','P1173065.JPG','P1173068.jpg',
+      'P1173078.JPG','P1173144.jpg','P1173158.jpg','P1173178.jpg','P1173221.jpg',
+      'P1173224.jpg','P1173242.jpg','P1173244.jpg','P1173264.jpg','P1173267.jpg',
+      'P1173302.jpeg','P1173415.jpg','P1173426.jpg','P1173449.jpg','P1173464.jpg',
+      'P1173552.jpg','P1173571.jpg','P1173594.jpg','P1173667.jpg','P1173689.jpg',
+      'P1173706.jpg','P1173739.jpg'
+    ];
+    var ROWS = [
+      { items:[{w:'54%',ml:'0'}],                                       mt:'1rem'  },
+      { items:[{w:'16%',ml:'65%'}],                                     mt:'3rem'  },
+      { items:[{w:'22%',ml:'8%'},{w:'18%',ml:'10%'}],                   mt:'8rem'  },
+      { items:[{w:'62%',ml:'24%'}],                                     mt:'3rem'  },
+      { items:[{w:'13%',ml:'0'},{w:'36%',ml:'12%'}],                    mt:'9rem'  },
+      { items:[{w:'19%',ml:'58%'}],                                     mt:'2rem'  },
+      { items:[{w:'42%',ml:'0'},{w:'13%',ml:'8%'}],                     mt:'7rem'  },
+      { items:[{w:'15%',ml:'28%'},{w:'24%',ml:'6%'},{w:'11%',ml:'6%'}], mt:'5rem'  },
+      { items:[{w:'60%',ml:'0'}],                                       mt:'9rem'  },
+      { items:[{w:'13%',ml:'74%'}],                                     mt:'2rem'  },
+      { items:[{w:'20%',ml:'10%'},{w:'38%',ml:'9%'}],                   mt:'7rem'  },
+      { items:[{w:'17%',ml:'0'}],                                       mt:'4rem'  },
+      { items:[{w:'48%',ml:'34%'}],                                     mt:'3rem'  },
+      { items:[{w:'13%',ml:'0'},{w:'12%',ml:'6%'},{w:'26%',ml:'14%'}],  mt:'8rem'  },
+      { items:[{w:'66%',ml:'0'}],                                       mt:'9rem'  },
+      { items:[{w:'18%',ml:'48%'},{w:'14%',ml:'5%'}],                   mt:'3rem'  },
+      { items:[{w:'32%',ml:'16%'},{w:'16%',ml:'8%'}],                   mt:'7rem'  },
+      { items:[{w:'11%',ml:'0'},{w:'50%',ml:'12%'}],                    mt:'5rem'  },
+      { items:[{w:'22%',ml:'62%'}],                                     mt:'7rem'  },
+      { items:[{w:'40%',ml:'0'},{w:'18%',ml:'7%'}],                     mt:'4rem'  },
+      { items:[{w:'14%',ml:'22%'},{w:'14%',ml:'6%'},{w:'28%',ml:'8%'}], mt:'8rem'  },
+      { items:[{w:'58%',ml:'22%'}],                                     mt:'9rem'  },
+      { items:[{w:'17%',ml:'0'},{w:'20%',ml:'46%'}],                    mt:'3rem'  },
+      { items:[{w:'36%',ml:'6%'},{w:'14%',ml:'8%'}],                    mt:'7rem'  },
+      { items:[{w:'12%',ml:'70%'}],                                     mt:'4rem'  },
+      { items:[{w:'26%',ml:'0'},{w:'22%',ml:'7%'},{w:'13%',ml:'7%'}],   mt:'6rem'  },
+      { items:[{w:'50%',ml:'0'}],                                       mt:'9rem'  },
+      { items:[{w:'14%',ml:'52%'},{w:'18%',ml:'5%'}],                   mt:'3rem'  },
+      { items:[{w:'30%',ml:'12%'},{w:'16%',ml:'9%'}],                   mt:'7rem'  },
+      { items:[{w:'18%',ml:'0'},{w:'13%',ml:'8%'},{w:'30%',ml:'10%'}],  mt:'5rem'  },
+      { items:[{w:'52%',ml:'30%'}],                                     mt:'8rem'  },
+      { items:[{w:'15%',ml:'0'},{w:'20%',ml:'7%'},{w:'14%',ml:'42%'}],  mt:'5rem'  },
+      { items:[{w:'40%',ml:'32%'}],                                     mt:'6rem'  },
+    ];
+
+    var SAVE_KEY = 'sn-photos-layout-v1';
+
+    // ── HARDCODED LAYOUT (paste new export here to update) ──
+    var HARDCODED_LAYOUT = [{"fileIdx":0,"x":51,"y":113,"w":639.352,"h":852},{"fileIdx":1,"x":1075.59,"y":890.891,"w":189.438,"h":237},{"fileIdx":2,"x":0,"y":1381.7,"w":206.477,"h":275},{"fileIdx":3,"x":305.594,"y":1611.7,"w":345.102,"h":502},{"fileIdx":4,"x":815.141,"y":1165.77,"w":307.055,"h":409},{"fileIdx":5,"x":690,"y":2616.88,"w":564.891,"h":848},{"fileIdx":6,"x":29,"y":2575.88,"w":202.227,"h":271},{"fileIdx":7,"x":690.719,"y":3484.48,"w":224.938,"h":300},{"fileIdx":8,"x":45,"y":3739.41,"w":389.266,"h":584},{"fileIdx":9,"x":1008.98,"y":4418.41,"w":153.891,"h":231},{"fileIdx":10,"x":251.516,"y":4723.52,"w":631.594,"h":948},{"fileIdx":11,"x":1163.12,"y":5369.52,"w":150.141,"h":192},{"fileIdx":12,"x":666.344,"y":5686.52,"w":360.227,"h":523},{"fileIdx":13,"x":1182,"y":4064.19,"w":117.391,"h":176},{"fileIdx":14,"x":716.141,"y":4164.05,"w":275.891,"h":414},{"fileIdx":15,"x":0,"y":6482.97,"w":236.797,"h":325},{"fileIdx":16,"x":785.75,"y":6614.97,"w":449.891,"h":639},{"fileIdx":17,"x":218,"y":7263.59,"w":132.266,"h":198},{"fileIdx":18,"x":0,"y":7584.58,"w":345.305,"h":502},{"fileIdx":19,"x":380,"y":7931.01,"w":153.891,"h":231},{"fileIdx":20,"x":965.938,"y":7702.01,"w":273.055,"h":364},{"fileIdx":21,"x":740.766,"y":8169.01,"w":409.836,"h":615},{"fileIdx":22,"x":40,"y":8725.88,"w":194.438,"h":292},{"fileIdx":23,"x":285.305,"y":8937.3,"w":473.102,"h":681},{"fileIdx":24,"x":1109.62,"y":9638.3,"w":165.758,"h":228},{"fileIdx":25,"x":11.4375,"y":10367.2,"w":284.875,"h":190},{"fileIdx":26,"x":506.016,"y":9998.2,"w":680.438,"h":454},{"fileIdx":27,"x":136,"y":10728.7,"w":130.227,"h":195},{"fileIdx":28,"x":506.305,"y":10888.7,"w":489,"h":734},{"fileIdx":29,"x":1074.05,"y":11444.9,"w":269.477,"h":404},{"fileIdx":30,"x":390,"y":12084.7,"w":270.594,"h":361},{"fileIdx":31,"x":138.469,"y":12019.7,"w":213.102,"h":142},{"fileIdx":32,"x":0,"y":12615.2,"w":132.758,"h":177},{"fileIdx":33,"x":67.2578,"y":12881.2,"w":133.758,"h":178},{"fileIdx":34,"x":1040.75,"y":12345.2,"w":190.516,"h":254},{"fileIdx":35,"x":211.477,"y":12880.9,"w":133.719,"h":178},{"fileIdx":36,"x":131,"y":14056.9,"w":333.266,"h":444},{"fileIdx":37,"x":654.891,"y":14440.9,"w":549.797,"h":733},{"fileIdx":38,"x":88.0156,"y":15261.4,"w":281.227,"h":375},{"fileIdx":39,"x":997.977,"y":15641.4,"w":141.758,"h":189},{"fileIdx":40,"x":1148.8,"y":15640.4,"w":142.055,"h":189},{"fileIdx":41,"x":38,"y":16149.7,"w":405.836,"h":541},{"fileIdx":42,"x":586.711,"y":16022.7,"w":260.477,"h":347},{"fileIdx":43,"x":32.0547,"y":13804.7,"w":153.891,"h":205},{"fileIdx":44,"x":592,"y":13009.8,"w":592,"h":789},{"fileIdx":45,"x":1098,"y":2157.59,"w":125.758,"h":168},{"fileIdx":46,"x":1040.63,"y":16659.6,"w":213.102,"h":160},{"fileIdx":47,"x":186.055,"y":17001.5,"w":472.188,"h":629},{"fileIdx":48,"x":103.805,"y":17663.5,"w":189.438,"h":252},{"fileIdx":49,"x":834,"y":17954.8,"w":213.102,"h":284},{"fileIdx":50,"x":434.836,"y":18236.8,"w":153.891,"h":205},{"fileIdx":51,"x":46,"y":18270.8,"w":355.188,"h":473},{"fileIdx":52,"x":699.188,"y":18596,"w":615.68,"h":820},{"fileIdx":53,"x":121,"y":19632.4,"w":177.594,"h":237},{"fileIdx":54,"x":319.469,"y":19684.4,"w":236.797,"h":316},{"fileIdx":55,"x":1102.54,"y":19466.4,"w":123.758,"h":165},{"fileIdx":56,"x":440.875,"y":20057.9,"w":473.594,"h":631}];
+
+    var srcs = FILES.map(function(f){ return FOLDER + encodeURIComponent(f); });
+    var isEditing = false;
+    var visualOrder = []; // fileIdx values sorted by y position
+    var photoElMap = {}; // fileIdx → .sn-photo-abs DOM element
+
+    var canvas   = document.getElementById('photosCanvas');
+    var editBtn   = document.getElementById('snEditBtn');
+    var doneBtn   = document.getElementById('snDoneBtn');
+    var resetBtn  = document.getElementById('snResetBtn');
+    var exportBtn = document.getElementById('snExportBtn');
+    var editHint  = document.getElementById('snEditHint');
+    var lightbox = document.getElementById('snLightbox');
+    var lbClose  = document.getElementById('snLightboxClose');
+    var lbPrev   = document.getElementById('snLightboxPrev');
+    var lbNext   = document.getElementById('snLightboxNext');
+    var lbCtr    = document.getElementById('snLightboxCounter');
+    var currentIdx = 0;
+
+    // ── INIT ──
+    // Show edit bar only for you (?edit in URL)
+    if (location.search.includes('edit')) {
+      document.getElementById('snEditBar').style.display = 'flex';
+      exportBtn.style.display = '';
+    }
+
+    var saved = loadSaved();
+    renderAbsolute(saved || HARDCODED_LAYOUT, false);
+
+    // ── FLEX RENDER (default layout) ──
+    function renderFlex() {
+      canvas.innerHTML = '';
+      canvas.className = 'sn-photos-canvas';
+      var photoIdx = 0;
+      ROWS.forEach(function(row) {
+        if (photoIdx >= FILES.length) return;
+        var rowEl = document.createElement('div');
+        rowEl.className = 'sn-photo-row';
+        rowEl.style.marginTop = row.mt;
+        row.items.forEach(function(slot) {
+          if (photoIdx >= FILES.length) return;
+          var item = document.createElement('div');
+          item.className = 'sn-photo-item';
+          item.style.width = slot.w;
+          item.style.marginLeft = slot.ml;
+          var img = document.createElement('img');
+          img.src = srcs[photoIdx];
+          img.alt = '';
+          img.loading = 'lazy';
+          item.appendChild(img);
+          (function(idx){ item.addEventListener('click', function(){ openLightbox(idx); }); })(photoIdx);
+          rowEl.appendChild(item);
+          photoIdx++;
+        });
+        canvas.appendChild(rowEl);
+      });
+    }
+
+    // ── BUILD VISUAL ORDER from layout (sorted by y) ──
+    function buildVisualOrder(layout) {
+      visualOrder = layout.slice().sort(function(a, b) { return a.y - b.y; }).map(function(item) { return item.fileIdx; });
+    }
+
+    // ── ABSOLUTE RENDER (saved / edit mode) ──
+    function renderAbsolute(layout, editing) {
+      buildVisualOrder(layout);
+      photoElMap = {};
+      canvas.innerHTML = '';
+      canvas.className = 'sn-photos-canvas abs-mode' + (editing ? ' editing' : '');
+
+      var maxBottom = 0;
+      layout.forEach(function(item) {
+        maxBottom = Math.max(maxBottom, item.y + item.h + 200);
+      });
+      canvas.style.minHeight = maxBottom + 'px';
+
+      layout.forEach(function(item, i) {
+        var el = document.createElement('div');
+        el.className = 'sn-photo-abs';
+        el.style.left  = item.x + 'px';
+        el.style.top   = item.y + 'px';
+        el.style.width = item.w + 'px';
+
+        var img = document.createElement('img');
+        img.src = srcs[item.fileIdx];
+        img.alt = '';
+        img.loading = 'lazy';
+        img.addEventListener('load', function() {
+          var bottom = item.y + el.offsetHeight + 200;
+          if (bottom > parseFloat(canvas.style.minHeight || 0)) {
+            canvas.style.minHeight = bottom + 'px';
+          }
+          if (badge) badge.textContent = Math.round(item.w) + 'px wide';
+        });
+        el.appendChild(img);
+
+        // Resize handle
+        var rh = document.createElement('div');
+        rh.className = 'edit-resize';
+        el.appendChild(rh);
+
+        // Width badge
+        var badge = document.createElement('div');
+        badge.className = 'edit-badge';
+        badge.textContent = Math.round(item.w) + 'px wide';
+        el.appendChild(badge);
+
+        photoElMap[item.fileIdx] = el;
+
+        if (editing) {
+          makeDraggable(el, item, badge);
+          makeResizable(rh, el, item, badge);
+        } else {
+          (function(idx){ el.addEventListener('click', function(){ openLightbox(idx); }); })(item.fileIdx);
+        }
+
+        canvas.appendChild(el);
+      });
+    }
+
+    // ── DRAG ──
+    function makeDraggable(el, item, badge) {
+      el.addEventListener('mousedown', function(e) {
+        if (e.target.classList.contains('edit-resize')) return;
+        e.preventDefault();
+        var startX = e.clientX, startY = e.clientY;
+        var startLeft = item.x, startTop = item.y;
+        el.style.zIndex = '50';
+
+        function onMove(e) {
+          item.x = Math.max(0, startLeft + e.clientX - startX);
+          item.y = Math.max(0, startTop  + e.clientY - startY);
+          el.style.left = item.x + 'px';
+          el.style.top  = item.y + 'px';
+          // expand canvas if dragged down
+          var bottom = item.y + el.offsetHeight + 200;
+          if (bottom > parseFloat(canvas.style.minHeight || 0)) {
+            canvas.style.minHeight = bottom + 'px';
+          }
+        }
+        function onUp() {
+          el.style.zIndex = '';
+          autosave();
+          document.removeEventListener('mousemove', onMove);
+          document.removeEventListener('mouseup', onUp);
+        }
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      });
+    }
+
+    // ── RESIZE ──
+    function makeResizable(rh, el, item, badge) {
+      rh.addEventListener('mousedown', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var startX = e.clientX;
+        var startW = item.w;
+
+        function onMove(e) {
+          item.w = Math.max(60, startW + e.clientX - startX);
+          el.style.width = item.w + 'px';
+          badge.textContent = Math.round(item.w) + 'px wide';
+        }
+        function onUp() {
+          autosave();
+          document.removeEventListener('mousemove', onMove);
+          document.removeEventListener('mouseup', onUp);
+        }
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      });
+    }
+
+    // ── EDIT CONTROLS ──
+    window.startEdit = function() {
+      // Snapshot current flex layout positions
+      var items = canvas.querySelectorAll('.sn-photo-item, .sn-photo-abs');
+      var canvasRect = canvas.getBoundingClientRect();
+      var layout = [];
+
+      items.forEach(function(el, i) {
+        var rect = el.getBoundingClientRect();
+        layout.push({
+          fileIdx: i,
+          x: rect.left - canvasRect.left,
+          y: rect.top  - canvasRect.top + window.scrollY - (canvasRect.top + window.scrollY - canvasRect.top),
+          w: rect.width,
+          h: rect.height
+        });
+      });
+
+      // Correct y: getBoundingClientRect is viewport-relative; adjust for scroll
+      var canvasTop = canvasRect.top + window.scrollY;
+      items.forEach(function(el, i) {
+        var rect = el.getBoundingClientRect();
+        layout[i].y = rect.top + window.scrollY - canvasTop;
+      });
+
+      renderAbsolute(layout, true);
+      isEditing = true;
+      editBtn.style.display = 'none';
+      doneBtn.style.display = '';
+      resetBtn.style.display = '';
+      exportBtn.style.display = '';
+      editHint.style.display = '';
+      doneBtn.classList.add('active-edit');
+    };
+
+    window.finishEdit = function() {
+      autosave();
+      // Re-render without edit handles
+      var saved = loadSaved();
+      renderAbsolute(saved, false);
+      isEditing = false;
+      editBtn.style.display = '';
+      doneBtn.style.display = 'none';
+      resetBtn.style.display = 'none';
+      exportBtn.style.display = '';
+      editHint.style.display = 'none';
+      doneBtn.classList.remove('active-edit');
+    };
+
+    window.resetLayout = function() {
+      localStorage.removeItem(SAVE_KEY);
+      renderAbsolute(HARDCODED_LAYOUT, false);
+      isEditing = false;
+      editBtn.style.display = '';
+      doneBtn.style.display = 'none';
+      resetBtn.style.display = 'none';
+      exportBtn.style.display = '';
+      editHint.style.display = 'none';
+    };
+
+    // ── EXPORT ──
+    window.exportLayout = function() {
+      var saved = loadSaved();
+      if (!saved) { alert('No saved layout yet — make some changes first.'); return; }
+      var code = 'var SAVED_LAYOUT = ' + JSON.stringify(saved, null, 2) + ';';
+      navigator.clipboard.writeText(code).then(function() {
+        var btn = document.getElementById('snExportBtn');
+        btn.textContent = 'Copied!';
+        setTimeout(function() { btn.textContent = 'Copy layout code'; }, 2000);
+      });
+    };
+
+    // ── SAVE / LOAD ──
+    function autosave() {
+      var els = canvas.querySelectorAll('.sn-photo-abs');
+      var layout = [];
+      els.forEach(function(el, i) {
+        layout.push({
+          fileIdx: i,
+          x: parseFloat(el.style.left),
+          y: parseFloat(el.style.top),
+          w: parseFloat(el.style.width),
+          h: el.offsetHeight
+        });
+      });
+      localStorage.setItem(SAVE_KEY, JSON.stringify(layout));
+    }
+
+    function loadSaved() {
+      try {
+        var raw = localStorage.getItem(SAVE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch(e) {}
+      return null;
+    }
+
+    // ── LIGHTBOX (shared-element / hero transition) ──
+    // The image physically lifts out of its spot, moves to center, returns on close.
+    var lbClosing = false;
+    var lbFloatImg = null;  // fixed-positioned <img> that does the moving
+    var lbSourceEl = null;  // the .sn-photo-abs whose img is hidden while open
+
+    function computeFinalSize(naturalW, naturalH) {
+      var vw = window.innerWidth;
+      var vh = window.innerHeight;
+      var maxW = vw * 0.86;
+      var maxH = vh * 0.88;
+      var aspect = naturalW / naturalH;
+      var w, h;
+      if (naturalW <= maxW && naturalH <= maxH) {
+        w = naturalW; h = naturalH;
+      } else if ((naturalW / maxW) > (naturalH / maxH)) {
+        w = maxW; h = maxW / aspect;
+      } else {
+        h = maxH; w = maxH * aspect;
+      }
+      return { w: w, h: h };
+    }
+
+    function openLightbox(fileIdx) {
+      if (lbClosing || lbFloatImg) return;
+      currentIdx = visualOrder.indexOf(fileIdx);
+      if (currentIdx === -1) currentIdx = fileIdx;
+      var actualIdx = (visualOrder[currentIdx] !== undefined) ? visualOrder[currentIdx] : fileIdx;
+
+      lbSourceEl = photoElMap[fileIdx];
+      if (!lbSourceEl) return;
+
+      var rect = lbSourceEl.getBoundingClientRect();
+      var sourceImg = lbSourceEl.querySelector('img');
+      var naturalW = (sourceImg && sourceImg.naturalWidth  > 0) ? sourceImg.naturalWidth  : rect.width;
+      var naturalH = (sourceImg && sourceImg.naturalHeight > 0) ? sourceImg.naturalHeight : rect.height;
+      var size = computeFinalSize(naturalW, naturalH);
+      var vw = window.innerWidth, vh = window.innerHeight;
+      var destLeft = (vw - size.w) / 2;
+      var destTop  = (vh - size.h) / 2;
+
+      // Blank the original thumbnail instantly (suppress its CSS opacity transition)
+      if (sourceImg) {
+        sourceImg.style.transition = 'none';
+        sourceImg.style.opacity = '0';
+      }
+
+      // Create the floating image exactly over the thumbnail
+      lbFloatImg = document.createElement('img');
+      lbFloatImg.src = srcs[actualIdx];
+      lbFloatImg.style.cssText =
+        'position:fixed;z-index:1001;margin:0;padding:0;border:none;display:block;' +
+        'left:'   + rect.left   + 'px;' +
+        'top:'    + rect.top    + 'px;' +
+        'width:'  + rect.width  + 'px;' +
+        'height:' + rect.height + 'px;' +
+        'transition:none;';
+      document.body.appendChild(lbFloatImg);
+
+      // Show controls
+      lbCtr.textContent = (currentIdx + 1) + ' / ' + FILES.length;
+      lightbox.classList.add('active');
+
+      // Force reflow, then animate to center
+      lbFloatImg.offsetHeight;
+      var ease = '0.5s cubic-bezier(0.4,0,0.2,1)';
+      lbFloatImg.style.transition =
+        'left ' + ease + ',top ' + ease + ',width ' + ease + ',height ' + ease;
+      lbFloatImg.style.left   = destLeft  + 'px';
+      lbFloatImg.style.top    = destTop   + 'px';
+      lbFloatImg.style.width  = size.w    + 'px';
+      lbFloatImg.style.height = size.h    + 'px';
+    }
+
+    function closeLightbox() {
+      if (lbClosing || !lbFloatImg) return;
+      lbClosing = true;
+      lightbox.classList.remove('active');
+
+      var sourceEl = lbSourceEl;
+      var floatImg = lbFloatImg;
+
+      if (sourceEl) {
+        var rect = sourceEl.getBoundingClientRect();
+        var ease = '0.44s cubic-bezier(0.4,0,0.2,1)';
+        floatImg.style.transition =
+          'left ' + ease + ',top ' + ease + ',width ' + ease + ',height ' + ease;
+        floatImg.style.left   = rect.left   + 'px';
+        floatImg.style.top    = rect.top    + 'px';
+        floatImg.style.width  = rect.width  + 'px';
+        floatImg.style.height = rect.height + 'px';
+
+        // Wait for ALL 4 properties to finish before swapping
+        var img = sourceEl.querySelector('img');
+        var fired = {};
+        var swapped = false;
+
+        function doSwap() {
+          if (swapped) return;
+          swapped = true;
+          floatImg.removeEventListener('transitionend', onProp);
+
+          // Atomic: float img invisible + thumbnail visible — same paint, no gap
+          floatImg.style.transition = 'none';
+          floatImg.style.opacity    = '0';
+          if (img) { img.style.transition = 'none'; img.style.opacity = '1'; }
+
+          // DOM cleanup happens AFTER that paint (element is already invisible)
+          requestAnimationFrame(function() {
+            if (floatImg.parentNode) floatImg.parentNode.removeChild(floatImg);
+            if (lbFloatImg === floatImg) lbFloatImg = null;
+            lbSourceEl = null;
+            lbClosing  = false;
+            // Restore hover transition after another frame
+            if (img) requestAnimationFrame(function() {
+              img.style.opacity    = '';
+              img.style.transition = '';
+            });
+          });
+        }
+
+        function onProp(e) {
+          fired[e.propertyName] = true;
+          if (fired.left && fired.top && fired.width && fired.height) doSwap();
+        }
+        floatImg.addEventListener('transitionend', onProp);
+        // Safety fallback in case any transitionend is missed
+        setTimeout(doSwap, 500);
+      } else {
+        if (floatImg.parentNode) floatImg.parentNode.removeChild(floatImg);
+        lbFloatImg = null;
+        lbSourceEl = null;
+        lbClosing = false;
+      }
+    }
+
+    function navigate(dir) {
+      if (!lbFloatImg || lbClosing) return;
+      // Restore old source thumbnail
+      if (lbSourceEl) {
+        var oldImg = lbSourceEl.querySelector('img');
+        if (oldImg) oldImg.style.opacity = '';
+      }
+      currentIdx = (currentIdx + dir + FILES.length) % FILES.length;
+      var fileIdx = (visualOrder[currentIdx] !== undefined) ? visualOrder[currentIdx] : currentIdx;
+      lbSourceEl = photoElMap[fileIdx] || null;
+      // Hide new source thumbnail
+      if (lbSourceEl) {
+        var newImg = lbSourceEl.querySelector('img');
+        if (newImg) newImg.style.opacity = '0';
+      }
+      // Crossfade the floating image
+      var floatImg = lbFloatImg;
+      floatImg.style.transition = 'opacity 0.15s ease';
+      floatImg.style.opacity = '0';
+      var nextSrc = srcs[visualOrder[currentIdx]];
+      setTimeout(function() {
+        if (floatImg === lbFloatImg) { floatImg.src = nextSrc; floatImg.style.opacity = '1'; }
+      }, 150);
+      lbCtr.textContent = (currentIdx + 1) + ' / ' + FILES.length;
+    }
+
+    lbClose.addEventListener('click', closeLightbox);
+    lbPrev.addEventListener('click', function(e){ e.stopPropagation(); navigate(-1); });
+    lbNext.addEventListener('click', function(e){ e.stopPropagation(); navigate(1); });
+    // Click anywhere except the floating image closes it
+    lightbox.addEventListener('click', closeLightbox);
+    document.addEventListener('keydown', function(e){
+      if (!lightbox.classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') navigate(-1);
+      if (e.key === 'ArrowRight') navigate(1);
+    });
+    window.addEventListener('scroll', function(){
+      if (lightbox.classList.contains('active')) closeLightbox();
+    }, { passive: true });
+  })();
+  </script>
+</body>
+</html>

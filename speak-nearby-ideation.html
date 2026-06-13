@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ideation — Speak Nearby — Emily Nguyen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;1,6..96,300;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Outfit:wght@200;300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ─── IDEATION PAGE ─────────────────────────────────────── */
+
+    .id-header {
+      padding: 5rem 4rem 3.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 3rem;
+    }
+    .id-header-left .eyebrow { margin-bottom: 1rem; display: block; }
+    .id-header-left h1 {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(2.6rem, 5vw, 5rem);
+      font-weight: 300;
+      font-style: italic;
+      margin: 0 0 0.6rem;
+      line-height: 1;
+    }
+    .id-header-sub {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 200;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+    }
+    .id-back {
+      flex-shrink: 0;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 200;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      text-decoration: none;
+      transition: color 0.2s;
+      white-space: nowrap;
+    }
+    .id-back:hover { color: var(--text-dark); }
+
+    /* ─── SECTION LABEL ─── */
+    .id-label {
+      padding: 4.5rem 4rem 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: baseline;
+      gap: 2rem;
+    }
+    .id-label h2 {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+      font-weight: 300;
+      font-style: italic;
+      margin: 0;
+    }
+
+    /* ─── CAPTION ─── */
+    .id-cap {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 200;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      margin-top: 0.5rem;
+    }
+
+    /* ─── TWO-COLUMN ─── */
+    .id-two {
+      display: grid;
+      gap: 1.5rem;
+      padding: 0 4rem 4rem;
+      align-items: start;
+    }
+    .id-two--half { grid-template-columns: 1fr 1fr; }
+    .id-two--6040 { grid-template-columns: 6fr 4fr; }
+    .id-two img { width: 100%; display: block; }
+
+    /* ─── SINGLE IMAGE ROW (variable width + alignment) ─── */
+    .id-row {
+      display: flex;
+      padding: 0 4rem 3rem;
+    }
+    .id-row img { display: block; }
+    .id-row--left   { justify-content: flex-start; }
+    .id-row--right  { justify-content: flex-end; }
+    .id-row--center { justify-content: center; }
+
+    /* ─── TEXT BLOCK ─── */
+    .id-text { padding: 0 4rem 3rem; max-width: 760px; }
+    .id-text p {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 200;
+      line-height: 1.9;
+      color: var(--text);
+      margin: 0 0 1.2em;
+    }
+    .id-text p:last-child { margin: 0; }
+
+    /* ─── JOURNAL PAGES ─── */
+    .id-journal {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      padding: 0 4rem 5rem;
+      align-items: start;
+    }
+    .id-journal-item {
+      overflow: hidden;
+    }
+    .id-journal-item img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      cursor: zoom-in;
+      box-shadow: 0 3px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s ease;
+    }
+    .id-journal-item:nth-child(1) img { object-position: center bottom; }
+    .id-journal-item:nth-child(3) img { object-position: center top; }
+    .id-journal-item:hover img {
+      transform: scale(1.04);
+      box-shadow: 0 8px 36px rgba(0,0,0,0.18);
+    }
+
+    /* ─── LIGHTBOX ─── */
+    #id-lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(0,0,0,0.92);
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+    }
+    #id-lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      box-shadow: 0 8px 60px rgba(0,0,0,0.6);
+    }
+    #id-lightbox.open { display: flex; }
+
+
+    /* ─── CUSTOMER ─── */
+    .id-customer {
+      padding: 0 4rem 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .id-customer img { width: 100%; display: block; }
+    .id-customer-text p {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 200;
+      line-height: 1.9;
+      color: var(--text);
+      margin: 0 0 1.2em;
+    }
+    .id-customer-text p:last-child { margin: 0; }
+
+    /* ─── DARK LINEUP SECTION ─── */
+    .id-dark {
+      background: #171615;
+      padding: 4rem;
+    }
+    .id-dark .id-label {
+      padding: 0 0 2rem;
+      border-top: none;
+    }
+    .id-dark .id-label h2 { color: rgba(242,241,238,0.75); }
+    .id-dark .id-label .eyebrow { color: rgba(242,241,238,0.38); }
+
+    /* ─── LINEUP CAROUSEL ─── */
+    .id-carousel {
+      position: relative;
+    }
+    .id-carousel-track {
+      overflow: hidden;
+    }
+    .id-carousel-slides {
+      display: flex;
+      transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+    }
+    .id-carousel-slide {
+      flex: 0 0 100%;
+      width: 100%;
+    }
+    .id-carousel-slide img {
+      width: 100%;
+      display: block;
+    }
+    .id-carousel-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1.2rem;
+    }
+    .id-carousel-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 200;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(242,241,238,0.38);
+    }
+    .id-carousel-controls {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .id-carousel-btn {
+      background: none;
+      border: 1px solid rgba(242,241,238,0.2);
+      color: rgba(242,241,238,0.6);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s, color 0.2s;
+      flex-shrink: 0;
+    }
+    .id-carousel-btn:hover {
+      border-color: rgba(242,241,238,0.6);
+      color: rgba(242,241,238,0.9);
+    }
+    .id-carousel-counter {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 200;
+      letter-spacing: 0.14em;
+      color: rgba(242,241,238,0.3);
+    }
+
+    /* ─── NEXT SECTION ─── */
+    .id-next {
+      display: flex;
+      justify-content: flex-end;
+      padding: 3rem 4rem 4rem;
+      border-top: 1px solid var(--border);
+    }
+    .id-next-link {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 200;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      transition: color 0.2s;
+    }
+    .id-next-link:hover { color: var(--text-dark); }
+    .id-next-label {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.3rem;
+    }
+    .id-next-title {
+      font-family: 'Bodoni Moda', serif;
+      font-size: 1.2rem;
+      font-weight: 300;
+      font-style: italic;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--text-dark);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .id-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; padding: 3.5rem 1.5rem 2.5rem; }
+      .id-label  { padding: 3rem 1.5rem 1.5rem; }
+      .id-journal { grid-template-columns: 1fr 1fr; padding: 0 1.5rem 3rem; gap: 1rem; }
+      .id-two, .id-row, .id-text, .id-customer { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .id-two--half, .id-two--6040 { grid-template-columns: 1fr; }
+      .id-row img { width: 90% !important; }
+      .id-customer { grid-template-columns: 1fr; gap: 2rem; }
+      .id-dark { padding: 2.5rem 1.5rem; }
+      .id-dark .id-lineup-pair { grid-template-columns: 1fr; }
+      .id-next { padding: 2rem 1.5rem 3rem; }
+    }
+  </style>
+</head>
+<body data-lb-no-scroll="true">
+  <aside class="sidebar" id="sidebar">
+    <a href="index.html" class="sidebar-brand">
+      <img src="logo.png" alt="Emily Nguyen logo" class="sidebar-logo" />
+      <span class="sidebar-name">emily nguyen.</span>
+    </a>
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="speak-nearby.html" class="active">Senior Thesis</a></li>
+        <li><a href="archive.html">Archive</a></li>
+        <li><a href="illustrations.html">Illustrations</a></li>
+        <li><a href="other-works.html">Other Works</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://instagram.com/sp1ritdancr" target="_blank" rel="noopener">@sp1ritdancr</a>
+    </div>
+  </aside>
+  <button class="sidebar-toggle" aria-label="menu" onclick="toggleSidebar()">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="content">
+
+    <!-- ── HEADER ── -->
+    <div class="id-header fade-up">
+      <div class="id-header-left">
+        <span class="eyebrow">speak nearby · section 01</span>
+        <h1>Ideation.</h1>
+        <p class="id-header-sub">research, references &amp; early development</p>
+      </div>
+      <a href="speak-nearby.html" class="id-back">← Back to Senior Thesis</a>
+    </div>
+
+    <!-- ── PROCESS BOOK HIGHLIGHTS ── -->
+    <div class="id-label fade-up">
+      <span class="eyebrow">process book</span>
+      <h2>Highlights</h2>
+    </div>
+    <div class="id-journal fade-up">
+      <div class="id-journal-item">
+        <img src="speak-nearby/ideation/IMG_7259.jpeg" alt="Process book page" data-lb-group="journal" />
+      </div>
+      <div class="id-journal-item">
+        <img src="speak-nearby/ideation/IMG_7260.jpeg" alt="Process book page" data-lb-group="journal" />
+      </div>
+      <div class="id-journal-item">
+        <img src="speak-nearby/ideation/IMG_7261.jpeg" alt="Process book page" data-lb-group="journal" />
+      </div>
+      <div class="id-journal-item">
+        <img src="speak-nearby/ideation/IMG_7266.jpeg" alt="Process book page" data-lb-group="journal" />
+      </div>
+    </div>
+
+    <!-- ── EXPLORATIONS ── -->
+    <div class="id-label fade-up">
+      <span class="eyebrow">development</span>
+      <h2>Explorations</h2>
+    </div>
+
+    <!-- Development wall -->
+    <div class="id-row id-row--right fade-up">
+      <img src="speak-nearby/ideation/silhouette%20explorations.jpeg" alt="Silhouette development wall" data-lb-group="explorations" style="width:68%;" />
+    </div>
+
+    <!-- 4 equal images in a row -->
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; padding:0 4rem 1rem;" class="fade-up">
+      <img src="speak-nearby/ideation/silhouette%20explorations.PNG" alt="Digital draped collages" data-lb-group="explorations" style="width:100%;display:block;" />
+      <img src="speak-nearby/ideation/silhouette%20explorations%202.PNG" alt="Digital draped collages" data-lb-group="explorations" style="width:100%;display:block;" />
+      <img src="speak-nearby/ideation/silhouette%20collage.PNG" alt="Silhouette collage" data-lb-group="explorations" style="width:100%;display:block;" />
+      <img src="speak-nearby/ideation/sketches.jpeg" alt="Rough initial sketches" data-lb-group="explorations" style="width:100%;display:block;" />
+    </div>
+    <p class="id-cap" style="padding: 0 4rem 5rem;">digital draped collages · silhouette collage · rough initial sketches</p>
+
+    <!-- ── COLOR STORY ── -->
+    <div class="id-label fade-up">
+      <span class="eyebrow">palette</span>
+      <h2>Color Story</h2>
+    </div>
+    <div style="display:grid; grid-template-columns: 55fr 32fr; gap:2.5rem; padding:0 4rem 4rem; align-items:start;" class="fade-up">
+      <div>
+        <img src="speak-nearby/ideation/color.jpeg" alt="Color story board" data-lb-group="color" style="width:100%;display:block;" />
+        <p class="id-cap">Dusty plum · misted sage · velvet orchid · painted horizon</p>
+      </div>
+      <div style="padding-top:3rem;">
+        <img src="speak-nearby/ideation/plaid%20development.JPG" alt="Custom plaid development" data-lb-group="color" style="width:100%;display:block;" />
+        <p class="id-cap">Custom plaid development in Photoshop</p>
+      </div>
+    </div>
+
+    <!-- ── FABRIC EXPLORATIONS ── -->
+    <div class="id-label fade-up">
+      <span class="eyebrow">materials</span>
+      <h2>Fabric Explorations</h2>
+    </div>
+    <div class="id-row id-row--center fade-up">
+      <img src="speak-nearby/ideation/explorations.jpeg" alt="Fabric explorations flat lay" data-lb-group="materials" style="width:72%;" />
+    </div>
+    <div style="display:flex; justify-content:flex-end; gap:2rem; padding:0 4rem 5rem;" class="fade-up">
+      <img src="speak-nearby/ideation/fabric%20manipulation%20test.jpeg" alt="Fabric manipulation — gathered navy" data-lb-group="materials" style="width:22%;display:block;" />
+      <img src="speak-nearby/ideation/fabric%20manipulation%20test%202.jpeg" alt="Fabric manipulation — knotted plaid" data-lb-group="materials" style="width:22%;display:block;" />
+    </div>
+
+    <!-- ── MUSE & CUSTOMER ── -->
+    <div class="id-label fade-up">
+      <span class="eyebrow">muse &amp; customer</span>
+      <h2>The Customer</h2>
+    </div>
+    <div class="id-customer fade-up">
+      <div>
+        <img src="speak-nearby/ideation/customer.jpeg" alt="Muse &amp; Customer" data-lb-group="customer" />
+      </div>
+      <div class="id-customer-text">
+        <p>Trinh T. Minh-ha is a Vietnamese-American filmmaker and writer whose ideology critiques binary thinking that obscures life's complexities, emphasizing that cultures are not monolithic but composed of diverse and often beautifully conflicting elements. She coined the idea of <em>"speaking nearby"</em> — as opposed to speaking for others — an approach that resists imposing meaning and instead makes space for multiplicity.</p>
+        <p>The Speak Nearby customer inhabits this same in-between: 18–30 year olds living in cities where cultures converge and meaning is constantly redefined — multi-hyphenate individuals, first and second generation immigrants, exchange students, and creative thinkers shaping new cultural languages of their own. Their style is a living collage.</p>
+      </div>
+    </div>
+
+    <!-- ── THE LINEUP ── -->
+    <div class="id-dark fade-up">
+      <div class="id-label">
+        <span class="eyebrow">final ideation</span>
+        <h2>Initial Lineup</h2>
+      </div>
+
+      <div class="id-carousel" id="lineupCarousel">
+        <div class="id-carousel-track">
+          <div class="id-carousel-slides" id="lineupSlides">
+            <div class="id-carousel-slide">
+              <img src="speak-nearby/ideation/initial%20lineup.PNG" alt="Front — Line" data-lb-group="lineup" />
+            </div>
+            <div class="id-carousel-slide">
+              <img src="speak-nearby/ideation/initial%20lineup%20front%20color.PNG" alt="Front — Color" data-lb-group="lineup" />
+            </div>
+            <div class="id-carousel-slide">
+              <img src="speak-nearby/ideation/initial%20lineup%20back%20color.PNG" alt="Back — Color" data-lb-group="lineup" />
+            </div>
+          </div>
+        </div>
+        <div class="id-carousel-meta">
+          <span class="id-carousel-label" id="lineupLabel">Front — Line</span>
+          <div class="id-carousel-controls">
+            <button class="id-carousel-btn" id="lineupPrev" aria-label="Previous">&#8592;</button>
+            <span class="id-carousel-counter" id="lineupCounter">1 / 4</span>
+            <button class="id-carousel-btn" id="lineupNext" aria-label="Next">&#8594;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── NEXT SECTION ── -->
+    <div class="id-next fade-up">
+      <a href="speak-nearby-process.html" class="id-next-link">
+        <span class="id-next-label">
+          <span class="eyebrow">section 02</span>
+          <span class="id-next-title">Process →</span>
+        </span>
+      </a>
+    </div>
+
+    <footer class="footer">
+      <span class="footer-name"><img src="emily%20nguyen%20transparent.png" alt="emily nguyen." class="logo-img logo-img--footer" /></span>
+      <div class="footer-links">
+        <a href="https://instagram.com/sp1ritdancr" target="_blank" rel="noopener">@sp1ritdancr</a>
+        <a href="index.html">home</a>
+      </div>
+      <span class="footer-copy">© 2026 Emily Nguyen</span>
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
+  <script src="editor.js"></script>
+  <script src="lightbox.js"></script>
+  <script>
+  // ── Lineup carousel ──────────────────────────────────────────────────
+  (function () {
+    var slides  = document.getElementById('lineupSlides');
+    var prev    = document.getElementById('lineupPrev');
+    var next    = document.getElementById('lineupNext');
+    var label   = document.getElementById('lineupLabel');
+    var counter = document.getElementById('lineupCounter');
+    if (!slides) return;
+
+    var labels = ['Front — Line', 'Front — Color', 'Back — Color'];
+    var total  = labels.length;
+    var idx    = 0;
+
+    function go(n) {
+      idx = (n + total) % total;
+      slides.style.transform = 'translateX(-' + (idx * 100) + '%)';
+      label.textContent   = labels[idx];
+      counter.textContent = (idx + 1) + ' / ' + total;
+    }
+
+    prev.addEventListener('click', function () { go(idx - 1); });
+    next.addEventListener('click', function () { go(idx + 1); });
+  })();
+  </script>
+</body>
+</html>

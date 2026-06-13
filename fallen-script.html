@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fallen Script — Emily Nguyen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;1,6..96,300;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Outfit:wght@200;300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── FALLEN SCRIPT PAGE ── */
+    .fs-hero {
+      position: relative;
+      height: 100vh;
+      min-height: 560px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+    .fs-hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: grayscale(0.15) contrast(1.02);
+    }
+    .fs-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(20,19,18,0.82) 0%, rgba(20,19,18,0.2) 55%, transparent 100%);
+    }
+    .fs-hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 3rem 4rem;
+      max-width: 680px;
+    }
+    .fs-hero-content .eyebrow {
+      color: rgba(242,241,238,0.55);
+      margin-bottom: 0.8rem;
+    }
+    .fs-hero-title {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(2.8rem, 7vw, 6rem);
+      font-weight: 300;
+      font-style: italic;
+      color: #f2f1ee;
+      line-height: 1;
+      margin: 0 0 1.2rem;
+      letter-spacing: -0.01em;
+    }
+    .fs-hero-sub {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 200;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(242,241,238,0.6);
+    }
+
+    /* ── INTRO ── */
+    .fs-intro {
+      padding: 6rem 3rem 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .fs-intro-label {
+      padding-top: 0.3rem;
+    }
+    .fs-intro-label .eyebrow {
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .fs-intro-label h2 {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 300;
+      line-height: 1.2;
+      margin: 0;
+    }
+    .fs-intro-text p {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 200;
+      line-height: 1.85;
+      color: var(--text);
+      margin: 0 0 1.2em;
+    }
+    .fs-intro-text p:last-child { margin: 0; }
+
+    /* ── RESEARCH SECTION ── */
+    .fs-research {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 5rem 3rem;
+    }
+    .fs-research-header {
+      display: flex;
+      align-items: baseline;
+      gap: 2rem;
+      margin-bottom: 3rem;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .fs-research-header .eyebrow { flex-shrink: 0; }
+    .fs-research-header h2 {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 300;
+      font-style: italic;
+      margin: 0;
+    }
+    .fs-research-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .fs-research-card {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      cursor: default;
+    }
+    .fs-research-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(0.2) contrast(1.02);
+      transition: transform 0.6s ease, filter 0.4s ease;
+    }
+    .fs-research-card:hover img {
+      transform: scale(1.04);
+      filter: grayscale(0) contrast(1.04);
+    }
+    .fs-research-card-label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 2rem 1.4rem 1.2rem;
+      background: linear-gradient(to top, rgba(18,17,16,0.8), transparent);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 200;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(242,241,238,0.8);
+    }
+
+    /* ── MOOD BOARD ── */
+    .fs-moodboard {
+      position: relative;
+      overflow: hidden;
+    }
+    .fs-moodboard img {
+      width: 100%;
+      display: block;
+      filter: grayscale(0.1);
+    }
+    .fs-moodboard-caption {
+      position: absolute;
+      bottom: 2rem;
+      right: 3rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+      font-style: italic;
+      font-weight: 300;
+      color: rgba(242,241,238,0.75);
+      text-align: right;
+      max-width: 340px;
+      line-height: 1.5;
+    }
+
+    /* ── COLOR & FABRIC ── */
+    .fs-cf {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .fs-cf-img {
+      overflow: hidden;
+    }
+    .fs-cf-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(0.1);
+      transition: transform 0.6s ease;
+    }
+    .fs-cf-img:hover img { transform: scale(1.03); }
+    .fs-cf-text {
+      padding: 4rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-left: 1px solid var(--border);
+    }
+    .fs-cf-text .eyebrow { margin-bottom: 1.2rem; }
+    .fs-cf-text h2 {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 300;
+      font-style: italic;
+      margin: 0 0 1.8rem;
+    }
+    .fs-cf-palette {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .fs-cf-swatch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+    .fs-cf-swatch-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+    .fs-cf-swatch span {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.45rem;
+      font-weight: 200;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      text-align: center;
+    }
+
+    /* ── LINEUP ── */
+    .fs-lineup {
+      border-top: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .fs-lineup-header {
+      padding: 3rem 3rem 2rem;
+      display: flex;
+      align-items: baseline;
+      gap: 2rem;
+    }
+    .fs-lineup-header .eyebrow { flex-shrink: 0; }
+    .fs-lineup-header h2 {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 300;
+      font-style: italic;
+      margin: 0;
+    }
+    .fs-lineup img {
+      width: 100%;
+      display: block;
+      filter: grayscale(0.08);
+    }
+
+    /* ── PRODUCTS ── */
+    .fs-products {
+      border-top: 1px solid var(--border);
+      padding: 5rem 3rem;
+    }
+    .fs-products-header {
+      display: flex;
+      align-items: baseline;
+      gap: 2rem;
+      margin-bottom: 3rem;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .fs-products-header .eyebrow { flex-shrink: 0; }
+    .fs-products-header h2 {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 300;
+      font-style: italic;
+      margin: 0;
+    }
+    .fs-products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .fs-product-item {
+      overflow: hidden;
+      position: relative;
+    }
+    .fs-product-item img {
+      width: 100%;
+      display: block;
+      filter: grayscale(0.1);
+      transition: transform 0.6s ease;
+    }
+    .fs-product-item:hover img { transform: scale(1.03); }
+    .fs-product-label {
+      padding: 1rem 0 0;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.55rem;
+      font-weight: 200;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+
+    /* ── CONCLUSION ── */
+    .fs-conclusion {
+      border-top: 1px solid var(--border);
+      padding: 7rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 4rem;
+      align-items: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .fs-conclusion-img {
+      overflow: hidden;
+    }
+    .fs-conclusion-img img {
+      width: 100%;
+      display: block;
+      filter: grayscale(0.15);
+      transition: transform 0.6s ease;
+    }
+    .fs-conclusion-img:hover img { transform: scale(1.03); }
+    .fs-conclusion-text blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.65;
+      margin: 0 0 2rem;
+      color: var(--text);
+    }
+    .fs-conclusion-text .eyebrow { margin-bottom: 0.8rem; }
+
+    /* ── PDF BUTTON ── */
+    .fs-pdf-section {
+      border-top: 1px solid var(--border);
+      padding: 5rem 3rem;
+      text-align: center;
+    }
+    .fs-pdf-section p {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 200;
+      letter-spacing: 0.1em;
+      color: var(--text-light);
+      margin: 0 0 2rem;
+    }
+    .fs-pdf-btn {
+      display: inline-block;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 300;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 1rem 2.4rem;
+      text-decoration: none;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+    .fs-pdf-btn:hover {
+      background: var(--text);
+      color: var(--bg);
+    }
+
+    /* ── BRAND SLIDES SECTION ── */
+    .fs-brands {
+      border-top: 1px solid var(--border);
+      padding: 5rem 3rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .fs-brands-header {
+      display: flex;
+      align-items: baseline;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+    .fs-brands-header .eyebrow { flex-shrink: 0; }
+    .fs-brands-header h2 {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 300;
+      font-style: italic;
+      margin: 0;
+    }
+    .fs-brands-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+    .fs-brand-card {
+      overflow: hidden;
+      position: relative;
+    }
+    .fs-brand-card img {
+      width: 100%;
+      display: block;
+      filter: grayscale(0.15);
+      transition: transform 0.6s ease;
+    }
+    .fs-brand-card:hover img { transform: scale(1.03); }
+
+    @media (max-width: 768px) {
+      .fs-intro { grid-template-columns: 1fr; gap: 2rem; padding: 4rem 1.5rem; }
+      .fs-research-grid { grid-template-columns: 1fr; }
+      .fs-cf { grid-template-columns: 1fr; }
+      .fs-cf-text { border-left: none; border-top: 1px solid var(--border); }
+      .fs-products-grid { grid-template-columns: 1fr; }
+      .fs-conclusion { grid-template-columns: 1fr; padding: 4rem 1.5rem; }
+      .fs-brands-grid { grid-template-columns: 1fr; }
+      .fs-hero-content { padding: 0 1.5rem 3rem; }
+      .fs-research { padding: 4rem 1.5rem; }
+      .fs-products { padding: 4rem 1.5rem; }
+      .fs-pdf-section { padding: 4rem 1.5rem; }
+      .fs-brands { padding: 4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <a href="index.html" class="sidebar-brand">
+      <img src="logo.png" alt="Emily Nguyen logo" class="sidebar-logo" />
+      <span class="sidebar-name">emily nguyen.</span>
+    </a>
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="speak-nearby.html">Senior Thesis</a></li>
+        <li><a href="archive.html" class="active">Archive</a></li>
+        <li><a href="illustrations.html">Illustrations</a></li>
+        <li><a href="other-works.html">Other Works</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://instagram.com/sp1ritdancr" target="_blank" rel="noopener">@sp1ritdancr</a>
+    </div>
+  </aside>
+  <button class="sidebar-toggle" aria-label="menu" onclick="toggleSidebar()">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="content">
+
+    <!-- HERO -->
+    <section class="fs-hero">
+      <img class="fs-hero-img" src="fallen-script/slide_01.jpg" alt="Fallen Script cover" />
+      <div class="fs-hero-overlay"></div>
+      <div class="fs-hero-content fade-up">
+        <span class="eyebrow">design &amp; product development · 2026</span>
+        <h1 class="fs-hero-title">Fallen Script.</h1>
+        <p class="fs-hero-sub">Undercover × Internet Archive — FSF Case Study</p>
+      </div>
+    </section>
+
+    <!-- CONCEPT -->
+    <div class="fs-intro fade-up">      <div class="fs-intro-label">
+        <span class="eyebrow">concept</span>
+        <h2>To history.<br>Beautiful<br>but fragile.</h2>
+      </div>
+      <div class="fs-intro-text">
+        <p>Fallen Script is a collection that brings attention to the crisis of lost knowledge within our digital age — specifically how memory, data, and truth erode over time. Inspired by deteriorating manuscripts, corrupted files, and blurred scans, the collection reimagines fashion as a living archive.</p>
+        <p>Garments are treated as artifacts, meant to be maintained, reworked, and preserved rather than discarded. Thick stripes and plaid represent the structure of archive research. Swirl motifs inspired by the borders of old books and calligraphy. Censored bar patches, sheer overlays, and deconstructed silhouettes create the sense of erasure and fragmentation.</p>
+        <p>Everything is crafted using natural dyes, repurposed materials, and slow, handcrafted techniques — prioritizing quality and longevity over fast, mass production.</p>
+      </div>
+    </div>
+
+    <!-- COLLABORATION BRANDS -->
+    <div class="fs-brands fade-up">
+      <div class="fs-brands-header">
+        <span class="eyebrow">collaboration</span>
+        <h2>Undercover × Internet Archive</h2>
+      </div>
+      <div class="fs-brands-grid">
+        <div class="fs-brand-card">
+          <img src="fallen-script/slide_04.jpg" alt="Undercover" />
+        </div>
+        <div class="fs-brand-card">
+          <img src="fallen-script/slide_05.jpg" alt="Internet Archive" />
+        </div>
+      </div>
+    </div>
+
+    <!-- RESEARCH -->
+    <div class="fs-research fade-up">
+      <div class="fs-research-header">
+        <span class="eyebrow">research</span>
+        <h2>The Crisis of Lost Knowledge</h2>
+      </div>
+      <div class="fs-research-grid">
+        <div class="fs-research-card">
+          <img src="fallen-script/slide_06.jpg" alt="Data Rot" />
+          <div class="fs-research-card-label">Data Rot</div>
+        </div>
+        <div class="fs-research-card">
+          <img src="fallen-script/slide_07.jpg" alt="Censorship" />
+          <div class="fs-research-card-label">Censorship</div>
+        </div>
+        <div class="fs-research-card">
+          <img src="fallen-script/slide_08.jpg" alt="Digital Impact" />
+          <div class="fs-research-card-label">Digital Impact</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOOD BOARD -->
+    <div class="fs-moodboard fade-up">
+      <img src="fallen-script/slide_12.jpg" alt="Concept &amp; Mood Board" />
+      <div class="fs-moodboard-caption">
+        "To the dust of forgotten files and lost knowledge...<br>We wear what the world forgot, but beautiful always."
+      </div>
+    </div>
+
+    <!-- COLOR & FABRIC -->
+    <div class="fs-cf fade-up">
+      <div class="fs-cf-img">
+        <img src="fallen-script/slide_14.jpg" alt="Color &amp; Fabric Board" />
+      </div>
+      <div class="fs-cf-text">
+        <span class="eyebrow">materials</span>
+        <h2>Color &amp; Fabric</h2>
+        <div class="fs-cf-palette">
+          <div class="fs-cf-swatch">
+            <div class="fs-cf-swatch-dot" style="background:#f5f4f0;"></div>
+            <span>Snow White</span>
+          </div>
+          <div class="fs-cf-swatch">
+            <div class="fs-cf-swatch-dot" style="background:#5a7473;"></div>
+            <span>Sea Pine</span>
+          </div>
+          <div class="fs-cf-swatch">
+            <div class="fs-cf-swatch-dot" style="background:#9b8fa0;"></div>
+            <span>Orchid Petal</span>
+          </div>
+          <div class="fs-cf-swatch">
+            <div class="fs-cf-swatch-dot" style="background:#7a7e7d;"></div>
+            <span>Graystone</span>
+          </div>
+          <div class="fs-cf-swatch">
+            <div class="fs-cf-swatch-dot" style="background:#3d3e3c;"></div>
+            <span>Charcoal Gray</span>
+          </div>
+          <div class="fs-cf-swatch">
+            <div class="fs-cf-swatch-dot" style="background:#1e1b24;"></div>
+            <span>Licorice</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLLECTION LINEUP -->
+    <div class="fs-lineup fade-up">
+      <div class="fs-lineup-header">
+        <span class="eyebrow">collection</span>
+        <h2>Lineup</h2>
+      </div>
+      <img src="fallen-script/slide_15.jpg" alt="Collection Lineup" />
+    </div>
+
+    <!-- PRODUCTS -->
+    <div class="fs-products fade-up">
+      <div class="fs-products-header">
+        <span class="eyebrow">technical specs</span>
+        <h2>Products</h2>
+      </div>
+      <div class="fs-products-grid">
+        <div class="fs-product-item">
+          <img src="fallen-script/slide_16.jpg" alt="Product 1 — Jacket" />
+          <p class="fs-product-label">Product 01 — Jacket</p>
+        </div>
+        <div class="fs-product-item">
+          <img src="fallen-script/slide_17.jpg" alt="Product 2 — Dress" />
+          <p class="fs-product-label">Product 02 — Dress</p>
+        </div>
+        <div class="fs-product-item">
+          <img src="fallen-script/slide_18.jpg" alt="Product 3 — Shorts" />
+          <p class="fs-product-label">Product 03 — Shorts</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONCLUSION -->
+    <div class="fs-conclusion fade-up">
+      <div class="fs-conclusion-img">
+        <img src="fallen-script/slide_20.jpg" alt="Conclusion" />
+      </div>
+      <div class="fs-conclusion-text">
+        <span class="eyebrow">conclusion</span>
+        <blockquote>
+          "Fallen Script is more than a collection. It is a call to recognize the importance of preservation in an age where knowledge can disappear with a click."
+        </blockquote>
+        <p style="font-family:'Outfit',sans-serif;font-size:0.75rem;font-weight:200;line-height:1.8;color:var(--text-light);">
+          This project invites us to see fashion not just as clothing, but as a vessel for storytelling, memory, and advocacy. By supporting open-source institutions like the Internet Archive, we are choosing to protect access to history, truth, and creativity for future generations.
+        </p>
+      </div>
+    </div>
+
+    <!-- PDF BUTTON -->
+    <div class="fs-pdf-section fade-up">
+      <p>View the complete case study — all 21 slides including research, brand alignment, and references.</p>
+      <a class="fs-pdf-btn" href="fallen-script/fsf-case-study.pdf" target="_blank" rel="noopener">
+        View Full Case Study
+      </a>
+    </div>
+
+    <footer class="footer">
+      <span class="footer-name"><img src="emily%20nguyen%20transparent.png" alt="emily nguyen." class="logo-img logo-img--footer" /></span>
+      <div class="footer-links">
+        <a href="https://instagram.com/sp1ritdancr" target="_blank" rel="noopener">@sp1ritdancr</a>
+        <a href="index.html">home</a>
+      </div>
+      <span class="footer-copy">© 2026 Emily Nguyen</span>
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
+  <script src="editor.js"></script>
+</body>
+</html>

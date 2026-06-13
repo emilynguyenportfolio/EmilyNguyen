@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(open \"/Users/emilynguyen/Website Code/index.html\")",
+      "WebFetch(domain:www.seanalex.com)",
+      "WebFetch(domain:www.louiselynghbjerregaard.net)",
+      "WebFetch(domain:haohaohuang.net)",
+      "Bash(open \"/Users/emilynguyen/Website Code/speak-nearby.html\")",
+      "mcp__Claude_Preview__preview_start",
+      "WebFetch(domain:carlijnjacobs.com)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "WebSearch"
+    ]
+  }
+}
