@@ -663,9 +663,20 @@
     toolbar.innerHTML =
       '<span>EDIT MODE</span>' +
       '<span style="opacity:0.4;font-size:0.65rem">drag tab to move · corner to resize</span>' +
+      '<button id="snEditCopy">Copy layout</button>' +
       '<button id="snEditReset">Reset</button>' +
       '<a href="' + window.location.pathname + '">Done</a>';
     document.body.appendChild(toolbar);
+
+    document.getElementById('snEditCopy').addEventListener('click', function () {
+      var btn = document.getElementById('snEditCopy');
+      var data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      var code = JSON.stringify(data);
+      navigator.clipboard.writeText(code).then(function () {
+        btn.textContent = 'Copied!';
+        setTimeout(function () { btn.textContent = 'Copy layout'; }, 2000);
+      });
+    });
 
     document.getElementById('snEditReset').addEventListener('click', function () {
       localStorage.removeItem(STORAGE_KEY);
