@@ -8,45 +8,6 @@ document.querySelectorAll('.sidebar-nav a').forEach(link => {
   });
 });
 
-// ── CUSTOM CURSOR (pointer devices only) ──
-(function() {
-  if (window.matchMedia('(pointer: coarse)').matches) return;
-
-  const dot  = document.createElement('div');
-  const lbl  = document.createElement('span');
-  dot.className  = 'cursor-dot';
-  lbl.className  = 'cursor-label';
-  document.body.append(dot, lbl);
-
-  let mx = -300, my = -300;
-
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    dot.style.left = mx + 'px';
-    dot.style.top  = my + 'px';
-    lbl.style.left = mx + 'px';
-    lbl.style.top  = my + 'px';
-  });
-
-  // Show label on project rows (uses existing data-label)
-  document.querySelectorAll('[data-label]').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      lbl.textContent = el.dataset.label;
-      lbl.classList.add('active');
-      document.body.classList.add('cursor-active');
-    });
-    el.addEventListener('mouseleave', () => {
-      lbl.classList.remove('active');
-      document.body.classList.remove('cursor-active');
-    });
-  });
-
-  // Expand ring on interactive elements
-  document.querySelectorAll('a, button, .fs-teaser-photo, .sn-strip-photo, .sn-section-link, .g-item').forEach(el => {
-    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-  });
-})();
 
 // ── PROJECT HOVER PREVIEW ──
 const projRows    = document.querySelectorAll('.proj-row');

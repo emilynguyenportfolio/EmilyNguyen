@@ -336,7 +336,6 @@
     // ── 9. Register image click handlers ─────────────────────────────
     Object.keys(groups).forEach(function (groupName) {
       groups[groupName].forEach(function (img, idx) {
-        img.style.cursor = 'zoom-in';
         (function (g, i) {
           img.addEventListener('click', function () { open(g, i); });
         }(groupName, idx));
