@@ -497,9 +497,12 @@
   (function () {
     if (window.location.search.includes('edit')) return;
     var STORAGE_KEY = 'sn-concept-layout-v2';
-    var HARDCODED_CONCEPT = {"lineup":{"x":20,"y":20,"w":380,"h":400},"quote":{"x":30,"y":440,"w":380,"h":180},"text":{"x":450,"y":30,"w":350,"h":400}};
-    var saved = HARDCODED_CONCEPT;
-    try { var stored = JSON.parse(localStorage.getItem(STORAGE_KEY)); if (stored && Object.keys(stored).length) saved = stored; } catch(e) {}
+    /* percentage layout measured from localhost — scales to any screen width */
+    var PCT = {
+      lineup: { x: 0.02, y: 20,  w: 0.47 },
+      quote:  { x: 0.04, y: 440, w: 0.47 },
+      text:   { x: 0.56, y: 30,  w: 0.44 }
+    };
 
     var concept = document.querySelector('.sn-concept');
     var leftCol = document.querySelector('.sn-concept-left');
@@ -508,14 +511,12 @@
     var textBox = document.querySelector('.sn-concept-text');
     if (!concept || !lineup || !quote || !textBox) return;
 
-    /* switch to free-form canvas */
     concept.style.display   = 'block';
     concept.style.position  = 'relative';
     concept.style.padding   = '4rem 3rem 0';
     concept.style.minHeight = '640px';
     leftCol.style.display   = 'none';
 
-    /* pull lineup + quote out of leftCol into concept */
     concept.insertBefore(lineup, textBox);
     concept.insertBefore(quote,  textBox);
 
@@ -524,22 +525,18 @@
     lineup.style.marginLeft = '0';
 
     function applyEl(el, key) {
-      var s = saved[key];
+      var s = PCT[key];
       if (!s) return;
-      var REF_W = 800; /* reference concept-section width when layout was saved */
-      var pct = concept.offsetWidth / REF_W;
       el.style.position  = 'absolute';
       el.style.boxSizing = 'border-box';
-      if (s.x != null) el.style.left   = (s.x * pct) + 'px';
-      if (s.y != null) el.style.top    = s.y + 'px';
-      if (s.w != null) el.style.width  = (s.w * pct) + 'px';
-      if (s.h != null) el.style.height = s.h + 'px';
+      el.style.left  = (s.x * 100) + '%';
+      el.style.top   = s.y + 'px';
+      el.style.width = (s.w * 100) + '%';
     }
     applyEl(lineup,  'lineup');
     applyEl(quote,   'quote');
     applyEl(textBox, 'text');
 
-    /* expand container once layout + images settle */
     function updateHeight() {
       var maxB = 0;
       [lineup, quote, textBox].forEach(function (el) {
