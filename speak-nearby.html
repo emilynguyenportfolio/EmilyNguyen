@@ -526,11 +526,13 @@
     function applyEl(el, key) {
       var s = saved[key];
       if (!s) return;
+      var REF_W = 800; /* reference concept-section width when layout was saved */
+      var pct = concept.offsetWidth / REF_W;
       el.style.position  = 'absolute';
       el.style.boxSizing = 'border-box';
-      if (s.x != null) el.style.left   = s.x + 'px';
+      if (s.x != null) el.style.left   = (s.x * pct) + 'px';
       if (s.y != null) el.style.top    = s.y + 'px';
-      if (s.w != null) el.style.width  = s.w + 'px';
+      if (s.w != null) el.style.width  = (s.w * pct) + 'px';
       if (s.h != null) el.style.height = s.h + 'px';
     }
     applyEl(lineup,  'lineup');
