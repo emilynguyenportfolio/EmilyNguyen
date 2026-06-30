@@ -493,6 +493,58 @@
   })();
   </script>
   <script>
+  /* ── APPLY CONCEPT LAYOUT (non-edit mode) ─────────────────────────── */
+  (function () {
+    if (window.location.search.includes('edit')) return;
+    var STORAGE_KEY = 'sn-concept-layout-v2';
+    var HARDCODED = {"lineup":{"x":-19,"y":41,"w":782,"h":506},"quote":{"x":50,"y":600,"w":1069,"h":95},"text":{"x":779,"y":74,"w":245,"h":451}};
+    var saved = HARDCODED;
+    try { var s = JSON.parse(localStorage.getItem(STORAGE_KEY)); if (s && Object.keys(s).length) saved = s; } catch(e) {}
+
+    var concept = document.querySelector('.sn-concept');
+    var leftCol = document.querySelector('.sn-concept-left');
+    var lineup  = document.querySelector('.sn-concept-lineup');
+    var quote   = document.querySelector('.sn-concept-quote');
+    var textBox = document.querySelector('.sn-concept-text');
+    if (!concept || !lineup || !quote || !textBox) return;
+
+    concept.style.display  = 'block';
+    concept.style.position = 'relative';
+    concept.style.padding  = '4rem 3rem 0';
+    leftCol.style.display  = 'none';
+
+    concept.insertBefore(lineup, textBox);
+    concept.insertBefore(quote,  textBox);
+
+    var lineupImg = lineup.querySelector('img');
+    if (lineupImg) { lineupImg.style.width = '100%'; lineupImg.style.marginLeft = '0'; }
+    lineup.style.marginLeft = '0';
+
+    function applyEl(el, key) {
+      var s = saved[key]; if (!s) return;
+      el.style.position  = 'absolute';
+      el.style.boxSizing = 'border-box';
+      if (s.x != null) el.style.left   = s.x + 'px';
+      if (s.y != null) el.style.top    = s.y + 'px';
+      if (s.w != null) el.style.width  = s.w + 'px';
+      if (s.h != null) el.style.height = s.h + 'px';
+    }
+    applyEl(lineup,  'lineup');
+    applyEl(quote,   'quote');
+    applyEl(textBox, 'text');
+
+    function updateHeight() {
+      var maxB = 0;
+      [lineup, quote, textBox].forEach(function (el) {
+        var b = el.offsetTop + el.offsetHeight; if (b > maxB) maxB = b;
+      });
+      if (maxB > 0) concept.style.minHeight = (maxB + 80) + 'px';
+    }
+    window.addEventListener('load', updateHeight);
+    setTimeout(updateHeight, 400);
+  })();
+  </script>
+  <script>
   /* ── CONCEPT SECTION EDIT MODE (?edit) ─────────────────────────────── */
   (function () {
     if (!window.location.search.includes('edit')) return;
