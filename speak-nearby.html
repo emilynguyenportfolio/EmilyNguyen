@@ -493,62 +493,6 @@
   })();
   </script>
   <script>
-  /* ── APPLY SAVED CONCEPT LAYOUT (non-edit mode) ─────────────────────── */
-  (function () {
-    if (window.location.search.includes('edit')) return;
-    var STORAGE_KEY = 'sn-concept-layout-v2';
-    /* percentage layout measured from localhost — scales to any screen width */
-    var PCT = {
-      lineup: { x: 0.02, y: 20,  w: 0.47 },
-      quote:  { x: 0.04, y: 440, w: 0.47 },
-      text:   { x: 0.56, y: 30,  w: 0.44 }
-    };
-
-    var concept = document.querySelector('.sn-concept');
-    var leftCol = document.querySelector('.sn-concept-left');
-    var lineup  = document.querySelector('.sn-concept-lineup');
-    var quote   = document.querySelector('.sn-concept-quote');
-    var textBox = document.querySelector('.sn-concept-text');
-    if (!concept || !lineup || !quote || !textBox) return;
-
-    concept.style.display   = 'block';
-    concept.style.position  = 'relative';
-    concept.style.padding   = '4rem 3rem 0';
-    concept.style.minHeight = '640px';
-    leftCol.style.display   = 'none';
-
-    concept.insertBefore(lineup, textBox);
-    concept.insertBefore(quote,  textBox);
-
-    var lineupImg = lineup.querySelector('img');
-    if (lineupImg) { lineupImg.style.width = '100%'; lineupImg.style.marginLeft = '0'; }
-    lineup.style.marginLeft = '0';
-
-    function applyEl(el, key) {
-      var s = PCT[key];
-      if (!s) return;
-      el.style.position  = 'absolute';
-      el.style.boxSizing = 'border-box';
-      el.style.left  = (s.x * 100) + '%';
-      el.style.top   = s.y + 'px';
-      el.style.width = (s.w * 100) + '%';
-    }
-    applyEl(lineup,  'lineup');
-    applyEl(quote,   'quote');
-    applyEl(textBox, 'text');
-
-    function updateHeight() {
-      var maxB = 0;
-      [lineup, quote, textBox].forEach(function (el) {
-        var b = el.offsetTop + el.offsetHeight;
-        if (b > maxB) maxB = b;
-      });
-      if (maxB > 0) concept.style.minHeight = (maxB + 80) + 'px';
-    }
-    window.addEventListener('load', updateHeight);
-    setTimeout(updateHeight, 400);
-  })();
-
   /* ── CONCEPT SECTION EDIT MODE (?edit) ─────────────────────────────── */
   (function () {
     if (!window.location.search.includes('edit')) return;
