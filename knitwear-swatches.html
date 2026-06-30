@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Technical Swatches — Knitwear — Emily Nguyen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;1,6..96,300;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Outfit:wght@200;300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── HEADER ── */
+    .kw-sw-header {
+      padding: 5rem 4rem 3rem;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+    .kw-sw-header-left .eyebrow { display: block; margin-bottom: 0.8rem; }
+    .kw-sw-header-left h1 {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(1.8rem, 3.5vw, 3rem);
+      font-weight: 300;
+      font-style: italic;
+      margin: 0;
+      line-height: 1.1;
+    }
+    .kw-sw-back {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 200;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    .kw-sw-back:hover { color: var(--text-dark); }
+
+    /* ── EDIT BAR ── */
+    .kw-sw-edit-bar {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.7rem 4rem;
+      background: rgba(242,241,238,0.97);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--border);
+    }
+    .kw-sw-edit-bar button {
+      background: none;
+      border: 1px solid var(--border);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 300;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      padding: 0.4rem 0.9rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .kw-sw-edit-bar button:hover { background: var(--text-dark); color: var(--bg); }
+    .kw-sw-edit-bar button.active-edit { background: var(--text-dark); color: var(--bg); border-color: var(--text-dark); }
+    .kw-sw-edit-hint {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.58rem;
+      font-weight: 200;
+      letter-spacing: 0.1em;
+      color: var(--text-mid);
+    }
+
+    /* ── CANVAS ── */
+    .kw-sw-canvas {
+      position: relative;
+      padding: 0 4rem;
+      margin-bottom: 6rem;
+    }
+    .kw-sw-item {
+      position: absolute;
+      cursor: pointer;
+    }
+    .kw-sw-item img {
+      display: block;
+      width: 100%;
+      height: auto;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .kw-sw-item:hover img { opacity: 0.82; }
+
+    /* ── EDIT HANDLES ── */
+    .kw-sw-canvas.editing .kw-sw-item {
+      cursor: grab;
+      outline: 1px solid rgba(80,120,255,0.35);
+    }
+    .kw-sw-canvas.editing .kw-sw-item:active { cursor: grabbing; }
+    .kw-sw-item .edit-resize {
+      display: none;
+      position: absolute;
+      right: -5px; bottom: -5px;
+      width: 14px; height: 14px;
+      background: #5070ff;
+      border-radius: 2px;
+      cursor: se-resize;
+      z-index: 10;
+    }
+    .kw-sw-canvas.editing .kw-sw-item .edit-resize { display: block; }
+    .kw-sw-item .edit-badge {
+      display: none;
+      position: absolute;
+      top: 4px; left: 4px;
+      background: rgba(0,0,0,0.65);
+      color: #fff;
+      font-family: monospace;
+      font-size: 9px;
+      padding: 2px 5px;
+      pointer-events: none;
+      z-index: 10;
+      white-space: nowrap;
+    }
+    .kw-sw-canvas.editing .kw-sw-item .edit-badge { display: block; }
+
+    /* ── LIGHTBOX CONTROLS ── */
+    .kw-lb-backdrop {
+      position: fixed; inset: 0; z-index: 1000;
+      background: transparent;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s;
+    }
+    .kw-lb-backdrop.open { opacity: 1; pointer-events: all; }
+
+    .kw-lb-btn {
+      position: fixed; z-index: 1002;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s;
+      background: none; border: none; cursor: pointer;
+    }
+    .kw-lb-btn.open { opacity: 1; pointer-events: all; }
+
+    .kw-lb-prev, .kw-lb-next {
+      top: 50%; transform: translateY(-50%);
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: 1px solid rgba(20,19,18,0.18) !important;
+      background: rgba(242,241,238,0.75) !important;
+      backdrop-filter: blur(6px);
+      color: rgba(20,19,18,0.5);
+      font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .kw-lb-prev { left: 1.5rem; }
+    .kw-lb-next { right: 1.5rem; }
+    .kw-lb-prev:hover, .kw-lb-next:hover { color: rgba(20,19,18,0.85); }
+
+    .kw-lb-close {
+      top: 2rem; right: 2.5rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 200;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(20,19,18,0.4);
+      padding: 0;
+      transition: color 0.2s;
+    }
+    .kw-lb-close:hover { color: rgba(20,19,18,0.85); }
+
+    .kw-lb-counter {
+      position: fixed;
+      bottom: 1.8rem; left: 50%; transform: translateX(-50%);
+      z-index: 1002;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.58rem; font-weight: 200;
+      letter-spacing: 0.15em; color: rgba(20,19,18,0.3);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s;
+    }
+    .kw-lb-counter.open { opacity: 1; }
+
+    /* ── DESCRIPTION BELOW LIGHTBOX IMAGE ── */
+    .kw-lb-desc {
+      position: fixed;
+      z-index: 1001;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .kw-lb-desc.open { opacity: 1; }
+    .kw-lb-desc-num {
+      display: block;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 200;
+      font-size: 0.52rem;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: rgba(20,19,18,0.38);
+      margin-bottom: 0.3rem;
+    }
+    .kw-lb-desc-name {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--text-dark);
+      line-height: 1.2;
+      margin-bottom: 0.25rem;
+    }
+    .kw-lb-desc-tech {
+      display: block;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 200;
+      font-size: 0.56rem;
+      letter-spacing: 0.1em;
+      color: rgba(20,19,18,0.45);
+    }
+
+    @media (max-width: 900px) {
+      .kw-sw-header { padding: 3rem 1.5rem 2rem; flex-direction: column; gap: 1rem; }
+      .kw-sw-canvas { padding: 0 1.5rem; }
+      .kw-sw-edit-bar { padding: 0.7rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <a href="index.html" class="sidebar-brand">
+      <img src="logo.png" alt="Emily Nguyen logo" class="sidebar-logo" />
+      <span class="sidebar-name">emily nguyen.</span>
+    </a>
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="speak-nearby.html">Senior Thesis</a></li>
+        <li><a href="knitwear.html" class="active">Knitwear</a></li>
+        <li><a href="archive.html">Archive</a></li>
+        <li><a href="illustrations.html">Illustrations</a></li>
+        <li><a href="other-works.html">Other Works</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://instagram.com/sp1ritdancr" target="_blank" rel="noopener">@sp1ritdancr</a>
+    </div>
+  </aside>
+  <button class="sidebar-toggle" aria-label="menu" onclick="toggleSidebar()">
+    <span></span><span></span><span></span>
+  </button>
+
+  <!-- Lightbox controls -->
+  <div class="kw-lb-backdrop" id="kwLbBackdrop"></div>
+  <button class="kw-lb-btn kw-lb-prev" id="kwLbPrev">&#8592;</button>
+  <button class="kw-lb-btn kw-lb-next" id="kwLbNext">&#8594;</button>
+  <button class="kw-lb-btn kw-lb-close" id="kwLbClose">close</button>
+  <span class="kw-lb-counter" id="kwLbCounter"></span>
+  <div class="kw-lb-desc" id="kwLbDesc">
+    <span class="kw-lb-desc-num" id="kwLbNum"></span>
+    <span class="kw-lb-desc-name" id="kwLbName"></span>
+    <span class="kw-lb-desc-tech" id="kwLbTech"></span>
+  </div>
+
+  <div class="content">
+
+    <div class="kw-sw-header fade-up">
+      <div class="kw-sw-header-left">
+        <span class="eyebrow">knitwear · red azalea</span>
+        <h1>Technical Swatches.</h1>
+      </div>
+      <a href="knitwear.html" class="kw-sw-back">&#8592; Knitwear</a>
+    </div>
+
+    <!-- Edit bar — visible only with ?edit in URL -->
+    <div class="kw-sw-edit-bar" id="kwSwEditBar" style="display:none">
+      <button id="kwSwEditBtn" onclick="startEdit()">Edit Layout</button>
+      <span class="kw-sw-edit-hint" id="kwSwEditHint" style="display:none">Drag to move &nbsp;·&nbsp; drag corner handle to resize</span>
+      <button id="kwSwDoneBtn" style="display:none" onclick="finishEdit()">Done</button>
+      <button id="kwSwResetBtn" style="display:none" onclick="resetLayout()">Reset</button>
+      <button id="kwSwExportBtn" onclick="exportLayout()" style="display:none">Copy layout code</button>
+    </div>
+
+    <div class="kw-sw-canvas" id="kwSwCanvas"></div>
+
+    <footer class="footer">
+      <span class="footer-name"><img src="emily%20nguyen%20transparent.png" alt="emily nguyen." class="logo-img logo-img--footer" /></span>
+      <div class="footer-links">
+        <a href="https://instagram.com/sp1ritdancr" target="_blank" rel="noopener">@sp1ritdancr</a>
+        <a href="knitwear.html">&#8592; back</a>
+      </div>
+      <span class="footer-copy">© 2026 Emily Nguyen</span>
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
+  <script src="editor.js"></script>
+  <script>
+  (function () {
+    var SWATCHES = [
+      { src: 'knitwear/swatches/1a.png',                      num: '01', name: 'Swatch 01', tech: '' },
+      { src: 'knitwear/swatches/1b.png',                      num: '02', name: 'Swatch 02', tech: '' },
+      { src: 'knitwear/swatches/2.png',                       num: '03', name: 'Swatch 03', tech: '' },
+      { src: 'knitwear/swatches/3.png',                       num: '04', name: 'Swatch 04', tech: '' },
+      { src: 'knitwear/swatches/4.png',                       num: '05', name: 'Swatch 05', tech: '' },
+      { src: 'knitwear/swatches/5.png',                       num: '06', name: 'Swatch 06', tech: '' },
+      { src: 'knitwear/swatches/cable%20knit.png',            num: '07', name: 'Cable Knit', tech: '' },
+      { src: 'knitwear/swatches/lace%20carraige.png',         num: '08', name: 'Lace Carriage', tech: '' },
+      { src: 'knitwear/swatches/partial%20knit%20swatch.png', num: '09', name: 'Partial Knit', tech: '' },
+      { src: 'knitwear/swatches/dubied/swatch_1.png',         num: '10', name: 'Dubied I',  tech: '' },
+      { src: 'knitwear/swatches/dubied/swatch_2.png',         num: '11', name: 'Dubied II', tech: '' },
+      { src: 'knitwear/swatches/dubied/swatch_3.png',         num: '12', name: 'Dubied III', tech: '' },
+      { src: 'knitwear/swatches/dubied/swatch_4.png',         num: '13', name: 'Dubied IV', tech: '' },
+    ];
+
+    var HARDCODED_LAYOUT = [
+      { swIdx: 0,  x:  52, y:  120, w: 448 },
+      { swIdx: 1,  x: 203, y:  663, w: 149 },
+      { swIdx: 2,  x:  44, y: 1216, w: 214 },
+      { swIdx: 3,  x: 811, y:  376, w: 424 },
+      { swIdx: 4,  x: 792, y:  859, w: 537 },
+      { swIdx: 5,  x: 685, y:  769, w: 289 },
+      { swIdx: 6,  x: 212, y: 1152, w: 375 },
+      { swIdx: 7,  x:   0, y: 2000, w: 499 },
+      { swIdx: 8,  x: 357, y: 1357, w: 924 },
+      { swIdx: 9,  x:   0, y: 2847, w: 250 },
+      { swIdx: 10, x: 796, y: 2401, w: 511 },
+      { swIdx: 11, x: 1076, y: 2268, w: 260 },
+      { swIdx: 12, x: 475, y: 2428, w: 280 },
+    ];
+
+    var SAVE_KEY     = 'kw-swatches-layout-v1';
+    var canvas       = document.getElementById('kwSwCanvas');
+    var photoElMap   = {};
+    var lbOrder      = [];
+    var isEditing    = false;
+    var lbCurIdx     = 0;
+    var lbClosing    = false;
+    var lbFloatImg   = null;
+    var lbSourceImg  = null;
+    var lbDestLeft   = 0;
+    var lbDestTop    = 0;
+    var lbDestW      = 0;
+    var lbDescH      = 80;
+    var lbDescGap    = 18;
+
+    var editBar  = document.getElementById('kwSwEditBar');
+    var editBtn  = document.getElementById('kwSwEditBtn');
+    var doneBtn  = document.getElementById('kwSwDoneBtn');
+    var resetBtn = document.getElementById('kwSwResetBtn');
+    var exportBtn = document.getElementById('kwSwExportBtn');
+    var editHint = document.getElementById('kwSwEditHint');
+
+    var lbBackdrop = document.getElementById('kwLbBackdrop');
+    var lbPrev     = document.getElementById('kwLbPrev');
+    var lbNext     = document.getElementById('kwLbNext');
+    var lbClose    = document.getElementById('kwLbClose');
+    var lbCounter  = document.getElementById('kwLbCounter');
+    var lbDesc     = document.getElementById('kwLbDesc');
+    var lbNum      = document.getElementById('kwLbNum');
+    var lbName     = document.getElementById('kwLbName');
+    var lbTech     = document.getElementById('kwLbTech');
+
+    if (location.search.includes('edit')) {
+      editBar.style.display  = 'flex';
+      exportBtn.style.display = '';
+    }
+
+    var saved = loadSaved();
+    renderAbsolute(saved || HARDCODED_LAYOUT, false);
+
+    // ── BUILD ORDER (sorted top-to-bottom for prev/next) ──
+    function buildOrder(layout) {
+      lbOrder = layout.slice().sort(function (a, b) { return a.y - b.y; }).map(function (item) { return item.swIdx; });
+    }
+
+    // ── RENDER ──
+    function renderAbsolute(layout, editing) {
+      buildOrder(layout);
+      photoElMap = {};
+      canvas.innerHTML = '';
+      canvas.className = 'kw-sw-canvas' + (editing ? ' editing' : '');
+
+      var maxBottom = 0;
+      layout.forEach(function (item) { maxBottom = Math.max(maxBottom, item.y + 600); });
+      canvas.style.minHeight = (maxBottom + 300) + 'px';
+
+      layout.forEach(function (item) {
+        var sw = SWATCHES[item.swIdx];
+        if (!sw) return;
+
+        var el = document.createElement('div');
+        el.className = 'kw-sw-item';
+        el.style.left  = item.x + 'px';
+        el.style.top   = item.y + 'px';
+        el.style.width = item.w + 'px';
+
+        var img = document.createElement('img');
+        img.src = sw.src;
+        img.alt = sw.name;
+        img.loading = 'lazy';
+        img.addEventListener('load', function () {
+          var bottom = item.y + el.offsetHeight + 60;
+          if (bottom > parseFloat(canvas.style.minHeight || 0)) canvas.style.minHeight = bottom + 'px';
+          if (badge) badge.textContent = Math.round(item.w) + 'px';
+        });
+        el.appendChild(img);
+
+        var rh = document.createElement('div');
+        rh.className = 'edit-resize';
+        el.appendChild(rh);
+
+        var badge = document.createElement('div');
+        badge.className = 'edit-badge';
+        badge.textContent = Math.round(item.w) + 'px';
+        el.appendChild(badge);
+
+        photoElMap[item.swIdx] = el;
+
+        if (editing) {
+          makeDraggable(el, item, badge);
+          makeResizable(rh, el, item, badge);
+        } else {
+          (function (idx) {
+            el.addEventListener('click', function () { openLightbox(idx); });
+          })(item.swIdx);
+        }
+
+        canvas.appendChild(el);
+      });
+    }
+
+    // ── DRAG ──
+    function makeDraggable(el, item, badge) {
+      el.addEventListener('mousedown', function (e) {
+        if (e.target.classList.contains('edit-resize')) return;
+        e.preventDefault();
+        var startX = e.clientX, startY = e.clientY;
+        var startL = item.x, startT = item.y;
+        el.style.zIndex = '50';
+        function onMove(e) {
+          item.x = Math.max(0, startL + e.clientX - startX);
+          item.y = Math.max(0, startT + e.clientY - startY);
+          el.style.left = item.x + 'px';
+          el.style.top  = item.y + 'px';
+          var bottom = item.y + el.offsetHeight + 200;
+          if (bottom > parseFloat(canvas.style.minHeight || 0)) canvas.style.minHeight = bottom + 'px';
+        }
+        function onUp() {
+          el.style.zIndex = '';
+          autosave();
+          document.removeEventListener('mousemove', onMove);
+          document.removeEventListener('mouseup', onUp);
+        }
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      });
+    }
+
+    // ── RESIZE ──
+    function makeResizable(rh, el, item, badge) {
+      rh.addEventListener('mousedown', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var startX = e.clientX, startW = item.w;
+        function onMove(e) {
+          item.w = Math.max(60, startW + e.clientX - startX);
+          el.style.width = item.w + 'px';
+          if (badge) badge.textContent = Math.round(item.w) + 'px';
+        }
+        function onUp() {
+          autosave();
+          document.removeEventListener('mousemove', onMove);
+          document.removeEventListener('mouseup', onUp);
+        }
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      });
+    }
+
+    // ── EDIT CONTROLS ──
+    window.startEdit = function () {
+      renderAbsolute(loadSaved() || HARDCODED_LAYOUT, true);
+      isEditing = true;
+      editBtn.style.display  = 'none';
+      doneBtn.style.display  = '';
+      resetBtn.style.display = '';
+      editHint.style.display = '';
+      doneBtn.classList.add('active-edit');
+    };
+
+    window.finishEdit = function () {
+      autosave();
+      renderAbsolute(loadSaved() || HARDCODED_LAYOUT, false);
+      isEditing = false;
+      editBtn.style.display  = '';
+      doneBtn.style.display  = 'none';
+      resetBtn.style.display = 'none';
+      editHint.style.display = 'none';
+      doneBtn.classList.remove('active-edit');
+    };
+
+    window.resetLayout = function () {
+      localStorage.removeItem(SAVE_KEY);
+      renderAbsolute(HARDCODED_LAYOUT, false);
+      isEditing = false;
+      editBtn.style.display  = '';
+      doneBtn.style.display  = 'none';
+      resetBtn.style.display = 'none';
+      editHint.style.display = 'none';
+    };
+
+    window.exportLayout = function () {
+      var saved = loadSaved();
+      if (!saved) { alert('No saved layout — make changes first.'); return; }
+      var code = 'var HARDCODED_LAYOUT = ' + JSON.stringify(saved, null, 2) + ';';
+      navigator.clipboard.writeText(code).then(function () {
+        exportBtn.textContent = 'Copied!';
+        setTimeout(function () { exportBtn.textContent = 'Copy layout code'; }, 2000);
+      });
+    };
+
+    function autosave() {
+      var els = canvas.querySelectorAll('.kw-sw-item');
+      var layout = [];
+      els.forEach(function (el, i) {
+        layout.push({ swIdx: i, x: parseFloat(el.style.left), y: parseFloat(el.style.top), w: parseFloat(el.style.width) });
+      });
+      localStorage.setItem(SAVE_KEY, JSON.stringify(layout));
+    }
+
+    function loadSaved() {
+      try { var r = localStorage.getItem(SAVE_KEY); if (r) return JSON.parse(r); } catch (e) {}
+      return null;
+    }
+
+    // ── LIGHTBOX ──
+    function computeSize(natW, natH) {
+      var vw = window.innerWidth, vh = window.innerHeight;
+      var maxW = vw * 0.82;
+      var maxH = (vh - lbDescH - lbDescGap - 48) * 0.9;
+      var ar = natW / natH, w, h;
+      if (natW <= maxW && natH <= maxH) { w = natW; h = natH; }
+      else if ((natW / maxW) > (natH / maxH)) { w = maxW; h = maxW / ar; }
+      else { h = maxH; w = maxH * ar; }
+      return { w: w, h: h };
+    }
+
+    function positionDesc(destLeft, destTop, sizeW, sizeH) {
+      lbDesc.style.left  = destLeft + 'px';
+      lbDesc.style.width = sizeW + 'px';
+      lbDesc.style.top   = (destTop + sizeH + lbDescGap) + 'px';
+    }
+
+    function showControls(on) {
+      lbBackdrop.className = 'kw-lb-backdrop' + (on ? ' open' : '');
+      var arrowOn = on && SWATCHES.length > 1;
+      lbPrev.className    = 'kw-lb-btn kw-lb-prev'    + (arrowOn ? ' open' : '');
+      lbNext.className    = 'kw-lb-btn kw-lb-next'    + (arrowOn ? ' open' : '');
+      lbClose.className   = 'kw-lb-btn kw-lb-close'   + (on ? ' open' : '');
+      lbCounter.className = 'kw-lb-counter'            + (on ? ' open' : '');
+    }
+
+    function openLightbox(swIdx) {
+      if (lbClosing || lbFloatImg) return;
+      var sw = SWATCHES[swIdx];
+      if (!sw) return;
+      lbCurIdx = lbOrder.indexOf(swIdx);
+      if (lbCurIdx < 0) lbCurIdx = 0;
+
+      var el = photoElMap[swIdx];
+      if (!el) return;
+      var srcImg = el.querySelector('img');
+      var rect   = el.getBoundingClientRect();
+
+      var natW = srcImg && srcImg.naturalWidth  > 0 ? srcImg.naturalWidth  : rect.width;
+      var natH = srcImg && srcImg.naturalHeight > 0 ? srcImg.naturalHeight : rect.height;
+      var size = computeSize(natW, natH);
+      var vw = window.innerWidth, vh = window.innerHeight;
+
+      var totalH  = size.h + lbDescGap + lbDescH;
+      lbDestLeft  = (vw - size.w) / 2;
+      lbDestTop   = (vh - totalH) / 2;
+      lbDestW     = size.w;
+
+      lbSourceImg = srcImg;
+      srcImg.style.transition = 'none';
+      srcImg.style.opacity    = '0';
+
+      lbFloatImg = document.createElement('img');
+      lbFloatImg.src = srcImg.src;
+      lbFloatImg.style.cssText =
+        'position:fixed;z-index:1001;margin:0;padding:0;border:none;display:block;' +
+        'left:' + rect.left + 'px;top:' + rect.top + 'px;' +
+        'width:' + rect.width + 'px;height:' + rect.height + 'px;transition:none;';
+      document.body.appendChild(lbFloatImg);
+
+      lbNum.textContent  = sw.num;
+      lbName.textContent = sw.name;
+      lbTech.textContent = sw.tech;
+      positionDesc(lbDestLeft, lbDestTop, size.w, size.h);
+
+      lbCounter.textContent = (lbCurIdx + 1) + ' / ' + SWATCHES.length;
+      showControls(true);
+
+      lbFloatImg.offsetHeight;
+      var ease = '0.5s cubic-bezier(0.4,0,0.2,1)';
+      lbFloatImg.style.transition = 'left ' + ease + ',top ' + ease + ',width ' + ease + ',height ' + ease;
+      lbFloatImg.style.left   = lbDestLeft + 'px';
+      lbFloatImg.style.top    = lbDestTop  + 'px';
+      lbFloatImg.style.width  = size.w     + 'px';
+      lbFloatImg.style.height = size.h     + 'px';
+
+      setTimeout(function () { if (lbFloatImg) lbDesc.classList.add('open'); }, 440);
+    }
+
+    function closeLightbox() {
+      if (lbClosing || !lbFloatImg) return;
+      lbClosing = true;
+      showControls(false);
+      lbDesc.classList.remove('open');
+
+      var srcImg   = lbSourceImg;
+      var floatImg = lbFloatImg;
+
+      if (srcImg) {
+        var rect = srcImg.getBoundingClientRect();
+        var ease = '0.44s cubic-bezier(0.4,0,0.2,1)';
+        floatImg.style.transition = 'left ' + ease + ',top ' + ease + ',width ' + ease + ',height ' + ease;
+        floatImg.style.left   = rect.left   + 'px';
+        floatImg.style.top    = rect.top    + 'px';
+        floatImg.style.width  = rect.width  + 'px';
+        floatImg.style.height = rect.height + 'px';
+
+        var fired = {}, swapped = false;
+        function doSwap() {
+          if (swapped) return; swapped = true;
+          floatImg.removeEventListener('transitionend', onProp);
+          floatImg.style.transition = 'none'; floatImg.style.opacity = '0';
+          srcImg.style.transition   = 'none'; srcImg.style.opacity   = '1';
+          requestAnimationFrame(function () {
+            if (floatImg.parentNode) floatImg.parentNode.removeChild(floatImg);
+            if (lbFloatImg === floatImg) lbFloatImg = null;
+            lbSourceImg = null; lbClosing = false;
+            requestAnimationFrame(function () { srcImg.style.opacity = ''; srcImg.style.transition = ''; });
+          });
+        }
+        function onProp(e) { fired[e.propertyName] = true; if (fired.left && fired.top && fired.width && fired.height) doSwap(); }
+        floatImg.addEventListener('transitionend', onProp);
+        setTimeout(doSwap, 520);
+      } else {
+        if (floatImg.parentNode) floatImg.parentNode.removeChild(floatImg);
+        lbFloatImg = null; lbSourceImg = null; lbClosing = false;
+      }
+    }
+
+    function navigate(dir) {
+      if (!lbFloatImg || lbClosing) return;
+      lbDesc.classList.remove('open');
+      if (lbSourceImg) { lbSourceImg.style.opacity = ''; lbSourceImg.style.transition = ''; }
+
+      lbCurIdx = (lbCurIdx + dir + SWATCHES.length) % SWATCHES.length;
+      var nextSwIdx = lbOrder[lbCurIdx];
+      var sw = SWATCHES[nextSwIdx];
+
+      lbSourceImg = photoElMap[nextSwIdx] ? photoElMap[nextSwIdx].querySelector('img') : null;
+      if (lbSourceImg) { lbSourceImg.style.transition = 'none'; lbSourceImg.style.opacity = '0'; }
+
+      var floatImg = lbFloatImg;
+      floatImg.style.transition = 'opacity 0.15s ease';
+      floatImg.style.opacity    = '0';
+
+      setTimeout(function () {
+        if (floatImg !== lbFloatImg) return;
+        floatImg.src = sw.src;
+        floatImg.style.opacity = '1';
+        lbNum.textContent  = sw.num;
+        lbName.textContent = sw.name;
+        lbTech.textContent = sw.tech;
+        positionDesc(lbDestLeft, lbDestTop, lbDestW, parseFloat(floatImg.style.height) || 400);
+        setTimeout(function () { if (lbFloatImg) lbDesc.classList.add('open'); }, 300);
+      }, 150);
+
+      lbCounter.textContent = (lbCurIdx + 1) + ' / ' + SWATCHES.length;
+    }
+
+    lbBackdrop.addEventListener('click', closeLightbox);
+    lbClose.addEventListener('click', closeLightbox);
+    lbPrev.addEventListener('click', function (e) { e.stopPropagation(); navigate(-1); });
+    lbNext.addEventListener('click', function (e) { e.stopPropagation(); navigate(1); });
+    document.addEventListener('keydown', function (e) {
+      if (!lbFloatImg) return;
+      if (e.key === 'Escape')     closeLightbox();
+      if (e.key === 'ArrowLeft')  navigate(-1);
+      if (e.key === 'ArrowRight') navigate(1);
+    });
+
+    window.addEventListener('load', function () {
+      var els = canvas.querySelectorAll('.kw-sw-item');
+      var maxBottom = 0;
+      els.forEach(function (el) { var b = el.offsetTop + el.offsetHeight; if (b > maxBottom) maxBottom = b; });
+      if (maxBottom > 0) canvas.style.minHeight = (maxBottom + 80) + 'px';
+    });
+  })();
+  </script>
+</body>
+</html>

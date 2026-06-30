@@ -8,6 +8,54 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;1,6..96,300;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Outfit:wght@200;300&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── embedded final photos ── */
+    .sn-photos-canvas { padding: 0 4rem 6rem; }
+    .sn-photo-row { display: flex; align-items: flex-start; }
+    .sn-photo-item { flex: 0 0 auto; cursor: pointer; overflow: hidden; }
+    .sn-photo-item img { display: block; width: 100%; height: auto; transition: opacity 0.3s ease; pointer-events: none; }
+    .sn-photo-item:hover img { opacity: 0.82; }
+
+    .sn-photos-canvas.abs-mode { position: relative; padding: 0; margin-top: -120px; }
+    .sn-photo-abs { position: absolute; cursor: pointer; }
+    .sn-photo-abs img { display: block; width: 100%; height: auto; pointer-events: none; transition: opacity 0.3s ease; }
+    .sn-photo-abs:hover img { opacity: 0.82; }
+
+    .sn-photos-canvas.editing .sn-photo-abs { cursor: grab; outline: 1px solid rgba(80,120,255,0.35); }
+    .sn-photos-canvas.editing .sn-photo-abs:active { cursor: grabbing; }
+    .sn-photo-abs .edit-resize { display: none; position: absolute; right: -5px; bottom: -5px; width: 14px; height: 14px; background: #5070ff; border-radius: 2px; cursor: se-resize; z-index: 10; }
+    .sn-photos-canvas.editing .sn-photo-abs .edit-resize { display: block; }
+    .sn-photo-abs .edit-badge { display: none; position: absolute; top: 4px; left: 4px; background: rgba(0,0,0,0.65); color: #fff; font-family: monospace; font-size: 9px; padding: 2px 5px; pointer-events: none; z-index: 10; white-space: nowrap; }
+    .sn-photos-canvas.editing .sn-photo-abs .edit-badge { display: block; }
+
+    .sn-edit-bar { position: sticky; top: 0; z-index: 200; display: flex; align-items: center; gap: 1rem; padding: 0.7rem 4rem; background: rgba(242,241,238,0.97); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); }
+    .sn-edit-bar button { background: none; border: 1px solid var(--border); font-family: 'Outfit', sans-serif; font-size: 0.6rem; font-weight: 300; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text); padding: 0.4rem 0.9rem; cursor: pointer; transition: background 0.2s, color 0.2s; }
+    .sn-edit-bar button:hover { background: var(--text-dark); color: var(--bg); }
+    .sn-edit-bar button.active-edit { background: var(--text-dark); color: var(--bg); border-color: var(--text-dark); }
+    .sn-edit-hint { font-family: 'Outfit', sans-serif; font-size: 0.58rem; font-weight: 200; letter-spacing: 0.1em; color: var(--text-mid); }
+
+    .sn-lightbox { position: fixed; inset: 0; z-index: 999; pointer-events: none; }
+    .sn-lightbox.active { pointer-events: all; }
+    .sn-lightbox-close { position: fixed; top: 2rem; right: 2.5rem; z-index: 1002; background: none; border: none; color: rgba(20,19,18,0.4); font-family: 'Outfit', sans-serif; font-size: 0.62rem; font-weight: 200; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; padding: 0; opacity: 0; pointer-events: none; transition: opacity 0.25s ease, color 0.2s; }
+    .sn-lightbox.active .sn-lightbox-close { opacity: 1; pointer-events: all; }
+    .sn-lightbox-close:hover { color: rgba(20,19,18,0.85); }
+    .sn-lightbox-prev, .sn-lightbox-next { position: fixed; top: 50%; transform: translateY(-50%); z-index: 1002; background: none; border: none; color: rgba(20,19,18,0.28); font-size: 1.1rem; cursor: pointer; padding: 1.2rem; opacity: 0; pointer-events: none; transition: opacity 0.25s ease, color 0.2s; }
+    .sn-lightbox.active .sn-lightbox-prev, .sn-lightbox.active .sn-lightbox-next { opacity: 1; pointer-events: all; }
+    .sn-lightbox-prev:hover, .sn-lightbox-next:hover { color: rgba(20,19,18,0.75); }
+    .sn-lightbox-prev { left: 1rem; }
+    .sn-lightbox-next { right: 1rem; }
+    .sn-lightbox-counter { position: fixed; bottom: 1.8rem; left: 50%; transform: translateX(-50%); z-index: 1002; font-family: 'Outfit', sans-serif; font-size: 0.58rem; font-weight: 200; letter-spacing: 0.15em; color: rgba(20,19,18,0.3); opacity: 0; transition: opacity 0.25s ease; }
+    .sn-lightbox.active .sn-lightbox-counter { opacity: 1; }
+
+    .sn-photos-credit { font-family: 'Outfit', sans-serif; font-size: 0.62rem; font-weight: 200; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-mid); padding: 0 4rem 1.5rem; }
+
+    @media (max-width: 768px) {
+      .sn-photos-canvas { padding: 0 1.5rem 6rem; }
+      .sn-edit-bar { padding: 0.7rem 1.5rem; }
+      .sn-photo-row { flex-wrap: wrap; gap: 4px !important; margin-top: 1.5rem !important; }
+      .sn-photo-item { width: 48% !important; margin-left: 0 !important; }
+    }
+  </style>
 </head>
 <body>
   <aside class="sidebar" id="sidebar">
@@ -18,6 +66,7 @@
     <nav class="sidebar-nav">
       <ul>
         <li><a href="speak-nearby.html" class="active">Senior Thesis</a></li>
+        <li><a href="knitwear.html">Knitwear</a></li>
         <li><a href="archive.html">Archive</a></li>
         <li><a href="illustrations.html">Illustrations</a></li>
         <li><a href="other-works.html">Other Works</a></li>
@@ -54,14 +103,20 @@
     </div>
 
     <!-- CONCEPT -->
-    <div class="sn-concept fade-up">      <div class="sn-concept-quote">
-        <blockquote>
-          "Whereas content and language form a certain unity in the original, like a fruit and its skin,
-          the language of the translation envelops its content like a royal robe with ample folds.
-          For it signifies a more exalted language than its own and thus remains unsuited to its content,
-          overpowering and alien."
-        </blockquote>
-        <cite>— Walter Benjamin, <em>The Task of the Translator</em></cite>
+    <div class="sn-concept fade-up">
+      <div class="sn-concept-left">
+        <div class="sn-concept-lineup">
+          <img src="lineup%20transparent%20background.png" alt="Speak Nearby lineup" />
+        </div>
+        <div class="sn-concept-quote">
+          <blockquote>
+            "Whereas content and language form a certain unity in the original, like a fruit and its skin,
+            the language of the translation envelops its content like a royal robe with ample folds.
+            For it signifies a more exalted language than its own and thus remains unsuited to its content,
+            overpowering and alien."
+          </blockquote>
+          <cite>— Walter Benjamin, <a href="https://www.konstfack.se/PageFiles/46686/Walter%20Benjamin%20-%20The%20task%20of%20the%20Translator.pdf" target="_blank" rel="noopener"><em>The Task of the Translator</em></a></cite>
+        </div>
       </div>
       <div class="sn-concept-text">
         <span class="eyebrow">concept</span>
@@ -75,21 +130,30 @@
       </div>
     </div>
 
+    <!-- FINAL PHOTOS -->
+    <div class="sn-edit-bar" id="snEditBar" style="display:none">
+      <button id="snEditBtn" onclick="startEdit()">Edit Layout</button>
+      <span class="sn-edit-hint" id="snEditHint" style="display:none">Drag to move &nbsp;·&nbsp; drag corner to resize</span>
+      <button id="snDoneBtn" style="display:none" onclick="finishEdit()">Done</button>
+      <button id="snResetBtn" style="display:none" onclick="resetLayout()">Reset</button>
+      <button id="snExportBtn" onclick="exportLayout()" style="display:none">Copy layout code</button>
+    </div>
+
+    <div class="sn-photos-canvas" id="photosCanvas"></div>
+
+    <div class="sn-lightbox" id="snLightbox">
+      <button class="sn-lightbox-close" id="snLightboxClose">close</button>
+      <button class="sn-lightbox-prev" id="snLightboxPrev">&#8592;</button>
+      <button class="sn-lightbox-next" id="snLightboxNext">&#8594;</button>
+      <span class="sn-lightbox-counter" id="snLightboxCounter"></span>
+    </div>
+
     <!-- SECTION NAV -->
+    <p class="sn-photos-credit fade-up">Photography by Taren Wang</p>
+    <div class="sub-divider"></div>
     <nav class="sn-sections">
       <a href="speak-nearby-ideation.html" class="sn-section-link">
-        <span class="eyebrow">section 01</span>
-        <span class="sn-section-name">Ideation</span>
-        <span class="sn-section-arrow">&#8594;</span>
-      </a>
-      <a href="speak-nearby-process.html" class="sn-section-link">
-        <span class="eyebrow">section 02</span>
-        <span class="sn-section-name">Process</span>
-        <span class="sn-section-arrow">&#8594;</span>
-      </a>
-      <a href="speak-nearby-photos.html" class="sn-section-link">
-        <span class="eyebrow">section 03</span>
-        <span class="sn-section-name">Final</span>
+        <span class="sn-section-name">Ideation / Process</span>
         <span class="sn-section-arrow">&#8594;</span>
       </a>
     </nav>
@@ -110,30 +174,42 @@
   <script>
   (function () {
     var FOLDER = 'speak-nearby/photos/';
-    var FILES = [
-      'IMG_6914.JPG','IMG_6912.JPG','IMG_6916.JPG','IMG_6917.JPG','IMG_6918.JPG',
-      'P1148269.jpg','P1148270.jpg','P1148313.jpg','P1148349.jpg',
-      'P1148449.jpg','P1148462.jpg','P1148512.JPG','P1148632.jpg','P1148639.jpg',
-      'P1148648.JPG','P1148659.JPG','P1148692.JPG','P1148755.jpg','P1148799.jpg',
-      'P1148904.jpg','P1148934.jpg','P1148937.jpg','P1148949.JPG','P1148967.JPG',
-      'P1172907.jpg','P1172912.jpg','P1172976.jpg','P1172991.jpg','P1173007.jpg',
-      'P1173026.jpg','P1173051.jpg','P1173061.jpg','P1173065.JPG','P1173068.jpg',
-      'P1173078.JPG','P1173144.jpg','P1173158.jpg','P1173178.jpg','P1173221.jpg',
-      'P1173224.jpg','P1173242.jpg','P1173244.jpg','P1173267.jpg',
-      'P1173302.jpeg','P1173415.jpg','P1173426.jpg','P1173449.jpg','P1173464.jpg',
-      'P1173552.jpg','P1173571.jpg','P1173594.jpg','P1173667.jpg','P1173689.jpg',
-      'P1173706.jpg','P1173739.jpg'
+    var STRIP_FILES = [
+      'P1148904.jpg',  'P1173449.jpg',  'IMG_6916.JPG',
+      'P1148269.jpg',  'P1173144.jpg',  'P1172907.jpg',
+      'P1148639.jpg',  'P1173667.jpg',  'IMG_6912.JPG',
+      'P1148462.jpg',  'P1173026.jpg',
+      'P1148755.jpg',  'P1173552.jpg',  'IMG_6917.JPG',
+      'P1148349.jpg',  'P1172976.jpg',
+      'P1148967.JPG',  'P1173221.jpg',
+      'P1148270.jpg',  'P1173739.jpg',  'IMG_6914.JPG',
+      'P1148692.JPG',  'P1173065.JPG',
+      'P1148313.jpg',  'P1173415.jpg',  'IMG_6918.JPG',
+      'P1148799.jpg',  'P1173302.jpeg',
+      'P1148512.JPG',  'P1172912.jpg',
+      'P1148937.jpg',  'P1173242.jpg',
+      'P1148449.jpg',  'P1173706.jpg',
+      'P1148659.JPG',  'P1173061.jpg',
+      'P1148934.jpg',  'P1173426.jpg',
+      'P1148632.jpg',  'P1173178.jpg',
+      'P1148949.JPG',  'P1173068.jpg',
+      'P1148648.JPG',  'P1173689.jpg',
+                       'P1172991.jpg',
+                       'P1173158.jpg',  'P1173051.jpg',
+                       'P1173007.jpg',  'P1173571.jpg',
+                       'P1173078.JPG',  'P1173244.jpg',
+                       'P1173224.jpg',  'P1173464.jpg',
+                       'P1173267.jpg',  'P1173594.jpg'
     ];
 
     function buildStrip(id, files) {
       var el = document.getElementById(id);
       if (!el) return;
-      // Duplicate for seamless infinite loop
       var doubled = files.concat(files);
       doubled.forEach(function (f) {
         var item = document.createElement('a');
         item.className = 'sn-strip-item';
-        item.href = 'speak-nearby-photos.html';
+        item.href = '#';
         var img = document.createElement('img');
         img.src = FOLDER + encodeURIComponent(f);
         img.alt = '';
@@ -143,9 +219,8 @@
       });
     }
 
-    buildStrip('snStrip1', FILES);
+    buildStrip('snStrip1', STRIP_FILES);
 
-    // ── JS-driven scroll — arrows steer it ───────────────────────────────
     (function () {
       var track = document.getElementById('snStrip1');
       var row   = track && track.parentElement;
@@ -153,15 +228,14 @@
       var btnR  = document.getElementById('snArrowRight');
       if (!track || !btnL || !btnR) return;
 
-      // Kill the CSS animation — we drive translateX in JS instead
       track.style.animation = 'none';
 
-      var ANIM_SECS  = 140;  // baseline duration matches CSS
-      var FAST_PX_S  = 600;  // px/s while arrow held
+      var ANIM_SECS  = 140;
+      var FAST_PX_S  = 600;
 
       var posX     = 0;
       var lastT    = null;
-      var holdDir  = 0;   // 0 = auto, -1 = right (fwd fast), +1 = left (backward)
+      var holdDir  = 0;
       var hovering = false;
 
       if (row) {
@@ -171,47 +245,489 @@
 
       function step(t) {
         if (lastT === null) lastT = t;
-        var dt   = Math.min((t - lastT) / 1000, 0.05); // seconds, capped
+        var dt   = Math.min((t - lastT) / 1000, 0.05);
         lastT    = t;
-
         var half = track.scrollWidth / 2;
-
         if (holdDir !== 0) {
           posX += holdDir * FAST_PX_S * dt;
         } else if (!hovering && half > 0) {
-          posX -= (half / ANIM_SECS) * dt; // normal forward
+          posX -= (half / ANIM_SECS) * dt;
         }
-
-        // Wrap within [−half, 0)
         if (half > 0) {
           posX = posX % half;
           if (posX > 0) posX -= half;
         }
-
         track.style.transform = 'translateX(' + posX + 'px)';
         requestAnimationFrame(step);
       }
-
       requestAnimationFrame(step);
 
-      // Right = forward faster (-1), Left = backward (+1)
       function press(dir)  { holdDir = dir; }
       function release()   { holdDir = 0;   }
 
-      btnR.addEventListener('mousedown',   function (e) { e.preventDefault(); press(-1); });
-      btnL.addEventListener('mousedown',   function (e) { e.preventDefault(); press(1);  });
-      btnR.addEventListener('touchstart',  function (e) { e.preventDefault(); press(-1); }, { passive: false });
-      btnL.addEventListener('touchstart',  function (e) { e.preventDefault(); press(1);  }, { passive: false });
-
-      ['mouseup','mouseleave'].forEach(function (ev) {
-        btnR.addEventListener(ev, release);
-        btnL.addEventListener(ev, release);
-      });
-      ['touchend','touchcancel'].forEach(function (ev) {
-        btnR.addEventListener(ev, release);
-        btnL.addEventListener(ev, release);
-      });
+      btnR.addEventListener('mousedown',  function (e) { e.preventDefault(); press(-1); });
+      btnL.addEventListener('mousedown',  function (e) { e.preventDefault(); press(1);  });
+      btnR.addEventListener('touchstart', function (e) { e.preventDefault(); press(-1); }, { passive: false });
+      btnL.addEventListener('touchstart', function (e) { e.preventDefault(); press(1);  }, { passive: false });
+      ['mouseup','mouseleave'].forEach(function (ev) { btnR.addEventListener(ev, release); btnL.addEventListener(ev, release); });
+      ['touchend','touchcancel'].forEach(function (ev) { btnR.addEventListener(ev, release); btnL.addEventListener(ev, release); });
     })();
+  })();
+  </script>
+  <script>
+  (function () {
+    var FOLDER = 'speak-nearby/photos/';
+    var FILES = [
+      'IMG_6914.JPG','IMG_6912.JPG','IMG_6916.JPG','IMG_6917.JPG','IMG_6918.JPG',
+      'P1148269.jpg','P1148270.jpg','P1148308-已增强-SR.jpg','P1148313.jpg','P1148349.jpg',
+      'P1148449.jpg','P1148462.jpg','P1148512.JPG','P1148632.jpg','P1148639.jpg',
+      'P1148648.JPG','P1148659.JPG','P1148692.JPG','P1148755.jpg','P1148799.jpg',
+      'P1148904.jpg','P1148934.jpg','P1148937.jpg','P1148949.JPG','P1148967.JPG',
+      'P1172907.jpg','P1172912.jpg','P1172976.jpg','P1172991.jpg','P1173007.jpg',
+      'P1173026.jpg','P1173051.jpg','P1173061.jpg','P1173065.JPG','P1173068.jpg',
+      'P1173078.JPG','P1173144.jpg','P1173158.jpg','P1173178.jpg','P1173221.jpg',
+      'P1173224.jpg','P1173242.jpg','P1173244.jpg','P1173264.jpg','P1173267.jpg',
+      'P1173302.jpeg','P1173415.jpg','P1173426.jpg','P1173449.jpg','P1173464.jpg',
+      'P1173552.jpg','P1173571.jpg','P1173594.jpg','P1173667.jpg','P1173689.jpg',
+      'P1173706.jpg','P1173739.jpg'
+    ];
+
+    var SAVE_KEY = 'sn-photos-layout-v1';
+    var HARDCODED_LAYOUT = [{"fileIdx":0,"x":51,"y":30,"w":639.352,"h":852},{"fileIdx":1,"x":1075.59,"y":890.891,"w":189.438,"h":237},{"fileIdx":2,"x":0,"y":1381.7,"w":206.477,"h":275},{"fileIdx":3,"x":305.594,"y":1611.7,"w":345.102,"h":502},{"fileIdx":4,"x":815.141,"y":1165.77,"w":307.055,"h":409},{"fileIdx":5,"x":690,"y":2616.88,"w":564.891,"h":848},{"fileIdx":6,"x":29,"y":2575.88,"w":202.227,"h":271},{"fileIdx":7,"x":690.719,"y":3484.48,"w":224.938,"h":300},{"fileIdx":8,"x":45,"y":3739.41,"w":389.266,"h":584},{"fileIdx":9,"x":1008.98,"y":4418.41,"w":153.891,"h":231},{"fileIdx":10,"x":251.516,"y":4723.52,"w":631.594,"h":948},{"fileIdx":11,"x":1163.12,"y":5369.52,"w":150.141,"h":192},{"fileIdx":12,"x":666.344,"y":5686.52,"w":360.227,"h":523},{"fileIdx":13,"x":1182,"y":4064.19,"w":117.391,"h":176},{"fileIdx":14,"x":716.141,"y":4164.05,"w":275.891,"h":414},{"fileIdx":15,"x":0,"y":6482.97,"w":236.797,"h":325},{"fileIdx":16,"x":785.75,"y":6614.97,"w":449.891,"h":639},{"fileIdx":17,"x":218,"y":7263.59,"w":132.266,"h":198},{"fileIdx":18,"x":0,"y":7584.58,"w":345.305,"h":502},{"fileIdx":19,"x":380,"y":7931.01,"w":153.891,"h":231},{"fileIdx":20,"x":965.938,"y":7702.01,"w":273.055,"h":364},{"fileIdx":21,"x":740.766,"y":8169.01,"w":409.836,"h":615},{"fileIdx":22,"x":40,"y":8725.88,"w":194.438,"h":292},{"fileIdx":23,"x":285.305,"y":8937.3,"w":473.102,"h":681},{"fileIdx":24,"x":1109.62,"y":9638.3,"w":165.758,"h":228},{"fileIdx":25,"x":11.4375,"y":10367.2,"w":284.875,"h":190},{"fileIdx":26,"x":506.016,"y":9998.2,"w":680.438,"h":454},{"fileIdx":27,"x":136,"y":10728.7,"w":130.227,"h":195},{"fileIdx":28,"x":506.305,"y":10888.7,"w":489,"h":734},{"fileIdx":29,"x":1074.05,"y":11444.9,"w":269.477,"h":404},{"fileIdx":30,"x":390,"y":12084.7,"w":270.594,"h":361},{"fileIdx":31,"x":138.469,"y":12019.7,"w":213.102,"h":142},{"fileIdx":32,"x":0,"y":12615.2,"w":132.758,"h":177},{"fileIdx":33,"x":67.2578,"y":12881.2,"w":133.758,"h":178},{"fileIdx":34,"x":1040.75,"y":12345.2,"w":190.516,"h":254},{"fileIdx":35,"x":211.477,"y":12880.9,"w":133.719,"h":178},{"fileIdx":36,"x":131,"y":14056.9,"w":333.266,"h":444},{"fileIdx":37,"x":654.891,"y":14440.9,"w":549.797,"h":733},{"fileIdx":38,"x":88.0156,"y":15261.4,"w":281.227,"h":375},{"fileIdx":39,"x":997.977,"y":15641.4,"w":141.758,"h":189},{"fileIdx":40,"x":1148.8,"y":15640.4,"w":142.055,"h":189},{"fileIdx":41,"x":38,"y":16149.7,"w":405.836,"h":541},{"fileIdx":42,"x":586.711,"y":16022.7,"w":260.477,"h":347},{"fileIdx":43,"x":32.0547,"y":13804.7,"w":153.891,"h":205},{"fileIdx":44,"x":592,"y":13009.8,"w":592,"h":789},{"fileIdx":45,"x":1098,"y":2157.59,"w":125.758,"h":168},{"fileIdx":46,"x":1040.63,"y":16659.6,"w":213.102,"h":160},{"fileIdx":47,"x":186.055,"y":17001.5,"w":472.188,"h":629},{"fileIdx":48,"x":103.805,"y":17663.5,"w":189.438,"h":252},{"fileIdx":49,"x":834,"y":17954.8,"w":213.102,"h":284},{"fileIdx":50,"x":434.836,"y":18236.8,"w":153.891,"h":205},{"fileIdx":51,"x":46,"y":18270.8,"w":355.188,"h":473},{"fileIdx":52,"x":699.188,"y":18596,"w":615.68,"h":820},{"fileIdx":53,"x":121,"y":19632.4,"w":177.594,"h":237},{"fileIdx":54,"x":319.469,"y":19684.4,"w":236.797,"h":316},{"fileIdx":55,"x":1102.54,"y":19466.4,"w":123.758,"h":165},{"fileIdx":56,"x":440.875,"y":20057.9,"w":473.594,"h":631}];
+
+    var srcs = FILES.map(function(f){ return FOLDER + encodeURIComponent(f); });
+    var isEditing = false;
+    var visualOrder = [];
+    var photoElMap = {};
+
+    var canvas   = document.getElementById('photosCanvas');
+    var editBtn  = document.getElementById('snEditBtn');
+    var doneBtn  = document.getElementById('snDoneBtn');
+    var resetBtn = document.getElementById('snResetBtn');
+    var exportBtn = document.getElementById('snExportBtn');
+    var editHint = document.getElementById('snEditHint');
+    var lightbox = document.getElementById('snLightbox');
+    var lbClose  = document.getElementById('snLightboxClose');
+    var lbPrev   = document.getElementById('snLightboxPrev');
+    var lbNext   = document.getElementById('snLightboxNext');
+    var lbCtr    = document.getElementById('snLightboxCounter');
+    var currentIdx = 0;
+
+    if (location.search.includes('edit')) {
+      document.getElementById('snEditBar').style.display = 'flex';
+      exportBtn.style.display = '';
+    }
+
+    var saved = loadSaved();
+    renderAbsolute(saved || HARDCODED_LAYOUT, false);
+
+    function buildVisualOrder(layout) {
+      visualOrder = layout.slice().sort(function(a,b){ return a.y - b.y; }).map(function(item){ return item.fileIdx; });
+    }
+
+    function renderAbsolute(layout, editing) {
+      buildVisualOrder(layout);
+      photoElMap = {};
+      canvas.innerHTML = '';
+      canvas.className = 'sn-photos-canvas abs-mode' + (editing ? ' editing' : '');
+      var maxBottom = 0;
+      layout.forEach(function(item){ maxBottom = Math.max(maxBottom, item.y + item.h + 200); });
+      canvas.style.minHeight = maxBottom + 'px';
+      layout.forEach(function(item) {
+        var el = document.createElement('div');
+        el.className = 'sn-photo-abs';
+        el.style.left = item.x + 'px';
+        el.style.top  = item.y + 'px';
+        el.style.width = item.w + 'px';
+        var img = document.createElement('img');
+        img.src = srcs[item.fileIdx];
+        img.alt = '';
+        img.loading = 'lazy';
+        var badge = document.createElement('div');
+        badge.className = 'edit-badge';
+        badge.textContent = Math.round(item.w) + 'px wide';
+        img.addEventListener('load', function() {
+          var bottom = item.y + el.offsetHeight + 200;
+          if (bottom > parseFloat(canvas.style.minHeight || 0)) canvas.style.minHeight = bottom + 'px';
+          badge.textContent = Math.round(item.w) + 'px wide';
+        });
+        el.appendChild(img);
+        var rh = document.createElement('div');
+        rh.className = 'edit-resize';
+        el.appendChild(rh);
+        el.appendChild(badge);
+        photoElMap[item.fileIdx] = el;
+        if (editing) { makeDraggable(el, item, badge); makeResizable(rh, el, item, badge); }
+        else { (function(idx){ el.addEventListener('click', function(){ openLightbox(idx); }); })(item.fileIdx); }
+        canvas.appendChild(el);
+      });
+    }
+
+    function makeDraggable(el, item, badge) {
+      el.addEventListener('mousedown', function(e) {
+        if (e.target.classList.contains('edit-resize')) return;
+        e.preventDefault();
+        var sx = e.clientX, sy = e.clientY, sl = item.x, st = item.y;
+        el.style.zIndex = '50';
+        function onMove(e) {
+          item.x = Math.max(0, sl + e.clientX - sx);
+          item.y = Math.max(0, st + e.clientY - sy);
+          el.style.left = item.x + 'px'; el.style.top = item.y + 'px';
+          var bottom = item.y + el.offsetHeight + 200;
+          if (bottom > parseFloat(canvas.style.minHeight || 0)) canvas.style.minHeight = bottom + 'px';
+        }
+        function onUp() { el.style.zIndex = ''; autosave(); document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); }
+        document.addEventListener('mousemove', onMove); document.addEventListener('mouseup', onUp);
+      });
+    }
+
+    function makeResizable(rh, el, item, badge) {
+      rh.addEventListener('mousedown', function(e) {
+        e.preventDefault(); e.stopPropagation();
+        var sx = e.clientX, sw = item.w;
+        function onMove(e) { item.w = Math.max(60, sw + e.clientX - sx); el.style.width = item.w + 'px'; badge.textContent = Math.round(item.w) + 'px wide'; }
+        function onUp() { autosave(); document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); }
+        document.addEventListener('mousemove', onMove); document.addEventListener('mouseup', onUp);
+      });
+    }
+
+    window.startEdit = function() {
+      renderAbsolute(loadSaved() || HARDCODED_LAYOUT, true);
+      isEditing = true;
+      editBtn.style.display = 'none'; doneBtn.style.display = ''; resetBtn.style.display = ''; editHint.style.display = '';
+      doneBtn.classList.add('active-edit');
+    };
+    window.finishEdit = function() {
+      autosave(); renderAbsolute(loadSaved(), false); isEditing = false;
+      editBtn.style.display = ''; doneBtn.style.display = 'none'; resetBtn.style.display = 'none'; editHint.style.display = 'none';
+      doneBtn.classList.remove('active-edit');
+    };
+    window.resetLayout = function() {
+      localStorage.removeItem(SAVE_KEY); renderAbsolute(HARDCODED_LAYOUT, false); isEditing = false;
+      editBtn.style.display = ''; doneBtn.style.display = 'none'; resetBtn.style.display = 'none'; editHint.style.display = 'none';
+    };
+    window.exportLayout = function() {
+      var saved = loadSaved();
+      if (!saved) { alert('No saved layout yet.'); return; }
+      var code = 'var HARDCODED_LAYOUT = ' + JSON.stringify(saved) + ';';
+      navigator.clipboard.writeText(code).then(function() { exportBtn.textContent = 'Copied!'; setTimeout(function(){ exportBtn.textContent = 'Copy layout code'; }, 2000); });
+    };
+
+    function autosave() {
+      var els = canvas.querySelectorAll('.sn-photo-abs');
+      var layout = [];
+      els.forEach(function(el, i) { layout.push({ fileIdx: i, x: parseFloat(el.style.left), y: parseFloat(el.style.top), w: parseFloat(el.style.width), h: el.offsetHeight }); });
+      localStorage.setItem(SAVE_KEY, JSON.stringify(layout));
+    }
+    function loadSaved() {
+      try { var r = localStorage.getItem(SAVE_KEY); if (r) return JSON.parse(r); } catch(e) {} return null;
+    }
+
+    // Lightbox
+    var lbClosing = false, lbFloatImg = null, lbSourceEl = null;
+    function computeFinalSize(nw, nh) {
+      var vw = window.innerWidth, vh = window.innerHeight, maxW = vw*0.86, maxH = vh*0.88, ar = nw/nh, w, h;
+      if (nw<=maxW && nh<=maxH){w=nw;h=nh;} else if ((nw/maxW)>(nh/maxH)){w=maxW;h=maxW/ar;} else {h=maxH;w=maxH*ar;}
+      return {w:w,h:h};
+    }
+    function openLightbox(fileIdx) {
+      if (lbClosing || lbFloatImg) return;
+      currentIdx = visualOrder.indexOf(fileIdx);
+      if (currentIdx === -1) currentIdx = fileIdx;
+      var actualIdx = visualOrder[currentIdx] !== undefined ? visualOrder[currentIdx] : fileIdx;
+      lbSourceEl = photoElMap[fileIdx]; if (!lbSourceEl) return;
+      var rect = lbSourceEl.getBoundingClientRect();
+      var sourceImg = lbSourceEl.querySelector('img');
+      var nw = (sourceImg && sourceImg.naturalWidth > 0) ? sourceImg.naturalWidth : rect.width;
+      var nh = (sourceImg && sourceImg.naturalHeight > 0) ? sourceImg.naturalHeight : rect.height;
+      var size = computeFinalSize(nw, nh);
+      var vw = window.innerWidth, vh = window.innerHeight;
+      var dL = (vw-size.w)/2, dT = (vh-size.h)/2;
+      if (sourceImg) { sourceImg.style.transition='none'; sourceImg.style.opacity='0'; }
+      lbFloatImg = document.createElement('img');
+      lbFloatImg.src = srcs[actualIdx];
+      lbFloatImg.style.cssText = 'position:fixed;z-index:1001;margin:0;padding:0;border:none;display:block;left:'+rect.left+'px;top:'+rect.top+'px;width:'+rect.width+'px;height:'+rect.height+'px;transition:none;';
+      document.body.appendChild(lbFloatImg);
+      lbCtr.textContent = (currentIdx+1) + ' / ' + FILES.length;
+      lightbox.classList.add('active');
+      lbFloatImg.offsetHeight;
+      var ease = '0.5s cubic-bezier(0.4,0,0.2,1)';
+      lbFloatImg.style.transition = 'left '+ease+',top '+ease+',width '+ease+',height '+ease;
+      lbFloatImg.style.left=dL+'px'; lbFloatImg.style.top=dT+'px'; lbFloatImg.style.width=size.w+'px'; lbFloatImg.style.height=size.h+'px';
+    }
+    function closeLightbox() {
+      if (lbClosing || !lbFloatImg) return;
+      lbClosing = true; lightbox.classList.remove('active');
+      var sourceEl = lbSourceEl, floatImg = lbFloatImg;
+      if (sourceEl) {
+        var rect = sourceEl.getBoundingClientRect();
+        var ease = '0.44s cubic-bezier(0.4,0,0.2,1)';
+        floatImg.style.transition = 'left '+ease+',top '+ease+',width '+ease+',height '+ease;
+        floatImg.style.left=rect.left+'px'; floatImg.style.top=rect.top+'px'; floatImg.style.width=rect.width+'px'; floatImg.style.height=rect.height+'px';
+        var img = sourceEl.querySelector('img'), fired = {}, swapped = false;
+        function doSwap(){ if(swapped)return; swapped=true; floatImg.removeEventListener('transitionend',onProp); floatImg.style.transition='none'; floatImg.style.opacity='0'; if(img){img.style.transition='none';img.style.opacity='1';} requestAnimationFrame(function(){ if(floatImg.parentNode)floatImg.parentNode.removeChild(floatImg); if(lbFloatImg===floatImg)lbFloatImg=null; lbSourceEl=null; lbClosing=false; if(img)requestAnimationFrame(function(){img.style.opacity='';img.style.transition='';}); }); }
+        function onProp(e){ fired[e.propertyName]=true; if(fired.left&&fired.top&&fired.width&&fired.height)doSwap(); }
+        floatImg.addEventListener('transitionend', onProp);
+        setTimeout(doSwap, 500);
+      } else { if(floatImg.parentNode)floatImg.parentNode.removeChild(floatImg); lbFloatImg=null; lbSourceEl=null; lbClosing=false; }
+    }
+    function navigate(dir) {
+      if (!lbFloatImg || lbClosing) return;
+      if (lbSourceEl) { var oi = lbSourceEl.querySelector('img'); if(oi) oi.style.opacity=''; }
+      currentIdx = (currentIdx + dir + FILES.length) % FILES.length;
+      var fileIdx = visualOrder[currentIdx] !== undefined ? visualOrder[currentIdx] : currentIdx;
+      lbSourceEl = photoElMap[fileIdx] || null;
+      if (lbSourceEl) { var ni = lbSourceEl.querySelector('img'); if(ni) ni.style.opacity='0'; }
+      var floatImg = lbFloatImg;
+      floatImg.style.transition='opacity 0.15s ease'; floatImg.style.opacity='0';
+      var nextSrc = srcs[visualOrder[currentIdx]];
+      setTimeout(function(){ if(floatImg===lbFloatImg){floatImg.src=nextSrc;floatImg.style.opacity='1';} }, 150);
+      lbCtr.textContent = (currentIdx+1) + ' / ' + FILES.length;
+    }
+    lbClose.addEventListener('click', closeLightbox);
+    lbPrev.addEventListener('click', function(e){ e.stopPropagation(); navigate(-1); });
+    lbNext.addEventListener('click', function(e){ e.stopPropagation(); navigate(1); });
+    lightbox.addEventListener('click', closeLightbox);
+    document.addEventListener('keydown', function(e){ if(!lightbox.classList.contains('active'))return; if(e.key==='Escape')closeLightbox(); if(e.key==='ArrowLeft')navigate(-1); if(e.key==='ArrowRight')navigate(1); });
+    window.addEventListener('scroll', function(){ if(lightbox.classList.contains('active'))closeLightbox(); }, { passive: true });
+  })();
+  </script>
+  <script>
+  /* ── APPLY SAVED CONCEPT LAYOUT (non-edit mode) ─────────────────────── */
+  (function () {
+    if (window.location.search.includes('edit')) return;
+    var STORAGE_KEY = 'sn-concept-layout-v2';
+    var saved = {};
+    try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch(e) {}
+    if (!Object.keys(saved).length) return;
+
+    var concept = document.querySelector('.sn-concept');
+    var leftCol = document.querySelector('.sn-concept-left');
+    var lineup  = document.querySelector('.sn-concept-lineup');
+    var quote   = document.querySelector('.sn-concept-quote');
+    var textBox = document.querySelector('.sn-concept-text');
+    if (!concept || !lineup || !quote || !textBox) return;
+
+    /* switch to free-form canvas */
+    concept.style.display   = 'block';
+    concept.style.position  = 'relative';
+    concept.style.padding   = '4rem 3rem 0';
+    concept.style.minHeight = '640px';
+    leftCol.style.display   = 'none';
+
+    /* pull lineup + quote out of leftCol into concept */
+    concept.insertBefore(lineup, textBox);
+    concept.insertBefore(quote,  textBox);
+
+    var lineupImg = lineup.querySelector('img');
+    if (lineupImg) { lineupImg.style.width = '100%'; lineupImg.style.marginLeft = '0'; }
+    lineup.style.marginLeft = '0';
+
+    function applyEl(el, key) {
+      var s = saved[key];
+      if (!s) return;
+      el.style.position  = 'absolute';
+      el.style.boxSizing = 'border-box';
+      if (s.x != null) el.style.left   = s.x + 'px';
+      if (s.y != null) el.style.top    = s.y + 'px';
+      if (s.w != null) el.style.width  = s.w + 'px';
+      if (s.h != null) el.style.height = s.h + 'px';
+    }
+    applyEl(lineup,  'lineup');
+    applyEl(quote,   'quote');
+    applyEl(textBox, 'text');
+
+    /* expand container once layout + images settle */
+    function updateHeight() {
+      var maxB = 0;
+      [lineup, quote, textBox].forEach(function (el) {
+        var b = el.offsetTop + el.offsetHeight;
+        if (b > maxB) maxB = b;
+      });
+      if (maxB > 0) concept.style.minHeight = (maxB + 80) + 'px';
+    }
+    window.addEventListener('load', updateHeight);
+    setTimeout(updateHeight, 400);
+  })();
+
+  /* ── CONCEPT SECTION EDIT MODE (?edit) ─────────────────────────────── */
+  (function () {
+    if (!window.location.search.includes('edit')) return;
+
+    var STORAGE_KEY = 'sn-concept-layout-v2';
+
+    /* ── styles ── */
+    var style = document.createElement('style');
+    style.textContent =
+      '.edit-toolbar{position:fixed;top:14px;left:50%;transform:translateX(-50%);' +
+        'background:rgba(20,20,20,0.88);color:#fff;padding:6px 18px;border-radius:20px;' +
+        'z-index:9999;display:flex;gap:12px;align-items:center;backdrop-filter:blur(6px);' +
+        'font-family:\'Outfit\',sans-serif;font-size:0.72rem;letter-spacing:0.06em;}' +
+      '.edit-toolbar button,.edit-toolbar a{background:rgba(255,255,255,0.15);color:#fff;' +
+        'border:none;padding:3px 10px;border-radius:10px;cursor:pointer;' +
+        'font-family:inherit;font-size:inherit;letter-spacing:inherit;text-decoration:none;}' +
+      '.edit-toolbar button:hover,.edit-toolbar a:hover{background:rgba(255,255,255,0.3);}' +
+      /* each free element */
+      '.sn-free-el{position:absolute;box-sizing:border-box;}' +
+      '.sn-free-el:hover{outline:1px dashed rgba(80,120,220,0.5);}' +
+      /* drag tab — top strip, appears on hover */
+      '.sn-drag-tab{position:absolute;top:-20px;left:0;height:20px;padding:0 8px;' +
+        'background:rgba(80,120,220,0.75);color:#fff;font-size:10px;font-family:\'Outfit\',sans-serif;' +
+        'display:flex;align-items:center;gap:5px;cursor:grab;border-radius:3px 3px 0 0;' +
+        'white-space:nowrap;opacity:0;transition:opacity 0.15s;pointer-events:none;}' +
+      '.sn-free-el:hover .sn-drag-tab{opacity:1;pointer-events:all;}' +
+      '.sn-drag-tab:active{cursor:grabbing;}' +
+      /* resize corner */
+      '.sn-resize-corner{position:absolute;bottom:0;right:0;width:14px;height:14px;' +
+        'background:rgba(80,120,220,0.65);cursor:se-resize;border-radius:2px 0 0 0;' +
+        'opacity:0;transition:opacity 0.15s;}' +
+      '.sn-free-el:hover .sn-resize-corner{opacity:1;}';
+    document.head.appendChild(style);
+    document.body.classList.add('edit-mode');
+
+    /* ── elements ── */
+    var concept  = document.querySelector('.sn-concept');
+    var leftCol  = document.querySelector('.sn-concept-left');
+    var lineup   = document.querySelector('.sn-concept-lineup');
+    var quote    = document.querySelector('.sn-concept-quote');
+    var textBox  = document.querySelector('.sn-concept-text');
+    var lineupImg = lineup && lineup.querySelector('img');
+
+    /* ── saved state ── */
+    var saved = {};
+    try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch(e) {}
+
+    /* ── switch concept to free-form canvas ── */
+    concept.style.cssText += ';display:block!important;position:relative!important;' +
+      'min-height:700px;padding:4rem 3rem;';
+    leftCol.style.display = 'none'; /* empty wrapper, hide it */
+
+    /* move lineup + quote out of leftCol directly into concept */
+    concept.insertBefore(lineup,  textBox);
+    concept.insertBefore(quote,   textBox);
+
+    /* fix lineup image to fill its container width */
+    if (lineupImg) {
+      lineupImg.style.width      = '100%';
+      lineupImg.style.height     = 'auto';
+      lineupImg.style.marginLeft = '0';
+    }
+    if (lineup) lineup.style.marginLeft = '0';
+
+    /* ── defaults (px, relative to concept padding box) ── */
+    var DEFAULTS = {
+      lineup: { x:  -30, y:   0, w: 400 },
+      quote:  { x:   80, y: 370, w: 320 },
+      text:   { x:  420, y:  20, w: 380, h: 420 }
+    };
+
+    function persist() { localStorage.setItem(STORAGE_KEY, JSON.stringify(saved)); }
+
+    function updateHeight() {
+      var maxB = 0;
+      [lineup, quote, textBox].forEach(function (el) {
+        var b = el.offsetTop + el.offsetHeight;
+        if (b > maxB) maxB = b;
+      });
+      concept.style.minHeight = (maxB + 80) + 'px';
+    }
+
+    /* ── make element freely draggable + resizable ── */
+    function makeEditable(el, key, labelText) {
+      var d  = DEFAULTS[key];
+      var sv = saved[key] || {};
+      var x  = sv.x != null ? sv.x : d.x;
+      var y  = sv.y != null ? sv.y : d.y;
+      var w  = sv.w != null ? sv.w : d.w;
+      var h  = sv.h != null ? sv.h : d.h;
+
+      el.classList.add('sn-free-el');
+      el.style.left  = x + 'px';
+      el.style.top   = y + 'px';
+      el.style.width = w + 'px';
+      if (h) el.style.height = h + 'px';
+
+      /* drag tab */
+      var tab = document.createElement('div');
+      tab.className   = 'sn-drag-tab';
+      tab.textContent = '⠿ ' + labelText;
+      el.appendChild(tab);
+
+      /* resize corner */
+      var corner = document.createElement('div');
+      corner.className = 'sn-resize-corner';
+      el.appendChild(corner);
+
+      function savePosSize() {
+        saved[key] = { x: el.offsetLeft, y: el.offsetTop,
+                       w: el.offsetWidth, h: el.offsetHeight };
+        persist();
+        updateHeight();
+      }
+
+      /* drag */
+      tab.addEventListener('mousedown', function (e) {
+        e.preventDefault();
+        var ox = e.clientX - el.offsetLeft;
+        var oy = e.clientY - el.offsetTop;
+        function mm(e) {
+          el.style.left = (e.clientX - ox) + 'px';
+          el.style.top  = Math.max(0, e.clientY - oy) + 'px';
+          updateHeight();
+        }
+        function mu() {
+          savePosSize();
+          document.removeEventListener('mousemove', mm);
+          document.removeEventListener('mouseup',   mu);
+        }
+        document.addEventListener('mousemove', mm);
+        document.addEventListener('mouseup',   mu);
+      });
+
+      /* resize */
+      corner.addEventListener('mousedown', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var sx = e.clientX, sy = e.clientY;
+        var sw = el.offsetWidth, sh = el.offsetHeight;
+        function mm(e) {
+          el.style.width  = Math.max(80,  sw + e.clientX - sx) + 'px';
+          /* for lineup, height auto-follows the image; skip height drag */
+          if (key !== 'lineup') {
+            el.style.height = Math.max(60, sh + e.clientY - sy) + 'px';
+          }
+          updateHeight();
+        }
+        function mu() {
+          savePosSize();
+          document.removeEventListener('mousemove', mm);
+          document.removeEventListener('mouseup',   mu);
+        }
+        document.addEventListener('mousemove', mm);
+        document.addEventListener('mouseup',   mu);
+      });
+    }
+
+    makeEditable(lineup,  'lineup', 'lineup');
+    makeEditable(quote,   'quote',  'quote');
+    makeEditable(textBox, 'text',   'concept text');
+
+    setTimeout(updateHeight, 120);
+
+    /* ── toolbar ── */
+    var toolbar = document.createElement('div');
+    toolbar.className = 'edit-toolbar';
+    toolbar.innerHTML =
+      '<span>EDIT MODE</span>' +
+      '<span style="opacity:0.4;font-size:0.65rem">drag tab to move · corner to resize</span>' +
+      '<button id="snEditReset">Reset</button>' +
+      '<a href="' + window.location.pathname + '">Done</a>';
+    document.body.appendChild(toolbar);
+
+    document.getElementById('snEditReset').addEventListener('click', function () {
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    });
   })();
   </script>
 </body>

@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ideation — Speak Nearby — Emily Nguyen</title>
+  <title>Ideation / Process — Speak Nearby — Emily Nguyen</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;1,6..96,300;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Outfit:wght@200;300&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <style>
+    /* ── HEADER ── */
     .id-header {
       padding: 5rem 4rem 3rem;
       display: flex;
@@ -37,111 +38,128 @@
     }
     .id-back:hover { color: var(--text-dark); }
 
+    /* ── EDIT BAR ── */
+    .id-edit-bar {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.7rem 4rem;
+      background: rgba(242,241,238,0.97);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--border);
+    }
+    .id-edit-bar button {
+      background: none;
+      border: 1px solid var(--border);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 300;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      padding: 0.4rem 0.9rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .id-edit-bar button:hover { background: var(--text-dark); color: var(--bg); }
+    .id-edit-bar button.active-edit { background: var(--text-dark); color: var(--bg); border-color: var(--text-dark); }
+    .id-edit-hint {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.58rem;
+      font-weight: 200;
+      letter-spacing: 0.1em;
+      color: var(--text-mid);
+    }
+
     /* ── CANVAS ── */
     .id-canvas {
-      padding: 0 4rem 8rem;
+      position: relative;
+      padding: 0 4rem;
     }
-    .id-row {
-      display: flex;
-      align-items: flex-start;
+    .id-photo-abs {
+      position: absolute;
     }
-    .id-item {
-      flex: 0 0 auto;
-    }
-    .id-item img {
+    .id-photo-abs img {
       display: block;
       width: 100%;
       height: auto;
-      cursor: zoom-in;
+      pointer-events: none;
       transition: opacity 0.3s ease;
     }
-    .id-item:hover img { opacity: 0.82; }
+    .id-photo-abs:hover img { opacity: 0.82; }
 
-    /* ── CUSTOMER TEXT ── */
-    .id-customer-block {
-      display: flex;
-      align-items: flex-start;
-      gap: 4rem;
-      margin-top: 9rem;
+    /* ── EDIT HANDLES ── */
+    .id-canvas.editing .id-photo-abs { cursor: grab; outline: 1px solid rgba(80,120,255,0.35); }
+    .id-canvas.editing .id-photo-abs:active { cursor: grabbing; }
+    .id-photo-abs .edit-resize {
+      display: none;
+      position: absolute;
+      right: -5px; bottom: -5px;
+      width: 14px; height: 14px;
+      background: #5070ff;
+      border-radius: 2px;
+      cursor: se-resize;
+      z-index: 10;
     }
-    .id-customer-img { flex: 0 0 38%; }
-    .id-customer-img img { width: 100%; display: block; cursor: zoom-in; transition: opacity 0.3s; }
-    .id-customer-img img:hover { opacity: 0.82; }
-    .id-customer-text {
-      flex: 1;
-      padding-top: 2rem;
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 200;
-      line-height: 1.9;
-      color: var(--text);
+    .id-canvas.editing .id-photo-abs .edit-resize { display: block; }
+    .id-photo-abs .edit-badge {
+      display: none;
+      position: absolute;
+      top: 4px; left: 4px;
+      background: rgba(0,0,0,0.65);
+      color: #fff;
+      font-family: monospace;
+      font-size: 9px;
+      padding: 2px 5px;
+      pointer-events: none;
+      z-index: 10;
+      white-space: nowrap;
     }
-    .id-customer-text p { margin: 0 0 1.2em; }
-    .id-customer-text p:last-child { margin: 0; }
+    .id-canvas.editing .id-photo-abs .edit-badge { display: block; }
 
-    /* ── LINEUP SECTION ── */
-    .id-dark {
-      background: #171615;
-      padding: 4rem;
-      margin-top: 0;
+    /* ── CUSTOMER TEXT PANEL ── */
+    .customer-panel {
+      position: fixed;
+      right: -480px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 420px;
+      background: rgba(242,241,238,0.96);
+      backdrop-filter: blur(10px);
+      border-left: 1px solid var(--border);
+      padding: 2.5rem 2rem;
+      z-index: 1003;
+      transition: right 0.45s cubic-bezier(0.4,0,0.2,1);
     }
-    .id-dark-label {
-      display: flex;
-      align-items: baseline;
-      gap: 2rem;
-      padding-bottom: 2rem;
-    }
-    .id-dark-label .eyebrow { color: rgba(242,241,238,0.38); }
-    .id-dark-label h2 {
-      font-family: 'Bodoni Moda', serif;
-      font-size: clamp(1.4rem, 2.5vw, 2.2rem);
-      font-weight: 300;
-      font-style: italic;
-      margin: 0;
-      color: rgba(242,241,238,0.75);
-    }
-    .id-carousel { position: relative; max-width: 55%; margin: 0 auto; }
-    .id-carousel-track { overflow: hidden; }
-    .id-carousel-slides {
-      display: flex;
-      transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
-    }
-    .id-carousel-slide { flex: 0 0 100%; width: 100%; }
-    .id-carousel-slide img { width: 100%; display: block; }
-    .id-carousel-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 1.2rem;
-    }
-    .id-carousel-label {
+    .customer-panel.open { right: 20px; }
+    .customer-panel-close {
+      background: none;
+      border: none;
       font-family: 'Outfit', sans-serif;
-      font-size: 0.62rem;
+      font-size: 0.58rem;
       font-weight: 200;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: rgba(242,241,238,0.38);
-    }
-    .id-carousel-controls { display: flex; align-items: center; gap: 1.2rem; }
-    .id-carousel-btn {
-      background: none;
-      border: 1px solid rgba(242,241,238,0.2);
-      color: rgba(242,241,238,0.6);
-      width: 34px; height: 34px;
-      border-radius: 50%;
+      color: var(--text-mid);
       cursor: pointer;
-      font-size: 0.85rem;
-      display: flex; align-items: center; justify-content: center;
-      transition: border-color 0.2s, color 0.2s;
+      padding: 0;
+      margin-bottom: 1.8rem;
+      display: block;
+      transition: color 0.2s;
     }
-    .id-carousel-btn:hover { border-color: rgba(242,241,238,0.6); color: rgba(242,241,238,0.9); }
-    .id-carousel-counter {
+    .customer-panel-close:hover { color: var(--text-dark); }
+    .customer-panel p {
       font-family: 'Outfit', sans-serif;
-      font-size: 0.6rem;
+      font-size: 0.78rem;
       font-weight: 200;
-      letter-spacing: 0.14em;
-      color: rgba(242,241,238,0.3);
+      line-height: 1.9;
+      color: var(--text);
+      margin: 0 0 1.2em;
     }
+    .customer-panel p:last-child { margin: 0; }
 
     /* ── NEXT ── */
     .id-next {
@@ -152,40 +170,37 @@
     }
     .id-next-link {
       font-family: 'Outfit', sans-serif;
-      font-size: 0.7rem;
-      font-weight: 200;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--text-mid);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
+      font-size: 0.7rem; font-weight: 200;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-mid); text-decoration: none;
+      display: flex; align-items: center; gap: 0.8rem;
       transition: color 0.2s;
     }
     .id-next-link:hover { color: var(--text-dark); }
     .id-next-title {
       font-family: 'Bodoni Moda', serif;
-      font-size: 1.2rem;
-      font-weight: 300;
-      font-style: italic;
-      letter-spacing: 0;
-      text-transform: none;
-      color: var(--text-dark);
-      display: block;
-      margin-top: 0.3rem;
+      font-size: 1.2rem; font-weight: 300; font-style: italic;
+      letter-spacing: 0; text-transform: none;
+      color: var(--text-dark); display: block; margin-top: 0.3rem;
     }
+
+    /* ── INLINE LIGHTBOX ── */
+    .id-lb-backdrop { position:fixed; inset:0; z-index:1000; background:transparent; opacity:0; pointer-events:none; transition:opacity 0.25s; }
+    .id-lb-backdrop.open { opacity:1; pointer-events:all; }
+    .id-lb-btn { position:fixed; z-index:1002; opacity:0; pointer-events:none; transition:opacity 0.25s; background:none; border:none; cursor:pointer; }
+    .id-lb-btn.open { opacity:1; pointer-events:all; }
+    .id-lb-prev, .id-lb-next { top:50%; transform:translateY(-50%); width:44px; height:44px; border-radius:50%; border:1px solid rgba(20,19,18,0.18) !important; background:rgba(242,241,238,0.75) !important; backdrop-filter:blur(6px); color:rgba(20,19,18,0.5); font-size:1rem; display:flex; align-items:center; justify-content:center; }
+    .id-lb-prev { left:1.5rem; }
+    .id-lb-next { right:1.5rem; }
+    .id-lb-close { top:2rem; right:2.5rem; font-family:'Outfit'; font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(20,19,18,0.4); padding:0; }
+    .id-lb-counter { position:fixed; bottom:1.8rem; left:50%; transform:translateX(-50%); z-index:1002; font-family:'Outfit'; font-size:0.58rem; font-weight:200; letter-spacing:0.15em; color:rgba(20,19,18,0.3); opacity:0; pointer-events:none; transition:opacity 0.25s; }
+    .id-lb-counter.open { opacity:1; }
 
     @media (max-width: 900px) {
       .id-header { padding: 3rem 1.5rem 2rem; flex-direction: column; gap: 1rem; }
-      .id-canvas { padding: 0 1.5rem 5rem; }
-      .id-row { flex-wrap: wrap; gap: 8px !important; margin-top: 1.5rem !important; }
-      .id-item { width: 48% !important; margin-left: 0 !important; }
-      .id-customer-block { flex-direction: column; gap: 2rem; margin-top: 4rem; }
-      .id-customer-img { flex: unset; width: 80%; }
-      .id-dark { padding: 2.5rem 1.5rem; }
-      .id-carousel { max-width: 100%; }
+      .id-canvas { padding: 0 1.5rem; }
       .id-next { padding: 2rem 1.5rem 3rem; }
+      .customer-panel { width: 260px; }
     }
   </style>
 </head>
@@ -198,6 +213,7 @@
     <nav class="sidebar-nav">
       <ul>
         <li><a href="speak-nearby.html" class="active">Senior Thesis</a></li>
+        <li><a href="knitwear.html">Knitwear</a></li>
         <li><a href="archive.html">Archive</a></li>
         <li><a href="illustrations.html">Illustrations</a></li>
         <li><a href="other-works.html">Other Works</a></li>
@@ -213,139 +229,51 @@
     <span></span><span></span><span></span>
   </button>
 
+  <!-- Lightbox controls -->
+  <div class="id-lb-backdrop" id="idLbBackdrop"></div>
+  <button class="id-lb-btn id-lb-prev" id="idLbPrev">&#8592;</button>
+  <button class="id-lb-btn id-lb-next" id="idLbNext">&#8594;</button>
+  <button class="id-lb-btn id-lb-close" id="idLbClose">close</button>
+  <span class="id-lb-counter" id="idLbCounter"></span>
+
+  <!-- Customer text panel -->
+  <div class="customer-panel" id="plaidPanel">
+    <button class="customer-panel-close" id="plaidPanelClose">close</button>
+    <p>For the Speak Nearby collection, I developed a custom plaid unit in Photoshop — building a repeat tile from scratch by layering colored stripes, adjusting opacity and scale to mimic woven structure. The tile was then set into a seamless repeat block, ready for digital printing or screen application directly onto fabric.</p>
+  </div>
+
+  <div class="customer-panel" id="customerPanel">
+    <button class="customer-panel-close" id="customerPanelClose">close</button>
+    <p>Trinh T. Minh-ha is a Vietnamese-American filmmaker and writer whose ideology critiques binary thinking that obscures life's complexities, emphasizing that cultures are not monolithic but composed of diverse and often beautifully conflicting elements. She coined the idea of <em>"speaking nearby"</em> as opposed to speaking for others, an approach that resists imposing meaning and instead makes space for interpretation.</p>
+    <p>The Speak Nearby customer is a living collage of 18–30 year olds living in cities where cultures converge and meaning is constantly redefined.</p>
+  </div>
+
   <div class="content">
 
     <div class="id-header fade-up">
       <div class="id-header-left">
         <span class="eyebrow">speak nearby · section 01</span>
-        <h1>Ideation.</h1>
+        <h1>Ideation / Process.</h1>
       </div>
       <a href="speak-nearby.html" class="id-back">← Senior Thesis</a>
     </div>
 
-    <div class="id-canvas fade-up">
-
-      <!-- Journal pages -->
-      <div class="id-row" style="margin-top:1rem;">
-        <div class="id-item" style="width:44%;margin-left:0;">
-          <img src="speak-nearby/ideation/IMG_7259.jpeg" alt="" data-lb-group="journal" />
-        </div>
-      </div>
-      <div class="id-row" style="margin-top:6rem;">
-        <div class="id-item" style="width:32%;margin-left:38%;">
-          <img src="speak-nearby/ideation/IMG_7260.jpeg" alt="" data-lb-group="journal" />
-        </div>
-      </div>
-      <div class="id-row" style="margin-top:6rem;">
-        <div class="id-item" style="width:28%;margin-left:6%;">
-          <img src="speak-nearby/ideation/IMG_7261.jpeg" alt="" data-lb-group="journal" />
-        </div>
-        <div class="id-item" style="width:26%;margin-left:8%;">
-          <img src="speak-nearby/ideation/IMG_7266.jpeg" alt="" data-lb-group="journal" />
-        </div>
-      </div>
-
-      <!-- Silhouette development wall -->
-      <div class="id-row" style="margin-top:10rem;">
-        <div class="id-item" style="width:66%;margin-left:22%;">
-          <img src="speak-nearby/ideation/silhouette%20explorations.jpeg" alt="" data-lb-group="explorations" />
-        </div>
-      </div>
-
-      <!-- Digital explorations -->
-      <div class="id-row" style="margin-top:7rem;">
-        <div class="id-item" style="width:22%;margin-left:0;">
-          <img src="speak-nearby/ideation/silhouette%20explorations.PNG" alt="" data-lb-group="explorations" />
-        </div>
-        <div class="id-item" style="width:20%;margin-left:6%;">
-          <img src="speak-nearby/ideation/silhouette%20explorations%202.PNG" alt="" data-lb-group="explorations" />
-        </div>
-      </div>
-      <div class="id-row" style="margin-top:4rem;">
-        <div class="id-item" style="width:22%;margin-left:14%;">
-          <img src="speak-nearby/ideation/silhouette%20collage.PNG" alt="" data-lb-group="explorations" />
-        </div>
-        <div class="id-item" style="width:24%;margin-left:8%;">
-          <img src="speak-nearby/ideation/sketches.jpeg" alt="" data-lb-group="explorations" />
-        </div>
-      </div>
-
-      <!-- Color story -->
-      <div class="id-row" style="margin-top:10rem;">
-        <div class="id-item" style="width:56%;margin-left:0;">
-          <img src="speak-nearby/ideation/color.jpeg" alt="" data-lb-group="color" />
-        </div>
-      </div>
-      <div class="id-row" style="margin-top:4rem;">
-        <div class="id-item" style="width:26%;margin-left:52%;">
-          <img src="speak-nearby/ideation/plaid%20development.JPG" alt="" data-lb-group="color" />
-        </div>
-      </div>
-
-      <!-- Fabric explorations -->
-      <div class="id-row" style="margin-top:9rem;">
-        <div class="id-item" style="width:70%;margin-left:0;">
-          <img src="speak-nearby/ideation/explorations.jpeg" alt="" data-lb-group="materials" />
-        </div>
-      </div>
-      <div class="id-row" style="margin-top:4rem;">
-        <div class="id-item" style="width:20%;margin-left:44%;">
-          <img src="speak-nearby/ideation/fabric%20manipulation%20test.jpeg" alt="" data-lb-group="materials" />
-        </div>
-        <div class="id-item" style="width:20%;margin-left:5%;">
-          <img src="speak-nearby/ideation/fabric%20manipulation%20test%202.jpeg" alt="" data-lb-group="materials" />
-        </div>
-      </div>
-
-      <!-- Customer -->
-      <div class="id-customer-block">
-        <div class="id-customer-img">
-          <img src="speak-nearby/ideation/customer.jpeg" alt="" data-lb-group="customer" />
-        </div>
-        <div class="id-customer-text">
-          <p>Trinh T. Minh-ha is a Vietnamese-American filmmaker and writer whose ideology critiques binary thinking that obscures life's complexities, emphasizing that cultures are not monolithic but composed of diverse and often beautifully conflicting elements. She coined the idea of <em>"speaking nearby"</em> as opposed to speaking for others, an approach that resists imposing meaning and instead makes space for interpretation.</p>
-          <p>The Speak Nearby customer is a living collage of 18–30 year olds living in cities where cultures converge and meaning is constantly redefined.</p>
-        </div>
-      </div>
-
+    <!-- edit bar — visible only with ?edit in URL -->
+    <div class="id-edit-bar" id="idEditBar" style="display:none">
+      <button id="idEditBtn" onclick="startEdit()">Edit Layout</button>
+      <span class="id-edit-hint" id="idEditHint" style="display:none">Drag to move &nbsp;·&nbsp; drag corner handle to resize</span>
+      <button id="idDoneBtn" style="display:none" onclick="finishEdit()">Done</button>
+      <button id="idResetBtn" style="display:none" onclick="resetLayout()">Reset</button>
+      <button id="idExportBtn" onclick="exportLayout()" style="display:none">Copy layout code</button>
     </div>
 
-    <!-- Lineup -->
-    <div class="id-dark fade-up">
-      <div class="id-dark-label">
-        <span class="eyebrow">final ideation</span>
-        <h2>Initial Lineup</h2>
-      </div>
-      <div class="id-carousel" id="lineupCarousel">
-        <div class="id-carousel-track">
-          <div class="id-carousel-slides" id="lineupSlides">
-            <div class="id-carousel-slide">
-              <img src="speak-nearby/ideation/initial%20lineup.PNG" alt="Front — Line" data-lb-group="lineup" />
-            </div>
-            <div class="id-carousel-slide">
-              <img src="speak-nearby/ideation/initial%20lineup%20front%20color.PNG" alt="Front — Color" data-lb-group="lineup" />
-            </div>
-            <div class="id-carousel-slide">
-              <img src="speak-nearby/ideation/initial%20lineup%20back%20color.PNG" alt="Back — Color" data-lb-group="lineup" />
-            </div>
-          </div>
-        </div>
-        <div class="id-carousel-meta">
-          <span class="id-carousel-label" id="lineupLabel">Front — Line</span>
-          <div class="id-carousel-controls">
-            <button class="id-carousel-btn" id="lineupPrev" aria-label="Previous">&#8592;</button>
-            <span class="id-carousel-counter" id="lineupCounter">1 / 3</span>
-            <button class="id-carousel-btn" id="lineupNext" aria-label="Next">&#8594;</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="id-canvas" id="idCanvas"></div>
 
     <div class="id-next fade-up">
-      <a href="speak-nearby-process.html" class="id-next-link">
+      <a href="speak-nearby.html" class="id-next-link">
         <span>
-          <span class="eyebrow">section 02</span>
-          <span class="id-next-title">Process →</span>
+          <span class="eyebrow">speak nearby</span>
+          <span class="id-next-title">← Back to project</span>
         </span>
       </a>
     </div>
@@ -363,26 +291,461 @@
 
   <script src="script.js"></script>
   <script src="editor.js"></script>
-  <script src="lightbox.js"></script>
   <script>
-  (function () {
-    var slides  = document.getElementById('lineupSlides');
-    var prev    = document.getElementById('lineupPrev');
-    var next    = document.getElementById('lineupNext');
-    var label   = document.getElementById('lineupLabel');
-    var counter = document.getElementById('lineupCounter');
-    if (!slides) return;
-    var labels = ['Front — Line', 'Front — Color', 'Back — Color'];
-    var total  = labels.length;
-    var idx    = 0;
-    function go(n) {
-      idx = (n + total) % total;
-      slides.style.transform = 'translateX(-' + (idx * 100) + '%)';
-      label.textContent   = labels[idx];
-      counter.textContent = (idx + 1) + ' / ' + total;
+  // ── Customer panel ───────────────────────────────────────────────────────
+  var customerPanel = document.getElementById('customerPanel');
+  var plaidPanel    = document.getElementById('plaidPanel');
+  document.getElementById('customerPanelClose').addEventListener('click', function () {
+    customerPanel.classList.remove('open');
+  });
+  document.getElementById('plaidPanelClose').addEventListener('click', function () {
+    plaidPanel.classList.remove('open');
+  });
+
+  // ── Inline hero-transition lightbox ─────────────────────────────────────
+  var lbAllImgs   = [];
+  var lbCurIdx    = 0;
+  var lbClosing   = false;
+  var lbFloatImg  = null;
+  var lbSourceImg = null;
+
+  var lbBackdrop = document.getElementById('idLbBackdrop');
+  var lbPrev     = document.getElementById('idLbPrev');
+  var lbNext     = document.getElementById('idLbNext');
+  var lbClose    = document.getElementById('idLbClose');
+  var lbCounter  = document.getElementById('idLbCounter');
+
+  function buildGroups() {
+    lbAllImgs = Array.from(document.querySelectorAll('#idCanvas img'));
+  }
+
+  function computeSize(natW, natH) {
+    var vw = window.innerWidth, vh = window.innerHeight;
+    var maxW = vw * 0.86, maxH = vh * 0.88;
+    var ar = natW / natH, w, h;
+    if (natW <= maxW && natH <= maxH) { w = natW; h = natH; }
+    else if ((natW / maxW) > (natH / maxH)) { w = maxW; h = maxW / ar; }
+    else { h = maxH; w = maxH * ar; }
+    return { w: w, h: h };
+  }
+
+  function showLbControls(on, showArrows) {
+    lbBackdrop.className = 'id-lb-backdrop' + (on ? ' open' : '');
+    var arrowOn = on && showArrows;
+    lbPrev.className = lbPrev.className.replace(' open','') + (arrowOn ? ' open' : '');
+    lbNext.className = lbNext.className.replace(' open','') + (arrowOn ? ' open' : '');
+    lbClose.className = lbClose.className.replace(' open','') + (on ? ' open' : '');
+    lbCounter.className = 'id-lb-counter' + (on ? ' open' : '');
+  }
+
+  function openLightbox(srcImg, align) {
+    if (lbClosing || lbFloatImg) return;
+    lbCurIdx = lbAllImgs.indexOf(srcImg);
+    if (lbCurIdx < 0) lbCurIdx = 0;
+
+    var rect   = srcImg.getBoundingClientRect();
+    var startW = srcImg.offsetWidth;
+    var startH = srcImg.offsetHeight;
+    var cx = rect.left + rect.width  / 2;
+    var cy = rect.top  + rect.height / 2;
+
+    var natW  = srcImg.naturalWidth  > 0 ? srcImg.naturalWidth  : startW;
+    var natH  = srcImg.naturalHeight > 0 ? srcImg.naturalHeight : startH;
+    var vw = window.innerWidth, vh = window.innerHeight;
+    var destL, destT, size;
+    if (align === 'left') {
+      var maxW = Math.min(vw * 0.52, vw - 340);
+      var maxH = vh * 0.88;
+      var ar = natW / natH;
+      var w = natW, h = natH;
+      if (w > maxW) { w = maxW; h = w / ar; }
+      if (h > maxH) { h = maxH; w = h * ar; }
+      size = { w: w, h: h };
+      destL = Math.round(vw * 0.14);
+      destT = (vh - size.h) / 2;
+    } else {
+      size  = computeSize(natW, natH);
+      destL = (vw - size.w) / 2;
+      destT = (vh - size.h) / 2;
     }
-    prev.addEventListener('click', function () { go(idx - 1); });
-    next.addEventListener('click', function () { go(idx + 1); });
+
+    lbSourceImg = srcImg;
+    srcImg.style.transition = 'none';
+    srcImg.style.opacity    = '0';
+
+    lbFloatImg = document.createElement('img');
+    lbFloatImg.src = srcImg.src;
+    lbFloatImg.style.cssText =
+      'position:fixed;z-index:1001;margin:0;padding:0;border:none;display:block;object-fit:contain;' +
+      'left:' + (cx - startW/2) + 'px;top:' + (cy - startH/2) + 'px;' +
+      'width:' + startW + 'px;height:' + startH + 'px;transition:none;';
+    document.body.appendChild(lbFloatImg);
+
+    lbCounter.textContent = (lbCurIdx + 1) + ' / ' + lbAllImgs.length;
+    showLbControls(true, lbAllImgs.length > 1);
+
+    lbFloatImg.offsetHeight;
+    var ease  = '0.5s cubic-bezier(0.4,0,0.2,1)';
+    lbFloatImg.style.transition = 'left ' + ease + ',top ' + ease + ',width ' + ease + ',height ' + ease;
+    lbFloatImg.style.left   = destL  + 'px';
+    lbFloatImg.style.top    = destT  + 'px';
+    lbFloatImg.style.width  = size.w + 'px';
+    lbFloatImg.style.height = size.h + 'px';
+  }
+
+  function closeLightbox() {
+    if (lbClosing || !lbFloatImg) return;
+    lbClosing = true;
+    showLbControls(false, false);
+    customerPanel.classList.remove('open');
+    plaidPanel.classList.remove('open');
+
+    var srcImg   = lbSourceImg;
+    var floatImg = lbFloatImg;
+
+    if (srcImg) {
+      var rect  = srcImg.getBoundingClientRect();
+      var ease  = '0.44s cubic-bezier(0.4,0,0.2,1)';
+      floatImg.style.transition = 'left ' + ease + ',top ' + ease + ',width ' + ease + ',height ' + ease;
+      floatImg.style.left   = rect.left   + 'px';
+      floatImg.style.top    = rect.top    + 'px';
+      floatImg.style.width  = rect.width  + 'px';
+      floatImg.style.height = rect.height + 'px';
+
+      var fired = {}, swapped = false;
+      function doSwap() {
+        if (swapped) return; swapped = true;
+        floatImg.removeEventListener('transitionend', onProp);
+        floatImg.style.transition = 'none'; floatImg.style.opacity = '0';
+        srcImg.style.transition   = 'none'; srcImg.style.opacity   = '1';
+        requestAnimationFrame(function () {
+          if (floatImg.parentNode) floatImg.parentNode.removeChild(floatImg);
+          if (lbFloatImg === floatImg) lbFloatImg = null;
+          lbSourceImg = null; lbClosing = false;
+          requestAnimationFrame(function () { srcImg.style.opacity = ''; srcImg.style.transition = ''; });
+        });
+      }
+      function onProp(e) { fired[e.propertyName] = true; if (fired.left && fired.top && fired.width && fired.height) doSwap(); }
+      floatImg.addEventListener('transitionend', onProp);
+      setTimeout(doSwap, 500);
+    } else {
+      if (floatImg.parentNode) floatImg.parentNode.removeChild(floatImg);
+      lbFloatImg = null; lbSourceImg = null; lbClosing = false;
+    }
+  }
+
+  function lbNavigate(dir) {
+    if (!lbFloatImg || lbClosing) return;
+    if (lbSourceImg) { lbSourceImg.style.opacity = ''; lbSourceImg.style.transition = ''; }
+    lbCurIdx = (lbCurIdx + dir + lbAllImgs.length) % lbAllImgs.length;
+    var newImg = lbAllImgs[lbCurIdx];
+    lbSourceImg = newImg;
+    newImg.style.transition = 'none'; newImg.style.opacity = '0';
+
+    var lbPanel = newImg.getAttribute('data-lb-panel') || '';
+    if (lbPanel === 'customer') customerPanel.classList.add('open'); else customerPanel.classList.remove('open');
+    if (lbPanel === 'plaid')   plaidPanel.classList.add('open');    else plaidPanel.classList.remove('open');
+
+    var floatImg = lbFloatImg;
+    floatImg.style.transition = 'opacity 0.15s ease';
+    floatImg.style.opacity    = '0';
+    var nextSrc = newImg.src;
+    setTimeout(function () {
+      if (floatImg !== lbFloatImg) return;
+      floatImg.src = nextSrc; floatImg.style.opacity = '1';
+      var natW = newImg.naturalWidth > 0 ? newImg.naturalWidth : newImg.offsetWidth;
+      var natH = newImg.naturalHeight > 0 ? newImg.naturalHeight : newImg.offsetHeight;
+      var vw = window.innerWidth, vh = window.innerHeight;
+      var destL, destT, w, h;
+      if (lbPanel === 'customer' || lbPanel === 'plaid') {
+        var maxW = Math.min(vw * 0.52, vw - 340);
+        var maxH = vh * 0.88;
+        var ar = natW / natH;
+        w = natW; h = natH;
+        if (w > maxW) { w = maxW; h = w / ar; }
+        if (h > maxH) { h = maxH; w = h * ar; }
+        destL = Math.round(vw * 0.14);
+        destT = (vh - h) / 2;
+      } else {
+        var size = computeSize(natW, natH);
+        w = size.w; h = size.h;
+        destL = (vw - w) / 2;
+        destT = (vh - h) / 2;
+      }
+      floatImg.style.transition = 'none';
+      floatImg.style.left   = destL + 'px';
+      floatImg.style.top    = destT + 'px';
+      floatImg.style.width  = w + 'px';
+      floatImg.style.height = h + 'px';
+    }, 150);
+    lbCounter.textContent = (lbCurIdx + 1) + ' / ' + lbAllImgs.length;
+  }
+
+  window.addEventListener('load', function () {
+    var canvas = document.getElementById('idCanvas');
+    var els = document.querySelectorAll('#idCanvas .id-photo-abs');
+    var maxBottom = 0;
+    els.forEach(function (el) { var b = el.offsetTop + el.offsetHeight; if (b > maxBottom) maxBottom = b; });
+    canvas.style.minHeight = (maxBottom + 60) + 'px';
+  });
+
+  lbClose.addEventListener('click', closeLightbox);
+  lbBackdrop.addEventListener('click', closeLightbox);
+  lbPrev.addEventListener('click', function (e) { e.stopPropagation(); lbNavigate(-1); });
+  lbNext.addEventListener('click', function (e) { e.stopPropagation(); lbNavigate(1);  });
+  document.addEventListener('keydown', function (e) {
+    if (!lbFloatImg) return;
+    if (e.key === 'Escape')     closeLightbox();
+    if (e.key === 'ArrowLeft')  lbNavigate(-1);
+    if (e.key === 'ArrowRight') lbNavigate(1);
+  });
+
+  // ── Ideation image canvas ────────────────────────────────────────────────
+  (function () {
+    var CUSTOMER_IDX = 14;
+    var PLAID_IDX    = 10;
+    var LINEUP_LABEL = ['Front — Line', 'Front — Color', 'Back — Color'];
+
+    var IMAGES = [
+      { src: 'speak-nearby/ideation/IMG_7259.jpeg',                         group: 'journal'      },
+      { src: 'speak-nearby/ideation/IMG_7260.jpeg',                         group: 'journal'      },
+      { src: 'speak-nearby/ideation/IMG_7261.jpeg',                         group: 'journal'      },
+      { src: 'speak-nearby/ideation/IMG_7266.jpeg',                         group: 'journal'      },
+      { src: 'speak-nearby/ideation/silhouette%20explorations.jpeg',        group: 'explorations' },
+      { src: 'speak-nearby/ideation/silhouette%20explorations.PNG',         group: 'explorations' },
+      { src: 'speak-nearby/ideation/silhouette%20explorations%202.PNG',     group: 'explorations' },
+      { src: 'speak-nearby/ideation/silhouette%20collage.PNG',              group: 'explorations' },
+      { src: 'speak-nearby/ideation/sketches.jpeg',                         group: 'explorations' },
+      { src: 'speak-nearby/ideation/color.jpeg',                            group: 'color'        },
+      { src: 'speak-nearby/ideation/plaid%20development.JPG',               group: 'color'        },
+      { src: 'speak-nearby/ideation/explorations.jpeg',                     group: 'materials'    },
+      { src: 'speak-nearby/ideation/fabric%20manipulation%20test.jpeg',     group: 'materials'    },
+      { src: 'speak-nearby/ideation/fabric%20manipulation%20test%202.jpeg', group: 'materials'    },
+      { src: 'speak-nearby/ideation/customer.jpeg',                         group: 'customer'     },
+      { src: 'speak-nearby/ideation/initial%20lineup.PNG',                  group: 'lineup'       },
+      { src: 'speak-nearby/ideation/initial%20lineup%20front%20color.PNG',  group: 'lineup'       },
+      { src: 'speak-nearby/ideation/initial%20lineup%20back%20color.PNG',   group: 'lineup'       },
+    ];
+
+    var HARDCODED_LAYOUT = [
+      { imgIdx:  0, x:   95, y:   88, w: 488 },
+      { imgIdx:  1, x:  899, y:  403, w: 394 },
+      { imgIdx:  2, x:   39, y:  839, w: 180 },
+      { imgIdx:  3, x:  717, y: 1189, w: 234 },
+      { imgIdx:  4, x:   55, y: 1395, w: 805 },
+      { imgIdx:  5, x:  789, y: 2168, w: 315 },
+      { imgIdx:  6, x: 1146, y: 2100, w: 132 },
+      { imgIdx:  7, x:    0, y: 2377, w: 521 },
+      { imgIdx:  8, x: 1064, y: 2908, w: 216 },
+      { imgIdx:  9, x:  258, y: 3121, w: 663 },
+      { imgIdx: 10, x:  101, y: 3708, w: 234 },
+      { imgIdx: 11, x:  694, y: 3871, w: 503 },
+      { imgIdx: 12, x:  426, y: 4485, w: 180 },
+      { imgIdx: 13, x:  227, y: 4484, w: 180 },
+      { imgIdx: 14, x:  607, y: 4934, w: 627 },
+      { imgIdx: 15, x:   60, y: 5617, w: 404 },
+      { imgIdx: 16, x:  668, y: 6148, w: 246 },
+      { imgIdx: 17, x:  938, y: 6089, w: 246 },
+    ];
+
+    var SAVE_KEY   = 'id-photos-layout-v3';
+    var canvas     = document.getElementById('idCanvas');
+    var photoElMap = {};
+    var isEditing  = false;
+
+    var editBar  = document.getElementById('idEditBar');
+    var editBtn  = document.getElementById('idEditBtn');
+    var doneBtn  = document.getElementById('idDoneBtn');
+    var resetBtn = document.getElementById('idResetBtn');
+    var exportBtn = document.getElementById('idExportBtn');
+    var editHint = document.getElementById('idEditHint');
+
+    if (location.search.includes('edit')) {
+      editBar.style.display   = 'flex';
+      exportBtn.style.display = '';
+    }
+
+    var saved = loadSaved();
+    renderAbsolute(saved || HARDCODED_LAYOUT, false);
+
+    // ── RENDER ──────────────────────────────────────────────────────────────
+    function renderAbsolute(layout, editing) {
+      photoElMap = {};
+      canvas.innerHTML = '';
+      canvas.className = 'id-canvas' + (editing ? ' editing' : '');
+
+      var maxBottom = 0;
+      layout.forEach(function (item) { maxBottom = Math.max(maxBottom, item.y + 600); });
+      canvas.style.minHeight = (maxBottom + 300) + 'px';
+
+      layout.forEach(function (item, i) {
+        var img_data = IMAGES[item.imgIdx];
+        if (!img_data) return;
+
+        var el = document.createElement('div');
+        el.className = 'id-photo-abs';
+        el.style.left  = item.x + 'px';
+        el.style.top   = item.y + 'px';
+        el.style.width = item.w + 'px';
+
+        var img = document.createElement('img');
+        img.src     = img_data.src;
+        img.alt = '';
+        img.setAttribute('data-lb-group', img_data.group);
+        if (item.imgIdx === CUSTOMER_IDX) img.setAttribute('data-lb-panel', 'customer');
+        if (item.imgIdx === PLAID_IDX)    img.setAttribute('data-lb-panel', 'plaid');
+        img.addEventListener('load', function () {
+          var bottom = item.y + el.offsetHeight + 60;
+          if (bottom > parseFloat(canvas.style.minHeight || 0)) {
+            canvas.style.minHeight = bottom + 'px';
+          }
+          if (badge) badge.textContent = Math.round(item.w) + 'px wide';
+        });
+        el.appendChild(img);
+
+        var rh = document.createElement('div');
+        rh.className = 'edit-resize';
+        el.appendChild(rh);
+
+        var badge = document.createElement('div');
+        badge.className = 'edit-badge';
+        badge.textContent = Math.round(item.w) + 'px wide';
+        el.appendChild(badge);
+
+        photoElMap[item.imgIdx] = el;
+
+        if (editing) {
+          makeDraggable(el, item, badge);
+          makeResizable(rh, el, item, badge);
+        } else {
+          (function (capturedEl, capturedImg, isCustomer, isPlaid) {
+            capturedEl.addEventListener('click', function () {
+              openLightbox(capturedImg, (isCustomer || isPlaid) ? 'left' : null);
+              if (isCustomer) customerPanel.classList.add('open');
+              if (isPlaid)    plaidPanel.classList.add('open');
+            });
+          })(el, img, item.imgIdx === CUSTOMER_IDX, item.imgIdx === PLAID_IDX);
+        }
+
+        canvas.appendChild(el);
+      });
+
+      // rebuild groups for navigation
+      buildGroups();
+    }
+
+    // ── DRAG ────────────────────────────────────────────────────────────────
+    function makeDraggable(el, item, badge) {
+      el.addEventListener('mousedown', function (e) {
+        if (e.target.classList.contains('edit-resize')) return;
+        e.preventDefault();
+        var startX = e.clientX, startY = e.clientY;
+        var startL = item.x,    startT = item.y;
+        el.style.zIndex = '50';
+        function onMove(e) {
+          item.x = Math.max(0, startL + e.clientX - startX);
+          item.y = Math.max(0, startT + e.clientY - startY);
+          el.style.left = item.x + 'px';
+          el.style.top  = item.y + 'px';
+          var bottom = item.y + el.offsetHeight + 200;
+          if (bottom > parseFloat(canvas.style.minHeight || 0)) canvas.style.minHeight = bottom + 'px';
+        }
+        function onUp() {
+          el.style.zIndex = '';
+          autosave();
+          document.removeEventListener('mousemove', onMove);
+          document.removeEventListener('mouseup',   onUp);
+        }
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup',   onUp);
+      });
+    }
+
+    // ── RESIZE ──────────────────────────────────────────────────────────────
+    function makeResizable(rh, el, item, badge) {
+      rh.addEventListener('mousedown', function (e) {
+        e.preventDefault(); e.stopPropagation();
+        var startX = e.clientX, startW = item.w;
+        function onMove(e) {
+          item.w = Math.max(60, startW + e.clientX - startX);
+          el.style.width = item.w + 'px';
+          if (badge) badge.textContent = Math.round(item.w) + 'px wide';
+        }
+        function onUp() {
+          autosave();
+          document.removeEventListener('mousemove', onMove);
+          document.removeEventListener('mouseup',   onUp);
+        }
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup',   onUp);
+      });
+    }
+
+    // ── EDIT CONTROLS ───────────────────────────────────────────────────────
+    window.startEdit = function () {
+      renderAbsolute(loadSaved() || HARDCODED_LAYOUT, true);
+      isEditing = true;
+      editBtn.style.display  = 'none';
+      doneBtn.style.display  = '';
+      resetBtn.style.display = '';
+      exportBtn.style.display = '';
+      editHint.style.display = '';
+      doneBtn.classList.add('active-edit');
+    };
+
+    window.finishEdit = function () {
+      autosave();
+      renderAbsolute(loadSaved() || HARDCODED_LAYOUT, false);
+      isEditing = false;
+      editBtn.style.display  = '';
+      doneBtn.style.display  = 'none';
+      resetBtn.style.display = 'none';
+      editHint.style.display = 'none';
+      doneBtn.classList.remove('active-edit');
+    };
+
+    window.resetLayout = function () {
+      localStorage.removeItem(SAVE_KEY);
+      renderAbsolute(HARDCODED_LAYOUT, false);
+      isEditing = false;
+      editBtn.style.display  = '';
+      doneBtn.style.display  = 'none';
+      resetBtn.style.display = 'none';
+      editHint.style.display = 'none';
+    };
+
+    window.exportLayout = function () {
+      var saved = loadSaved();
+      if (!saved) { alert('No saved layout yet — make some changes first.'); return; }
+      var code = 'var HARDCODED_LAYOUT = ' + JSON.stringify(saved, null, 2) + ';';
+      navigator.clipboard.writeText(code).then(function () {
+        var btn = document.getElementById('idExportBtn');
+        btn.textContent = 'Copied!';
+        setTimeout(function () { btn.textContent = 'Copy layout code'; }, 2000);
+      });
+    };
+
+    function autosave() {
+      var els = canvas.querySelectorAll('.id-photo-abs');
+      var layout = [];
+      els.forEach(function (el, i) {
+        layout.push({
+          imgIdx: i,
+          x: parseFloat(el.style.left),
+          y: parseFloat(el.style.top),
+          w: parseFloat(el.style.width),
+        });
+      });
+      localStorage.setItem(SAVE_KEY, JSON.stringify(layout));
+    }
+
+    function loadSaved() {
+      try {
+        var raw = localStorage.getItem(SAVE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return null;
+    }
   })();
   </script>
 </body>

@@ -177,9 +177,8 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   width: 52px;
   height: auto;
   object-fit: contain;
-  mix-blend-mode: multiply;
-  opacity: 0.68;
-  filter: drop-shadow(0 2px 4px rgba(100, 90, 85, 0.18));
+  opacity: 0.88;
+  filter: drop-shadow(0 1px 6px rgba(80, 60, 55, 0.22));
 }
 .sidebar-name {
   display: none;  /* name shown in hero, not duplicated in sidebar */
@@ -844,13 +843,27 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 /* concept section — two column */
 .sn-concept {
-  padding: 5rem 3rem;
+  padding: 5rem 3rem 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 5rem;
+  gap: 3.5rem;
   border-top: 1px solid var(--border);
   align-items: start;
 }
+.sn-concept-left {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+.sn-concept-lineup {
+  margin-left: -2rem;
+}
+.sn-concept-lineup img {
+  width: 115%;
+  height: auto;
+  display: block;
+}
+.sn-concept-quote { padding-left: 4rem; }
 .sn-concept-quote blockquote {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 0.88rem;
@@ -1123,44 +1136,6 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .page-body { padding: 3rem 1.5rem 5rem; }
 }
 
-/* ── CUSTOM CURSOR (pointer devices only) ── */
-@media (pointer: fine) {
-  *, *::before, *::after { cursor: none !important; }
-
-  .cursor-dot {
-    position: fixed;
-    width: 7px; height: 7px;
-    background: transparent;
-    border: 1px solid var(--text-dark);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    will-change: left, top;
-    transition: width 0.25s ease, height 0.25s ease, opacity 0.25s;
-  }
-  .cursor-label {
-    position: fixed;
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.6rem;
-    font-weight: 200;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--text-dark);
-    pointer-events: none;
-    z-index: 9999;
-    white-space: nowrap;
-    opacity: 0;
-    transform: translate(22px, -50%);
-    transition: opacity 0.22s ease;
-    will-change: left, top;
-  }
-  .cursor-label.active { opacity: 1; }
-
-  /* States */
-  body.cursor-hover .cursor-dot  { width: 9px; height: 9px; }
-  body.cursor-active .cursor-dot { width: 5px; height: 5px; opacity: 0.5; }
-}
 
 /* ══════════════════════════════════════════════
    GLOBAL LIGHTBOX (lightbox.js)
@@ -1235,5 +1210,275 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   letter-spacing: 0.15em; color: rgba(20,19,18,0.35);
   opacity: 0; pointer-events: none;
   transition: opacity 0.25s ease;
+}
+
+/* ══════════════════════════════════════════════════════════
+   KNITWEAR PAGE
+══════════════════════════════════════════════════════════ */
+
+/* hero photo wash */
+.kw-hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+.kw-hero-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 25%;
+  opacity: 0.22;
+  filter: saturate(0.55);
+}
+
+/* cover spread */
+.kw-cover-spread {
+  margin-bottom: 4rem;
+}
+.kw-cover-spread img {
+  width: 100%;
+  display: block;
+}
+
+/* concept 2-col */
+.kw-concept {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4.5rem;
+  align-items: start;
+}
+.kw-concept-text .eyebrow { margin-bottom: 0.8rem; }
+.kw-concept-text p {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 200;
+  font-size: 0.82rem;
+  line-height: 1.92;
+  color: var(--text-mid);
+  margin-top: 0;
+}
+.kw-concept-text p + p { margin-top: 1rem; }
+.kw-concept-credit {
+  display: block;
+  margin-top: 1.8rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.74rem;
+  color: var(--text-light);
+  letter-spacing: 0.03em;
+}
+.kw-concept-img { overflow: hidden; }
+.kw-concept-img img {
+  width: 100%;
+  display: block;
+  opacity: 0.88;
+}
+
+/* swatches grid */
+.kw-swatches {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.8rem 2.2rem;
+}
+.kw-swatch-img-wrap {
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  padding: 1.3rem;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+}
+.kw-swatch-img-wrap img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+.kw-swatch-label { padding-top: 0.85rem; }
+.kw-swatch-num {
+  display: block;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 200;
+  font-size: 0.52rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 0.28rem;
+}
+.kw-swatch-name {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  color: var(--text-dark);
+  margin-bottom: 0.22rem;
+}
+.kw-swatch-tech {
+  display: block;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 200;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  color: var(--text-light);
+}
+
+/* garments editorial */
+.kw-garment-full { overflow: hidden; margin-bottom: 0.7rem; }
+.kw-garment-full img { width: 100%; display: block; }
+.kw-garment-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+  margin-bottom: 0.7rem;
+}
+.kw-garment-pair img { width: 100%; display: block; }
+
+/* night editorial closing */
+.kw-closing { position: relative; margin-top: 0; }
+.kw-closing img { width: 100%; display: block; }
+.kw-closing-caption {
+  position: absolute;
+  bottom: 2.2rem;
+  right: 3rem;
+  font-family: 'Bodoni Moda', 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: rgba(242,241,238,0.82);
+  letter-spacing: 0.01em;
+  pointer-events: none;
+}
+
+/* process grid */
+.kw-process-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.7rem;
+}
+.kw-process-grid img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* swatch stack (knitwear.html preview) */
+/* physical card stack — swatches overlap like a deck of cards */
+.kw-swatch-stack {
+  position: relative;
+  width: 420px;
+  margin: 2rem 0 0;
+}
+.kw-swatch-stack a {
+  position: absolute;
+  display: block;
+  transition: transform 0.15s ease;
+  cursor: pointer;
+}
+.kw-swatch-stack a img {
+  width: 100%;
+  height: auto;
+  display: block;
+  pointer-events: none;
+}
+.kw-swatch-stack a:hover {
+  filter: brightness(0.93);
+}
+
+/* Edit mode */
+.kw-swatch-stack.editing a {
+  cursor: grab;
+  outline: 1px solid rgba(80,120,255,0.35);
+  transition: none;
+}
+.kw-swatch-stack.editing a:hover { filter: none; }
+.kw-swatch-stack.editing a:active { cursor: grabbing; }
+
+.kw-stack-resize {
+  display: none;
+  position: absolute;
+  right: -5px; bottom: -5px;
+  width: 14px; height: 14px;
+  background: #5070ff;
+  border-radius: 2px;
+  cursor: se-resize;
+  z-index: 10;
+}
+.kw-swatch-stack.editing a .kw-stack-resize { display: block; }
+
+.kw-stack-badge {
+  display: none;
+  position: absolute;
+  top: 4px; left: 4px;
+  background: rgba(0,0,0,0.65);
+  color: #fff;
+  font-family: monospace;
+  font-size: 9px;
+  padding: 2px 5px;
+  pointer-events: none;
+  z-index: 10;
+  white-space: nowrap;
+}
+.kw-swatch-stack.editing a .kw-stack-badge { display: block; }
+
+/* ── Shared edit bar (knitwear stack + swatches page) ── */
+.kw-sw-edit-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.7rem 0 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.kw-sw-edit-bar button {
+  background: none;
+  border: 1px solid var(--border);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 300;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text);
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.kw-sw-edit-bar button:hover { background: var(--text-dark); color: var(--bg); }
+.kw-sw-edit-bar button.active-edit { background: var(--text-dark); color: var(--bg); border-color: var(--text-dark); }
+.kw-sw-edit-hint {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 200;
+  letter-spacing: 0.1em;
+  color: var(--text-mid);
+}
+
+.kw-swatch-cta-row {
+  margin-top: 0;
+  text-align: left;
+}
+.kw-swatch-cta {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 200;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-mid);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.kw-swatch-cta:hover { color: var(--text-dark); }
+
+/* responsive */
+@media (max-width: 960px) {
+  .kw-concept { grid-template-columns: 1fr; gap: 2.4rem; }
+  .kw-process-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .kw-garment-pair { grid-template-columns: 1fr; }
+  .kw-process-grid { grid-template-columns: 1fr; }
+  .kw-closing-caption { font-size: 0.82rem; right: 1.5rem; bottom: 1.2rem; }
 }
 

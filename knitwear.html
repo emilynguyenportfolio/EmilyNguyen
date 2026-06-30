@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Knitwear — Emily Nguyen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;1,6..96,300;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Outfit:wght@200;300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <a href="index.html" class="sidebar-brand">
+      <img src="logo.png" alt="Emily Nguyen logo" class="sidebar-logo" />
+      <span class="sidebar-name">emily nguyen.</span>
+    </a>
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="speak-nearby.html">Senior Thesis</a></li>
+        <li><a href="knitwear.html" class="active">Knitwear</a></li>
+        <li><a href="archive.html">Archive</a></li>
+        <li><a href="illustrations.html">Illustrations</a></li>
+        <li><a href="other-works.html">Other Works</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://instagram.com/sp1ritdancr" target="_blank" rel="noopener">@sp1ritdancr</a>
+    </div>
+  </aside>
+  <button class="sidebar-toggle" aria-label="menu" onclick="toggleSidebar()">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="content">
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+      <div class="kw-hero-bg">
+        <img src="knitwear/garments/garment_3.jpg" alt="" />
+      </div>
+      <div class="sheer-rect page-veil"></div>
+      <div class="page-hero-content fade-up">
+        <span class="eyebrow">specialties · spring / summer</span>
+        <h1 class="page-title">Knitwear</h1>
+        <p class="page-subtitle">~ red azalea</p>
+      </div>
+    </section>
+
+    <div class="page-body">
+
+      <!-- SWATCHES -->
+      <div class="sub-heading fade-up">
+        <span class="eyebrow">technical</span>
+        <h2>Swatches</h2>
+      </div>
+
+      <div id="kwStackEditBar" class="kw-sw-edit-bar" style="display:none">
+        <button id="kwStackEditBtn" onclick="kwStackStartEdit()">Edit layout</button>
+        <button id="kwStackDoneBtn" onclick="kwStackFinishEdit()" style="display:none" class="active-edit">Done</button>
+        <button id="kwStackResetBtn" onclick="kwStackReset()" style="display:none">Reset</button>
+        <button id="kwStackExportBtn" onclick="kwStackExport()" style="display:none">Copy code</button>
+        <span id="kwStackHint" class="kw-sw-edit-hint" style="display:none">Drag to move · drag corner to resize · scroll to rotate</span>
+      </div>
+
+      <div class="kw-swatch-stack fade-up" id="kwStack">
+        <a href="knitwear-swatches.html"><img src="knitwear/swatches/1b.png" alt="" /></a>
+        <a href="knitwear-swatches.html"><img src="knitwear/swatches/cable%20knit.png" alt="" /></a>
+        <a href="knitwear-swatches.html"><img src="knitwear/swatches/5.png" alt="" /></a>
+        <a href="knitwear-swatches.html"><img src="knitwear/swatches/3.png" alt="" /></a>
+        <a href="knitwear-swatches.html"><img src="knitwear/swatches/4.png" alt="" /></a>
+        <a href="knitwear-swatches.html"><img src="knitwear/swatches/2.png" alt="" /></a>
+        <a href="knitwear-swatches.html"><img src="knitwear/swatches/1a.png" alt="" /></a>
+      </div>
+      <div class="kw-swatch-cta-row fade-up">
+        <a href="knitwear-swatches.html" class="kw-swatch-cta">View swatches &rarr;</a>
+      </div>
+
+      <div class="sub-divider"></div>
+
+      <!-- KNIT GARMENTS / COLLECTIONS -->
+      <div class="sub-heading fade-up">
+        <span class="eyebrow">collection · red azalea</span>
+        <h2>Knit Garments</h2>
+      </div>
+
+      <div class="kw-concept fade-up">
+        <div class="kw-concept-text">
+          <p>
+            A Spring/Summer knitwear collection exploring the formation of identity through adolescence,
+            secrecy, and desire. Inspired by the novel <em>Red Azalea</em> by Anchee Min — a memoir in
+            which youth unfolds under the tension between the public performances demanded by ideology and
+            the private passions that remain hidden.
+          </p>
+          <p>
+            This duality translates into soft, body-focused knitwear that shifts between concealment and
+            exposure. Silhouettes are close and fluid, using layering and transparency to suggest what
+            cannot be openly expressed — intimacy held just beneath the surface.
+          </p>
+          <p>
+            The collection explores techniques including tubular knitting, dubied knitting, embossing,
+            felting, and heat press printing — each process translating how identity is not performed
+            outwardly but carried inwardly, revealed only through texture, touch, and subtle transformation.
+          </p>
+          <cite class="kw-concept-credit">Inspired by <em>Red Azalea</em>, Anchee Min, 1994</cite>
+        </div>
+        <div class="kw-concept-img">
+          <img src="knitwear/garments/garment_1.jpg" alt="" />
+        </div>
+      </div>
+
+      <div class="kw-garment-full fade-up">
+        <img src="knitwear/garments/garment_10.jpg" alt="Red Azalea collection editorial" />
+      </div>
+      <div class="kw-garment-pair fade-up">
+        <img src="knitwear/garments/garment_11.jpg" alt="Red Azalea detail" />
+        <img src="knitwear/garments/garment_12.jpg" alt="Red Azalea editorial" />
+      </div>
+      <div class="kw-closing fade-up">
+        <img src="knitwear/garments/garment_13.jpg" alt="Red Azalea night editorial" />
+        <span class="kw-closing-caption">praising the winter plum.</span>
+      </div>
+
+      <div class="sub-divider"></div>
+
+      <!-- PROCESS -->
+      <div class="sub-heading fade-up">
+        <span class="eyebrow">behind the work</span>
+        <h2>Process</h2>
+      </div>
+
+      <div class="kw-process-grid fade-up">
+        <img src="knitwear/garments/garment_6.jpg" alt="Knit samples" />
+        <img src="knitwear/garments/garment_8.jpg" alt="Knitting machine and garment development" />
+        <img src="knitwear/garments/garment_9.jpg" alt="Machine knitting process" />
+      </div>
+
+    </div>
+
+    <footer class="footer">
+      <span class="footer-name"><img src="emily%20nguyen%20transparent.png" alt="emily nguyen." class="logo-img logo-img--footer" /></span>
+      <div class="footer-links">
+        <a href="https://instagram.com/sp1ritdancr" target="_blank" rel="noopener">@sp1ritdancr</a>
+        <a href="index.html">home</a>
+      </div>
+      <span class="footer-copy">© 2026 Emily Nguyen</span>
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
+  <script src="editor.js"></script>
+  <script>
+  (function () {
+    var SAVE_KEY = 'kw-stack-layout-v2';
+    var HARDCODED_LAYOUT = [
+      { rot:    3, top: 131, left: 1318, w: 260 },
+      { rot: -361, top:  87, left:  -94, w: 503 },
+      { rot:   -1, top:  24, left:    0, w: 385 },
+      { rot:   18, top: 115, left:  -94, w: 281 },
+      { rot:  -12, top: 129, left:  193, w: 364 },
+      { rot:  -11, top: 261, left:  134, w: 262 },
+      { rot:   -2, top:  81, left:  182, w: 213 },
+    ];
+
+    var stack     = document.getElementById('kwStack');
+    var editBar   = document.getElementById('kwStackEditBar');
+    var editBtn   = document.getElementById('kwStackEditBtn');
+    var doneBtn   = document.getElementById('kwStackDoneBtn');
+    var resetBtn  = document.getElementById('kwStackResetBtn');
+    var exportBtn = document.getElementById('kwStackExportBtn');
+    var hint      = document.getElementById('kwStackHint');
+    var cards     = Array.from(stack.querySelectorAll('a'));
+    var currentLayout;
+
+    if (location.search.includes('edit')) {
+      editBar.style.display  = 'flex';
+      exportBtn.style.display = '';
+    }
+
+    function loadSaved() {
+      try { var r = localStorage.getItem(SAVE_KEY); if (r) return JSON.parse(r); } catch (e) {}
+      return null;
+    }
+    function autosave() {
+      localStorage.setItem(SAVE_KEY, JSON.stringify(currentLayout));
+    }
+
+    function applyLayout(layout, editing) {
+      currentLayout = layout.map(function (x) { return Object.assign({}, x); });
+      var maxBottom = 0;
+      currentLayout.forEach(function (item) { maxBottom = Math.max(maxBottom, item.top + 210); });
+      stack.style.height = maxBottom + 'px';
+      stack.classList.toggle('editing', editing);
+
+      cards.forEach(function (card, i) {
+        var item = currentLayout[i];
+        if (!item) return;
+        card.style.top       = item.top  + 'px';
+        card.style.left      = item.left + 'px';
+        card.style.width     = item.w    + 'px';
+        card.style.transform = 'rotate(' + item.rot + 'deg)';
+
+        var oldRh    = card.querySelector('.kw-stack-resize');
+        var oldBadge = card.querySelector('.kw-stack-badge');
+        if (oldRh)    oldRh.remove();
+        if (oldBadge) oldBadge.remove();
+
+        var rh = document.createElement('div');
+        rh.className = 'kw-stack-resize';
+        card.appendChild(rh);
+
+        var badge = document.createElement('div');
+        badge.className = 'kw-stack-badge';
+        badge.textContent = Math.round(item.w) + 'px';
+        card.appendChild(badge);
+
+        card.onmousedown = null;
+        if (editing) {
+          makeDraggable(card, item, badge);
+          makeResizable(rh, card, item, badge);
+        }
+      });
+    }
+
+    function makeDraggable(card, item, badge) {
+      card.onmousedown = function (e) {
+        if (e.target.classList.contains('kw-stack-resize')) return;
+        e.preventDefault();
+        var startX = e.clientX, startY = e.clientY;
+        var startL = item.left, startT = item.top;
+        card.style.zIndex = '50';
+        function onMove(e) {
+          item.left = startL + e.clientX - startX;
+          item.top  = Math.max(0, startT + e.clientY - startY);
+          card.style.left = item.left + 'px';
+          card.style.top  = item.top  + 'px';
+          var maxBottom = 0;
+          currentLayout.forEach(function (it) { maxBottom = Math.max(maxBottom, it.top + 210); });
+          stack.style.height = maxBottom + 'px';
+        }
+        function onUp() {
+          card.style.zIndex = '';
+          autosave();
+          document.removeEventListener('mousemove', onMove);
+          document.removeEventListener('mouseup',   onUp);
+        }
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup',   onUp);
+      };
+    }
+
+    function makeResizable(rh, card, item, badge) {
+      rh.onmousedown = function (e) {
+        e.preventDefault(); e.stopPropagation();
+        var startX = e.clientX, startW = item.w;
+        function onMove(e) {
+          item.w = Math.max(80, startW + e.clientX - startX);
+          card.style.width = item.w + 'px';
+          badge.textContent = Math.round(item.w) + 'px';
+        }
+        function onUp() {
+          autosave();
+          document.removeEventListener('mousemove', onMove);
+          document.removeEventListener('mouseup',   onUp);
+        }
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup',   onUp);
+      };
+    }
+
+    // Prevent navigation and handle scroll-to-rotate — both delegated on stack
+    stack.addEventListener('click', function (e) {
+      if (stack.classList.contains('editing')) e.preventDefault();
+    }, true);
+
+    stack.addEventListener('wheel', function (e) {
+      if (!stack.classList.contains('editing')) return;
+      var card = e.target.closest('#kwStack > a');
+      if (!card) return;
+      e.preventDefault();
+      var idx = cards.indexOf(card);
+      if (idx < 0) return;
+      currentLayout[idx].rot += e.deltaY > 0 ? 1 : -1;
+      card.style.transform = 'rotate(' + currentLayout[idx].rot + 'deg)';
+      autosave();
+    }, { passive: false });
+
+    window.kwStackStartEdit = function () {
+      applyLayout(loadSaved() || HARDCODED_LAYOUT, true);
+      editBtn.style.display  = 'none';
+      doneBtn.style.display  = '';
+      resetBtn.style.display = '';
+      hint.style.display     = '';
+    };
+
+    window.kwStackFinishEdit = function () {
+      autosave();
+      applyLayout(currentLayout, false);
+      editBtn.style.display  = '';
+      doneBtn.style.display  = 'none';
+      resetBtn.style.display = 'none';
+      hint.style.display     = 'none';
+    };
+
+    window.kwStackReset = function () {
+      localStorage.removeItem(SAVE_KEY);
+      applyLayout(HARDCODED_LAYOUT, false);
+      editBtn.style.display  = '';
+      doneBtn.style.display  = 'none';
+      resetBtn.style.display = 'none';
+      hint.style.display     = 'none';
+    };
+
+    window.kwStackExport = function () {
+      var code = 'var HARDCODED_LAYOUT = ' + JSON.stringify(currentLayout, null, 2) + ';';
+      navigator.clipboard.writeText(code).then(function () {
+        exportBtn.textContent = 'Copied!';
+        setTimeout(function () { exportBtn.textContent = 'Copy code'; }, 2000);
+      });
+    };
+
+    applyLayout(loadSaved() || HARDCODED_LAYOUT, false);
+  })();
+  </script>
+</body>
+</html>
