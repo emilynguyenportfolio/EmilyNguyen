@@ -497,9 +497,9 @@
   (function () {
     if (window.location.search.includes('edit')) return;
     var STORAGE_KEY = 'sn-concept-layout-v2';
-    var HARDCODED_CONCEPT = {"lineup":{"x":20,"y":20,"w":380,"h":400},"quote":{"x":30,"y":440,"w":380,"h":180},"text":{"x":450,"y":30,"w":350,"h":400}};
-    var saved = HARDCODED_CONCEPT;
-    try { var stored = JSON.parse(localStorage.getItem(STORAGE_KEY)); if (stored && Object.keys(stored).length) saved = stored; } catch(e) {}
+    var saved = {};
+    try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch(e) {}
+    if (!Object.keys(saved).length) return;
 
     var concept = document.querySelector('.sn-concept');
     var leftCol = document.querySelector('.sn-concept-left');
