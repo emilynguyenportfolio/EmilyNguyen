@@ -93,6 +93,8 @@
       transition: opacity 0.3s ease;
     }
     .kw-sw-item:hover img { opacity: 0.82; }
+    .kw-sw-item--dubied img { filter: saturate(0.55); }
+    .kw-sw-item--dubied:hover img { filter: saturate(0.55); }
 
     /* ── EDIT HANDLES ── */
     .kw-sw-canvas.editing .kw-sw-item {
@@ -406,7 +408,7 @@
         if (!sw) return;
 
         var el = document.createElement('div');
-        el.className = 'kw-sw-item';
+        el.className = 'kw-sw-item' + (item.swIdx >= 14 ? ' kw-sw-item--dubied' : '');
         el.style.left  = item.x + 'px';
         el.style.top   = item.y + 'px';
         el.style.width = item.w + 'px';
