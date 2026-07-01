@@ -610,7 +610,8 @@
       lbFloatImg.style.cssText =
         'position:fixed;z-index:1001;margin:0;padding:0;border:none;display:block;' +
         'left:' + rect.left + 'px;top:' + rect.top + 'px;' +
-        'width:' + rect.width + 'px;height:' + rect.height + 'px;transition:none;';
+        'width:' + rect.width + 'px;height:' + rect.height + 'px;transition:none;' +
+        (swIdx >= 14 ? 'filter:saturate(0.55);' : '');
       document.body.appendChild(lbFloatImg);
 
       lbNum.textContent  = sw.num;
