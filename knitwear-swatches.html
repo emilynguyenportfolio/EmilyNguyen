@@ -301,43 +301,51 @@
   <script>
   (function () {
     var SWATCHES = [
-      { src: 'knitwear/swatches/1a.png',                      num: '01', name: 'Swatch 01', tech: '' },
-      { src: 'knitwear/swatches/1b.png',                      num: '02', name: 'Swatch 02', tech: '' },
-      { src: 'knitwear/swatches/2.png',                       num: '03', name: 'Swatch 03', tech: '' },
-      { src: 'knitwear/swatches/3.png',                       num: '04', name: 'Swatch 04', tech: '' },
-      { src: 'knitwear/swatches/4.png',                       num: '05', name: 'Swatch 05', tech: '' },
-      { src: 'knitwear/swatches/5.png',                       num: '06', name: 'Swatch 06', tech: '' },
-      { src: 'knitwear/swatches/cable%20knit.png',            num: '07', name: 'Cable Knit', tech: '' },
+      { src: 'knitwear/swatches/1a.png',                      num: '01', name: 'Swatch 01',   tech: '' },
+      { src: 'knitwear/swatches/1b.png',                      num: '02', name: 'Swatch 02',   tech: '' },
+      { src: 'knitwear/swatches/2.png',                       num: '03', name: 'Swatch 03',   tech: '' },
+      { src: 'knitwear/swatches/3.png',                       num: '04', name: 'Swatch 04',   tech: '' },
+      { src: 'knitwear/swatches/4.png',                       num: '05', name: 'Swatch 05',   tech: '' },
+      { src: 'knitwear/swatches/5.png',                       num: '06', name: 'Swatch 06',   tech: '' },
+      { src: 'knitwear/swatches/cable%20knit.png',            num: '07', name: 'Cable Knit',  tech: '' },
       { src: 'knitwear/swatches/lace%20carraige.png',         num: '08', name: 'Lace Carriage', tech: '' },
       { src: 'knitwear/swatches/partial%20knit%20swatch.png', num: '09', name: 'Partial Knit', tech: '' },
-      { src: 'knitwear/swatches/dubied/swatch_1.png',         num: '10', name: 'Dubied I',  tech: '' },
-      { src: 'knitwear/swatches/dubied/swatch_2.png',         num: '11', name: 'Dubied II', tech: '' },
-      { src: 'knitwear/swatches/dubied/swatch_3.png',         num: '12', name: 'Dubied III', tech: '' },
-      { src: 'knitwear/swatches/dubied/swatch_4.png',         num: '13', name: 'Dubied IV', tech: '' },
-      { src: 'knitwear/swatches/6.png',                       num: '14', name: 'Swatch 14', tech: '' },
-      { src: 'knitwear/swatches/7.png',                       num: '15', name: 'Swatch 15', tech: '' },
-      { src: 'knitwear/swatches/8.png',                       num: '16', name: 'Swatch 16', tech: '' },
-      { src: 'knitwear/swatches/9.png',                       num: '17', name: 'Swatch 17', tech: '' },
-      { src: 'knitwear/swatches/10.png',                      num: '18', name: 'Swatch 18', tech: '' },
+      { src: 'knitwear/swatches/6.png',                       num: '10', name: 'Swatch 10',   tech: '' },
+      { src: 'knitwear/swatches/7.png',                       num: '11', name: 'Swatch 11',   tech: '' },
+      { src: 'knitwear/swatches/8.png',                       num: '12', name: 'Swatch 12',   tech: '' },
+      { src: 'knitwear/swatches/9.png',                       num: '13', name: 'Swatch 13',   tech: '' },
+      { src: 'knitwear/swatches/10.png',                      num: '14', name: 'Swatch 14',   tech: '' },
+      { src: 'knitwear/swatches/dubied/1.png',                num: '15', name: 'Dubied I',    tech: '' },
+      { src: 'knitwear/swatches/dubied/2.png',                num: '16', name: 'Dubied II',   tech: '' },
+      { src: 'knitwear/swatches/dubied/3.png',                num: '17', name: 'Dubied III',  tech: '' },
+      { src: 'knitwear/swatches/dubied/4.png',                num: '18', name: 'Dubied IV',   tech: '' },
     ];
 
     var HARDCODED_LAYOUT = [
-      { swIdx: 0,  x:  52, y:  120, w: 448 },
-      { swIdx: 1,  x: 203, y:  663, w: 149 },
-      { swIdx: 2,  x:  44, y: 1216, w: 214 },
-      { swIdx: 3,  x: 811, y:  376, w: 424 },
-      { swIdx: 4,  x: 792, y:  859, w: 537 },
-      { swIdx: 5,  x: 685, y:  769, w: 289 },
-      { swIdx: 6,  x: 212, y: 1152, w: 375 },
-      { swIdx: 7,  x:   0, y: 2000, w: 499 },
-      { swIdx: 8,  x: 357, y: 1357, w: 924 },
-      { swIdx: 9,  x:   0, y: 2847, w: 250 },
-      { swIdx: 10, x: 796, y: 2401, w: 511 },
-      { swIdx: 11, x: 1076, y: 2268, w: 260 },
-      { swIdx: 12, x: 475, y: 2428, w: 280 },
+      /* main swatches */
+      { swIdx: 0,  x:   52, y:  120, w: 448 },
+      { swIdx: 1,  x:  203, y:  663, w: 149 },
+      { swIdx: 2,  x:   44, y: 1216, w: 214 },
+      { swIdx: 3,  x:  811, y:  376, w: 424 },
+      { swIdx: 4,  x:  792, y:  859, w: 537 },
+      { swIdx: 5,  x:  685, y:  769, w: 289 },
+      { swIdx: 6,  x:  212, y: 1152, w: 375 },
+      { swIdx: 7,  x:    0, y: 2000, w: 499 },
+      { swIdx: 8,  x:  357, y: 1357, w: 924 },
+      /* swatches 6–10 */
+      { swIdx: 9,  x:   50, y: 2400, w: 420 },
+      { swIdx: 10, x:  750, y: 2250, w: 380 },
+      { swIdx: 11, x:  300, y: 2750, w: 500 },
+      { swIdx: 12, x:  900, y: 2600, w: 320 },
+      { swIdx: 13, x:   80, y: 3050, w: 460 },
+      /* dubied */
+      { swIdx: 14, x:    0, y: 3700, w: 250 },
+      { swIdx: 15, x:  796, y: 3450, w: 511 },
+      { swIdx: 16, x: 1076, y: 3300, w: 260 },
+      { swIdx: 17, x:  475, y: 3500, w: 280 },
     ];
 
-    var SAVE_KEY     = 'kw-swatches-layout-v1';
+    var SAVE_KEY     = 'kw-swatches-layout-v2';
     var canvas       = document.getElementById('kwSwCanvas');
     var photoElMap   = {};
     var lbOrder      = [];
