@@ -199,9 +199,46 @@
   <script>
   (function () {
     var btn = document.getElementById('snBackTop');
-    window.addEventListener('scroll', function () {
-      btn.classList.toggle('visible', window.scrollY > 400);
-    }, { passive: true });
+    var POS_KEY = 'sn-backtop-pos';
+    var isEdit = window.location.search.includes('edit');
+
+    /* apply saved position */
+    try {
+      var p = JSON.parse(localStorage.getItem(POS_KEY));
+      if (p) { btn.style.bottom = p.bottom; btn.style.right = p.right; }
+    } catch(e) {}
+
+    if (isEdit) {
+      /* always visible in edit mode */
+      btn.classList.add('visible');
+      btn.style.cursor = 'grab';
+      btn.title = 'Drag to reposition';
+      btn.onclick = null;
+
+      btn.addEventListener('mousedown', function (e) {
+        e.preventDefault();
+        btn.style.cursor = 'grabbing';
+        var startX = e.clientX, startY = e.clientY;
+        var startR = parseFloat(btn.style.right  || getComputedStyle(btn).right);
+        var startB = parseFloat(btn.style.bottom || getComputedStyle(btn).bottom);
+        function onMove(e) {
+          btn.style.right  = Math.max(0, startR - (e.clientX - startX)) + 'px';
+          btn.style.bottom = Math.max(0, startB - (e.clientY - startY)) + 'px';
+        }
+        function onUp() {
+          btn.style.cursor = 'grab';
+          localStorage.setItem(POS_KEY, JSON.stringify({ right: btn.style.right, bottom: btn.style.bottom }));
+          document.removeEventListener('mousemove', onMove);
+          document.removeEventListener('mouseup', onUp);
+        }
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      });
+    } else {
+      window.addEventListener('scroll', function () {
+        btn.classList.toggle('visible', window.scrollY > 400);
+      }, { passive: true });
+    }
   })();
   </script>
 
