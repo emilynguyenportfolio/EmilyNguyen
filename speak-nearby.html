@@ -333,8 +333,8 @@
       if (targetIdx === -1) return;
       var el = photoElMap[targetIdx];
       if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        setTimeout(function () { openLightbox(targetIdx); }, 500);
+        el.scrollIntoView({ behavior: 'instant', block: 'center' });
+        setTimeout(function () { openLightbox(targetIdx); }, 60);
       } else {
         openLightbox(targetIdx);
       }
