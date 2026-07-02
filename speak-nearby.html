@@ -214,6 +214,21 @@
       btn.title = 'Drag to reposition';
       btn.onclick = null;
 
+      var copyBtn = document.createElement('button');
+      copyBtn.textContent = 'Copy arrow position';
+      copyBtn.style.cssText = 'position:fixed;bottom:1rem;right:1rem;z-index:9999;' +
+        'background:rgba(20,20,20,0.85);color:#fff;border:none;padding:5px 12px;' +
+        'border-radius:12px;font-family:\'Outfit\',sans-serif;font-size:0.68rem;' +
+        'letter-spacing:0.06em;cursor:pointer;';
+      copyBtn.addEventListener('click', function () {
+        var pos = JSON.stringify({ right: btn.style.right || '2rem', bottom: btn.style.bottom || '5rem' });
+        navigator.clipboard.writeText(pos).then(function () {
+          copyBtn.textContent = 'Copied!';
+          setTimeout(function () { copyBtn.textContent = 'Copy arrow position'; }, 2000);
+        });
+      });
+      document.body.appendChild(copyBtn);
+
       btn.addEventListener('mousedown', function (e) {
         e.preventDefault();
         btn.style.cursor = 'grabbing';
