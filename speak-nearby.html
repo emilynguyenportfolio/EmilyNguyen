@@ -332,12 +332,22 @@
       }
       if (targetIdx === -1) return;
       var el = photoElMap[targetIdx];
-      if (el) {
+      if (!el) { openLightbox(targetIdx); return; }
+
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      var done = false;
+      var scrollTimer, fallback;
+      function finish() {
+        if (done) return; done = true;
+        clearTimeout(scrollTimer); clearTimeout(fallback);
+        window.removeEventListener('scroll', onScroll);
         el.scrollIntoView({ behavior: 'instant', block: 'center' });
         setTimeout(function () { openLightbox(targetIdx); }, 60);
-      } else {
-        openLightbox(targetIdx);
       }
+      function onScroll() { clearTimeout(scrollTimer); scrollTimer = setTimeout(finish, 150); }
+      window.addEventListener('scroll', onScroll);
+      fallback = setTimeout(finish, 3000);
     };
 
     function buildVisualOrder(layout) {
