@@ -168,6 +168,41 @@
 
   </div>
 
+  <button id="snBackTop" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+  <style>
+    #snBackTop {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 500;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: rgba(242,241,238,0.85);
+      backdrop-filter: blur(6px);
+      color: var(--text-mid);
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s, color 0.2s;
+    }
+    #snBackTop.visible { opacity: 1; pointer-events: all; }
+    #snBackTop:hover { color: var(--text-dark); }
+  </style>
+  <script>
+  (function () {
+    var btn = document.getElementById('snBackTop');
+    window.addEventListener('scroll', function () {
+      btn.classList.toggle('visible', window.scrollY > 400);
+    }, { passive: true });
+  })();
+  </script>
+
   <script src="script.js"></script>
   <script src="editor.js"></script>
   <script>
