@@ -614,7 +614,7 @@
   (function () {
     if (window.location.search.includes('edit')) return;
     var STORAGE_KEY = 'sn-concept-layout-v2';
-    var HARDCODED = {"lineup":{"x":-19,"y":41,"w":782,"h":506},"quote":{"x":50,"y":600,"w":1069,"h":95},"text":{"x":779,"y":74,"w":245,"h":451}};
+    var HARDCODED = {"lineup":{"x":-19,"y":41,"w":782,"h":506},"quote":{"x":50,"y":600,"w":1069,"h":95},"text":{"x":779,"y":74,"w":245,"h":451},"arrow":{"right":"2rem","bottom":"5rem"}};
     var saved = HARDCODED;
     try { var s = JSON.parse(localStorage.getItem(STORAGE_KEY)); if (s && Object.keys(s).length) saved = s; } catch(e) {}
 
@@ -649,6 +649,15 @@
     applyEl(lineup,  'lineup');
     applyEl(quote,   'quote');
     applyEl(textBox, 'text');
+
+    var arrowData = saved.arrow;
+    if (arrowData) {
+      var arrowBtn = document.getElementById('snBackTop');
+      if (arrowBtn) {
+        if (arrowData.right)  arrowBtn.style.right  = arrowData.right;
+        if (arrowData.bottom) arrowBtn.style.bottom = arrowData.bottom;
+      }
+    }
 
     function updateHeight() {
       var maxB = 0;
@@ -840,7 +849,9 @@
     document.getElementById('snEditCopy').addEventListener('click', function () {
       var btn = document.getElementById('snEditCopy');
       var data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-      var code = JSON.stringify(data);
+      var arrowEl = document.getElementById('snBackTop');
+      var arrowPos = { right: arrowEl.style.right || '2rem', bottom: arrowEl.style.bottom || '5rem' };
+      var code = JSON.stringify({ concept: data, arrow: arrowPos });
       navigator.clipboard.writeText(code).then(function () {
         btn.textContent = 'Copied!';
         setTimeout(function () { btn.textContent = 'Copy layout'; }, 2000);
