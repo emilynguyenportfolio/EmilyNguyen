@@ -209,6 +209,11 @@
         var item = document.createElement('a');
         item.className = 'sn-strip-item';
         item.href = '#';
+        item.dataset.file = f;
+        item.addEventListener('click', function (e) {
+          e.preventDefault();
+          if (window.snOpenPhotoByFile) window.snOpenPhotoByFile(f);
+        });
         var img = document.createElement('img');
         img.src = FOLDER + encodeURIComponent(f);
         img.alt = '';
@@ -319,6 +324,21 @@
 
     var saved = loadSaved();
     renderAbsolute(saved || HARDCODED_LAYOUT, false);
+
+    window.snOpenPhotoByFile = function (filename) {
+      var targetIdx = -1;
+      for (var i = 0; i < FILES.length; i++) {
+        if (FILES[i].toLowerCase() === filename.toLowerCase()) { targetIdx = i; break; }
+      }
+      if (targetIdx === -1) return;
+      var el = photoElMap[targetIdx];
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(function () { openLightbox(targetIdx); }, 500);
+      } else {
+        openLightbox(targetIdx);
+      }
+    };
 
     function buildVisualOrder(layout) {
       visualOrder = layout.slice().sort(function(a,b){ return a.y - b.y; }).map(function(item){ return item.fileIdx; });
