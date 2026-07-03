@@ -338,8 +338,8 @@
           document.getElementById('kwColPanel' + current).style.display = '';
           titleEl.textContent   = COLLECTIONS[current].title;
           eyebrowEl.textContent = COLLECTIONS[current].eyebrow;
-          prevBtn.style.opacity = COLLECTIONS.length > 1 ? '1' : '0';
-          nextBtn.style.opacity = COLLECTIONS.length > 1 ? '1' : '0';
+          prevBtn.style.visibility = current === 0 ? 'hidden' : 'visible';
+          nextBtn.style.visibility = current === COLLECTIONS.length - 1 ? 'hidden' : 'visible';
         }
 
         prevBtn.addEventListener('click', function () { show(current - 1); });
