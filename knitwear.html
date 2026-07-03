@@ -181,23 +181,21 @@
           </div>
         </div>
 
-        <!-- Photo carousel -->
+        <!-- Editorial photo carousel (3 slides) -->
         <div class="kw-photo-carousel fade-up">
           <div class="kw-photo-slide" id="kwRaSlide0">
             <div class="kw-garment-full">
-              <img src="knitwear/garments/red%20azalea/garment_10.jpg" alt="Red Azalea collection editorial" />
+              <img src="knitwear/garments/red%20azalea/garment_10.jpg" alt="Red Azalea editorial" />
             </div>
           </div>
           <div class="kw-photo-slide" id="kwRaSlide1" style="display:none">
-            <div class="kw-garment-pair">
+            <div class="kw-garment-full">
               <img src="knitwear/garments/red%20azalea/garment_11.jpg" alt="Red Azalea detail" />
-              <img src="knitwear/garments/red%20azalea/garment_12.jpg" alt="Red Azalea editorial" />
             </div>
           </div>
           <div class="kw-photo-slide" id="kwRaSlide2" style="display:none">
-            <div class="kw-closing">
-              <img src="knitwear/garments/red%20azalea/garment_13.jpg" alt="Red Azalea night editorial" />
-              <span class="kw-closing-caption">praising the winter plum.</span>
+            <div class="kw-garment-full">
+              <img src="knitwear/garments/red%20azalea/garment_12.jpg" alt="Red Azalea editorial" />
             </div>
           </div>
           <div class="kw-photo-nav">
@@ -207,33 +205,60 @@
           </div>
         </div>
 
-        <script>
-        (function () {
-          var total = 3;
-          var current = 0;
-          var counter = document.getElementById('kwRaCounter');
-          function show(idx) {
-            document.getElementById('kwRaSlide' + current).style.display = 'none';
-            current = (idx + total) % total;
-            document.getElementById('kwRaSlide' + current).style.display = '';
-            counter.textContent = (current + 1) + ' / ' + total;
-          }
-          document.getElementById('kwRaPrev').addEventListener('click', function () { show(current - 1); });
-          document.getElementById('kwRaNext').addEventListener('click', function () { show(current + 1); });
-        })();
-        </script>
-
         <div class="sub-divider"></div>
 
+        <!-- Process / closing carousel (4 slides) -->
         <div class="sub-heading fade-up">
           <span class="eyebrow">behind the work</span>
           <h2>Process</h2>
         </div>
-        <div class="kw-process-grid fade-up">
-          <img src="knitwear/garments/red%20azalea/garment_6.jpg" alt="Knit samples" />
-          <img src="knitwear/garments/red%20azalea/garment_8.jpg" alt="Knitting machine and garment development" />
-          <img src="knitwear/garments/red%20azalea/garment_9.jpg" alt="Machine knitting process" />
+        <div class="kw-photo-carousel fade-up">
+          <div class="kw-photo-slide" id="kwPrSlide0">
+            <div class="kw-closing">
+              <img src="knitwear/garments/red%20azalea/garment_13.jpg" alt="Red Azalea night editorial" />
+              <span class="kw-closing-caption">praising the winter plum.</span>
+            </div>
+          </div>
+          <div class="kw-photo-slide" id="kwPrSlide1" style="display:none">
+            <div class="kw-garment-full">
+              <img src="knitwear/garments/red%20azalea/garment_6.jpg" alt="Knit samples" />
+            </div>
+          </div>
+          <div class="kw-photo-slide" id="kwPrSlide2" style="display:none">
+            <div class="kw-garment-full">
+              <img src="knitwear/garments/red%20azalea/garment_8.jpg" alt="Knitting machine detail" />
+            </div>
+          </div>
+          <div class="kw-photo-slide" id="kwPrSlide3" style="display:none">
+            <div class="kw-garment-full">
+              <img src="knitwear/garments/red%20azalea/garment_9.jpg" alt="Machine knitting process" />
+            </div>
+          </div>
+          <div class="kw-photo-nav">
+            <button class="kw-col-arrow" id="kwPrPrev" aria-label="Previous">&#8592;</button>
+            <span class="kw-photo-counter" id="kwPrCounter">1 / 4</span>
+            <button class="kw-col-arrow" id="kwPrNext" aria-label="Next">&#8594;</button>
+          </div>
         </div>
+
+        <script>
+        (function () {
+          function makeCarousel(prefix, total) {
+            var current = 0;
+            var counter = document.getElementById(prefix + 'Counter');
+            function show(idx) {
+              document.getElementById(prefix + 'Slide' + current).style.display = 'none';
+              current = (idx + total) % total;
+              document.getElementById(prefix + 'Slide' + current).style.display = '';
+              counter.textContent = (current + 1) + ' / ' + total;
+            }
+            document.getElementById(prefix + 'Prev').addEventListener('click', function () { show(current - 1); });
+            document.getElementById(prefix + 'Next').addEventListener('click', function () { show(current + 1); });
+          }
+          makeCarousel('kwRa', 3);
+          makeCarousel('kwPr', 4);
+        })();
+        </script>
       </div>
 
       <!-- Panel 1: Etude -->
