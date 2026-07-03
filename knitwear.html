@@ -8,6 +8,47 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;1,6..96,300;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Outfit:wght@200;300&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .kw-col-nav {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 1.6rem;
+      margin: 2rem 0 2.4rem;
+    }
+    .kw-col-arrow {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: var(--text-mid);
+      padding: 0.2rem 0.4rem;
+      transition: color 0.15s;
+      line-height: 1;
+    }
+    .kw-col-arrow:hover { color: var(--text-dark); }
+    .kw-col-nav-label {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .kw-col-nav-title {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 300;
+      font-size: 1.5rem;
+      color: var(--text-dark);
+      line-height: 1.1;
+    }
+    .kw-coming-soon {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 300;
+      color: var(--text-mid);
+      font-size: 0.95rem;
+      margin: 2rem 0 4rem;
+    }
+  </style>
 </head>
 <body>
   <aside class="sidebar" id="sidebar">
@@ -86,75 +127,103 @@
 
       <!-- KNIT GARMENTS / COLLECTIONS -->
       <div class="sub-heading fade-up">
-        <span class="eyebrow">collection</span>
         <h2>Fully Fashioned Garments</h2>
       </div>
 
-      <!-- RED AZALEA -->
-      <div class="kw-collection-label fade-up">
-        <span class="eyebrow">spring / summer</span>
-        <h3>Red Azalea</h3>
-      </div>
-
-      <div class="kw-concept fade-up">
-        <div class="kw-concept-text">
-          <p>
-            A Spring/Summer knitwear collection exploring the formation of identity through adolescence,
-            secrecy, and desire. Inspired by the novel <em>Red Azalea</em> by Anchee Min — a memoir in
-            which youth unfolds under the tension between the public performances demanded by ideology and
-            the private passions that remain hidden.
-          </p>
-          <p>
-            This duality translates into soft, body-focused knitwear that shifts between concealment and
-            exposure. Silhouettes are close and fluid, using layering and transparency to suggest what
-            cannot be openly expressed — intimacy held just beneath the surface.
-          </p>
-          <p>
-            The collection explores techniques including tubular knitting, dubied knitting, embossing,
-            felting, and heat press printing — each process translating how identity is not performed
-            outwardly but carried inwardly, revealed only through texture, touch, and subtle transformation.
-          </p>
-          <cite class="kw-concept-credit">Inspired by <em>Red Azalea</em>, Anchee Min, 1994</cite>
+      <!-- Collection nav -->
+      <div class="kw-col-nav fade-up">
+        <button class="kw-col-arrow" id="kwColPrev" aria-label="Previous collection">&#8592;</button>
+        <div class="kw-col-nav-label">
+          <span class="eyebrow" id="kwColEyebrow">spring / summer</span>
+          <span class="kw-col-nav-title" id="kwColTitle">Red Azalea</span>
         </div>
-        <div class="kw-concept-img">
-          <img src="knitwear/garments/red%20azalea/garment_1.jpg" alt="" />
+        <button class="kw-col-arrow" id="kwColNext" aria-label="Next collection">&#8594;</button>
+      </div>
+
+      <!-- Panel 0: Red Azalea -->
+      <div class="kw-col-panel" id="kwColPanel0">
+        <div class="kw-concept fade-up">
+          <div class="kw-concept-text">
+            <p>
+              A Spring/Summer knitwear collection exploring the formation of identity through adolescence,
+              secrecy, and desire. Inspired by the novel <em>Red Azalea</em> by Anchee Min — a memoir in
+              which youth unfolds under the tension between the public performances demanded by ideology and
+              the private passions that remain hidden.
+            </p>
+            <p>
+              This duality translates into soft, body-focused knitwear that shifts between concealment and
+              exposure. Silhouettes are close and fluid, using layering and transparency to suggest what
+              cannot be openly expressed — intimacy held just beneath the surface.
+            </p>
+            <p>
+              The collection explores techniques including tubular knitting, dubied knitting, embossing,
+              felting, and heat press printing — each process translating how identity is not performed
+              outwardly but carried inwardly, revealed only through texture, touch, and subtle transformation.
+            </p>
+            <cite class="kw-concept-credit">Inspired by <em>Red Azalea</em>, Anchee Min, 1994</cite>
+          </div>
+          <div class="kw-concept-img">
+            <img src="knitwear/garments/red%20azalea/garment_1.jpg" alt="" />
+          </div>
+        </div>
+
+        <div class="kw-garment-full fade-up">
+          <img src="knitwear/garments/red%20azalea/garment_10.jpg" alt="Red Azalea collection editorial" />
+        </div>
+        <div class="kw-garment-pair fade-up">
+          <img src="knitwear/garments/red%20azalea/garment_11.jpg" alt="Red Azalea detail" />
+          <img src="knitwear/garments/red%20azalea/garment_12.jpg" alt="Red Azalea editorial" />
+        </div>
+        <div class="kw-closing fade-up">
+          <img src="knitwear/garments/red%20azalea/garment_13.jpg" alt="Red Azalea night editorial" />
+          <span class="kw-closing-caption">praising the winter plum.</span>
+        </div>
+
+        <div class="sub-divider"></div>
+
+        <div class="sub-heading fade-up">
+          <span class="eyebrow">behind the work</span>
+          <h2>Process</h2>
+        </div>
+        <div class="kw-process-grid fade-up">
+          <img src="knitwear/garments/red%20azalea/garment_6.jpg" alt="Knit samples" />
+          <img src="knitwear/garments/red%20azalea/garment_8.jpg" alt="Knitting machine and garment development" />
+          <img src="knitwear/garments/red%20azalea/garment_9.jpg" alt="Machine knitting process" />
         </div>
       </div>
 
-      <div class="kw-garment-full fade-up">
-        <img src="knitwear/garments/red%20azalea/garment_10.jpg" alt="Red Azalea collection editorial" />
-      </div>
-      <div class="kw-garment-pair fade-up">
-        <img src="knitwear/garments/red%20azalea/garment_11.jpg" alt="Red Azalea detail" />
-        <img src="knitwear/garments/red%20azalea/garment_12.jpg" alt="Red Azalea editorial" />
-      </div>
-      <div class="kw-closing fade-up">
-        <img src="knitwear/garments/red%20azalea/garment_13.jpg" alt="Red Azalea night editorial" />
-        <span class="kw-closing-caption">praising the winter plum.</span>
+      <!-- Panel 1: Etude -->
+      <div class="kw-col-panel" id="kwColPanel1" style="display:none">
+        <p class="kw-coming-soon">More to come.</p>
       </div>
 
-      <div class="sub-divider"></div>
+      <script>
+      (function () {
+        var COLLECTIONS = [
+          { title: 'Red Azalea', eyebrow: 'spring / summer' },
+          { title: 'Etude',      eyebrow: 'coming soon'     },
+        ];
+        var current = 0;
+        var prevBtn  = document.getElementById('kwColPrev');
+        var nextBtn  = document.getElementById('kwColNext');
+        var titleEl  = document.getElementById('kwColTitle');
+        var eyebrowEl = document.getElementById('kwColEyebrow');
 
-      <!-- PROCESS -->
-      <div class="sub-heading fade-up">
-        <span class="eyebrow">behind the work</span>
-        <h2>Process</h2>
-      </div>
+        function show(idx) {
+          document.getElementById('kwColPanel' + current).style.display = 'none';
+          current = (idx + COLLECTIONS.length) % COLLECTIONS.length;
+          document.getElementById('kwColPanel' + current).style.display = '';
+          titleEl.textContent   = COLLECTIONS[current].title;
+          eyebrowEl.textContent = COLLECTIONS[current].eyebrow;
+          prevBtn.style.opacity = COLLECTIONS.length > 1 ? '1' : '0';
+          nextBtn.style.opacity = COLLECTIONS.length > 1 ? '1' : '0';
+        }
 
-      <div class="kw-process-grid fade-up">
-        <img src="knitwear/garments/red%20azalea/garment_6.jpg" alt="Knit samples" />
-        <img src="knitwear/garments/red%20azalea/garment_8.jpg" alt="Knitting machine and garment development" />
-        <img src="knitwear/garments/red%20azalea/garment_9.jpg" alt="Machine knitting process" />
-      </div>
-
-      <div class="sub-divider"></div>
-
-      <!-- ETUDE -->
-      <div class="kw-collection-label fade-up">
-        <span class="eyebrow">coming soon</span>
-        <h3>Etude</h3>
-      </div>
-      <p class="kw-coming-soon fade-up">More to come.</p>
+        prevBtn.addEventListener('click', function () { show(current - 1); });
+        nextBtn.addEventListener('click', function () { show(current + 1); });
+        show(0);
+      })();
+      </script>
 
     </div>
 

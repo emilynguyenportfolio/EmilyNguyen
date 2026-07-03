@@ -1389,20 +1389,36 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   z-index: 20;
 }
 
-.kw-collection-label {
-  margin: 3rem 0 1.8rem;
+.kw-col-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1.6rem;
+  margin: 2rem 0 2.4rem;
 }
-.kw-collection-label .eyebrow {
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
+.kw-col-arrow {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: var(--text-mid);
+  padding: 0.2rem 0.4rem;
+  transition: color 0.15s;
+  line-height: 1;
 }
-.kw-collection-label h3 {
+.kw-col-arrow:hover { color: var(--text-dark); }
+.kw-col-nav-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.kw-col-nav-title {
   font-family: var(--font-serif);
-  font-weight: 300;
   font-style: italic;
+  font-weight: 300;
   font-size: 1.5rem;
-  margin: 0.2rem 0 0;
   color: var(--text-dark);
+  line-height: 1.1;
 }
 .kw-coming-soon {
   font-family: var(--font-serif);
