@@ -207,36 +207,36 @@
 
         <div class="sub-divider"></div>
 
-        <!-- Process / closing carousel (4 slides) -->
+        <!-- Closing: standalone -->
+        <div class="kw-closing fade-up">
+          <img src="knitwear/garments/red%20azalea/garment_13.jpg" alt="Red Azalea night editorial" />
+          <span class="kw-closing-caption">praising the winter plum.</span>
+        </div>
+
+        <!-- Process carousel (3 slides) -->
         <div class="sub-heading fade-up">
           <span class="eyebrow">behind the work</span>
           <h2>Process</h2>
         </div>
         <div class="kw-photo-carousel fade-up">
           <div class="kw-photo-slide" id="kwPrSlide0">
-            <div class="kw-closing">
-              <img src="knitwear/garments/red%20azalea/garment_13.jpg" alt="Red Azalea night editorial" />
-              <span class="kw-closing-caption">praising the winter plum.</span>
-            </div>
-          </div>
-          <div class="kw-photo-slide" id="kwPrSlide1" style="display:none">
-            <div class="kw-garment-full">
-              <img src="knitwear/garments/red%20azalea/garment_6.jpg" alt="Knit samples" />
-            </div>
-          </div>
-          <div class="kw-photo-slide" id="kwPrSlide2" style="display:none">
             <div class="kw-garment-full">
               <img src="knitwear/garments/red%20azalea/garment_8.jpg" alt="Knitting machine detail" />
             </div>
           </div>
-          <div class="kw-photo-slide" id="kwPrSlide3" style="display:none">
+          <div class="kw-photo-slide" id="kwPrSlide1" style="display:none">
             <div class="kw-garment-full">
               <img src="knitwear/garments/red%20azalea/garment_9.jpg" alt="Machine knitting process" />
             </div>
           </div>
+          <div class="kw-photo-slide" id="kwPrSlide2" style="display:none">
+            <div class="kw-garment-full">
+              <img src="knitwear/garments/red%20azalea/garment_6.jpg" alt="Knit samples" />
+            </div>
+          </div>
           <div class="kw-photo-nav">
             <button class="kw-col-arrow" id="kwPrPrev" aria-label="Previous">&#8592;</button>
-            <span class="kw-photo-counter" id="kwPrCounter">1 / 4</span>
+            <span class="kw-photo-counter" id="kwPrCounter">1 / 3</span>
             <button class="kw-col-arrow" id="kwPrNext" aria-label="Next">&#8594;</button>
           </div>
         </div>
@@ -256,7 +256,7 @@
             document.getElementById(prefix + 'Next').addEventListener('click', function () { show(current + 1); });
           }
           makeCarousel('kwRa', 3);
-          makeCarousel('kwPr', 4);
+          makeCarousel('kwPr', 3);
         })();
         </script>
       </div>
