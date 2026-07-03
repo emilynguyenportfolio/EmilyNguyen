@@ -266,13 +266,7 @@
 
         <div class="sub-divider"></div>
 
-        <!-- Closing: standalone -->
-        <div class="kw-closing fade-up">
-          <img src="knitwear/garments/red%20azalea/garment_13.jpg" alt="Red Azalea night editorial" />
-          <span class="kw-closing-caption">praising the winter plum.</span>
-        </div>
-
-        <!-- Process carousel (3 slides) -->
+        <!-- Process carousel (2 slides) -->
         <div class="sub-heading fade-up">
           <span class="eyebrow">behind the work</span>
           <h2>Process</h2>
@@ -288,16 +282,17 @@
               <img src="knitwear/garments/red%20azalea/garment_9.jpg" alt="Machine knitting process" />
             </div>
           </div>
-          <div class="kw-photo-slide" id="kwPrSlide2" style="display:none">
-            <div class="kw-garment-full">
-              <img src="knitwear/garments/red%20azalea/garment_6.jpg" alt="Knit samples" />
-            </div>
-          </div>
           <button class="kw-carousel-side-btn kw-carousel-side-btn--prev" id="kwPrPrev" aria-label="Previous">&#8592;</button>
           <button class="kw-carousel-side-btn kw-carousel-side-btn--next" id="kwPrNext" aria-label="Next">&#8594;</button>
           <div class="kw-photo-nav">
-            <span class="kw-photo-counter" id="kwPrCounter">1 / 3</span>
+            <span class="kw-photo-counter" id="kwPrCounter">1 / 2</span>
           </div>
+        </div>
+
+        <!-- Closing: standalone -->
+        <div class="kw-closing fade-up">
+          <img src="knitwear/garments/red%20azalea/garment_13.jpg" alt="Red Azalea night editorial" />
+          <span class="kw-closing-caption">praising the winter plum.</span>
         </div>
 
         <script>
@@ -315,7 +310,7 @@
             document.getElementById(prefix + 'Next').addEventListener('click', function () { show(current + 1); });
           }
           makeCarousel('kwRa', 3);
-          makeCarousel('kwPr', 3);
+          makeCarousel('kwPr', 2);
         })();
         </script>
       </div>
