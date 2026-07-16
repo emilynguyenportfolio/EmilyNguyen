@@ -9,10 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;1,6..96,300;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Outfit:wght@200;300&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <style>
-    body { overflow: hidden; }
     .contact-page {
-      height: 100vh;
-      overflow: hidden;
+      min-height: 100vh;
       display: grid;
       grid-template-columns: 1fr 1fr;
     }
@@ -120,14 +118,25 @@
 
       <div class="contact-photo">
         <div class="contact-photo-inner">
-          <div class="img-placeholder"></div>
+          <img src="me.png" alt="Emily Nguyen" style="width:100%;height:100%;object-fit:cover;display:block;" />
         </div>
       </div>
 
       <div class="contact-right">
         <div class="contact-inner">
 
-          <span class="contact-eyebrow">contact</span>
+          <span class="contact-eyebrow">about</span>
+          <p class="contact-value" style="font-size:0.78rem;line-height:1.7;margin-bottom:0.4rem;">
+            Hello! I'm Emily, a Vietnamese American designer born and raised in Savannah, Georgia. My work centers on themes of hybridity, displacement, and the quiet beauty that emerges from living between cultures. Drawing from the nostalgic experiences of diaspora, I explore the spaces where identities overlap and evolve.
+          </p>
+          <p class="contact-value" style="font-size:0.78rem;line-height:1.7;">
+            I often work through layering of materials, imagery, and references to build whimsical, textured worlds that reflect the fluid nature of memory and belonging. Through my practice, I seek to visually translate the cultural nostalgia that has shaped my life and many others, honoring the tenderness, complexity, and beauty found within these in-between spaces.
+          </p>
+          <a href="Resume.pdf" target="_blank" rel="noopener" class="insta-link" style="font-size:0.72rem;margin-bottom:1.2rem;">résumé</a>
+
+          <div class="contact-divider"></div>
+
+          <span class="contact-eyebrow" style="margin-top:0.6rem;">contact</span>
 
           <div class="contact-item">
             <span class="contact-label">email</span>
