@@ -141,6 +141,40 @@
       letter-spacing: 0.1em;
       color: var(--text-mid);
     }
+    /* ── SWATCHES CANVAS ── */
+    .kw-sw-canvas {
+      position: relative;
+      margin-bottom: 6rem;
+    }
+    .kw-sw-item { position: absolute; cursor: pointer; }
+    .kw-sw-item img { display: block; width: 100%; height: auto; pointer-events: none; transition: opacity 0.3s; }
+    .kw-sw-item:hover img { opacity: 0.82; }
+    .kw-sw-item--dubied img { filter: saturate(0.55); }
+    .kw-sw-item--dubied:hover img { filter: saturate(0.55); }
+    .kw-sw-canvas.editing .kw-sw-item { cursor: grab; outline: 1px solid rgba(80,120,255,0.35); }
+    .kw-sw-canvas.editing .kw-sw-item:active { cursor: grabbing; }
+    .kw-sw-item .edit-resize { display: none; position: absolute; right: -5px; bottom: -5px; width: 14px; height: 14px; background: #5070ff; border-radius: 2px; cursor: se-resize; z-index: 10; }
+    .kw-sw-canvas.editing .kw-sw-item .edit-resize { display: block; }
+    .kw-sw-item .edit-badge { display: none; position: absolute; top: 4px; left: 4px; background: rgba(0,0,0,0.65); color: #fff; font-family: monospace; font-size: 9px; padding: 2px 5px; pointer-events: none; z-index: 10; white-space: nowrap; }
+    .kw-sw-canvas.editing .kw-sw-item .edit-badge { display: block; }
+    /* ── LIGHTBOX ── */
+    .kw-lb-backdrop { position: fixed; inset: 0; z-index: 1000; background: transparent; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+    .kw-lb-backdrop.open { opacity: 1; pointer-events: all; }
+    .kw-lb-btn { position: fixed; z-index: 1002; opacity: 0; pointer-events: none; transition: opacity 0.25s; background: none; border: none; cursor: pointer; }
+    .kw-lb-btn.open { opacity: 1; pointer-events: all; }
+    .kw-lb-prev, .kw-lb-next { top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(20,19,18,0.18) !important; background: rgba(242,241,238,0.75) !important; backdrop-filter: blur(6px); color: rgba(20,19,18,0.5); font-size: 1rem; display: flex; align-items: center; justify-content: center; }
+    .kw-lb-prev { left: 1.5rem; }
+    .kw-lb-next { right: 1.5rem; }
+    .kw-lb-prev:hover, .kw-lb-next:hover { color: rgba(20,19,18,0.85); }
+    .kw-lb-close { top: 2rem; right: 2.5rem; font-family: var(--font-body); font-size: 0.62rem; font-weight: 200; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(20,19,18,0.4); padding: 0; transition: color 0.2s; }
+    .kw-lb-close:hover { color: rgba(20,19,18,0.85); }
+    .kw-lb-counter { position: fixed; bottom: 1.8rem; left: 50%; transform: translateX(-50%); z-index: 1002; font-family: var(--font-body); font-size: 0.58rem; font-weight: 200; letter-spacing: 0.15em; color: rgba(20,19,18,0.3); opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+    .kw-lb-counter.open { opacity: 1; }
+    .kw-lb-desc { position: fixed; z-index: 1001; text-align: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+    .kw-lb-desc.open { opacity: 1; }
+    .kw-lb-desc-num { display: block; font-family: var(--font-body); font-weight: 200; font-size: 0.52rem; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(20,19,18,0.38); margin-bottom: 0.3rem; }
+    .kw-lb-desc-name { display: block; font-family: var(--font-serif); font-style: italic; font-size: 1.15rem; color: var(--text-dark); line-height: 1.2; margin-bottom: 0.25rem; }
+    .kw-lb-desc-tech { display: block; font-family: var(--font-body); font-weight: 200; font-size: 0.56rem; letter-spacing: 0.1em; color: rgba(20,19,18,0.45); }
   </style>
 </head>
 <body>
@@ -167,6 +201,18 @@
     <span></span><span></span><span></span>
   </button>
 
+  <!-- Lightbox (swatches) -->
+  <div class="kw-lb-backdrop" id="kwLbBackdrop"></div>
+  <button class="kw-lb-btn kw-lb-prev" id="kwLbPrev">&#8592;</button>
+  <button class="kw-lb-btn kw-lb-next" id="kwLbNext">&#8594;</button>
+  <button class="kw-lb-btn kw-lb-close" id="kwLbClose">close</button>
+  <span class="kw-lb-counter" id="kwLbCounter"></span>
+  <div class="kw-lb-desc" id="kwLbDesc">
+    <span class="kw-lb-desc-num" id="kwLbNum"></span>
+    <span class="kw-lb-desc-name" id="kwLbName"></span>
+    <span class="kw-lb-desc-tech" id="kwLbTech"></span>
+  </div>
+
   <div class="content">
 
     <!-- PAGE HERO -->
@@ -192,7 +238,7 @@
       <!-- Collection tabs -->
       <div class="kw-col-tabs fade-up">
         <button class="kw-col-tab active" id="kwTab0">Red Azalea</button>
-        <a href="knitwear-swatches.html" class="kw-col-tab">Swatches</a>
+        <button class="kw-col-tab" id="kwTab1">Swatches</button>
       </div>
 
       <!-- Panel 0: Red Azalea -->
@@ -298,6 +344,229 @@
         })();
         </script>
       </div>
+
+      <!-- Panel 1: Swatches -->
+      <div class="kw-col-panel" id="kwColPanel1" style="display:none">
+        <h3 class="kw-col-panel-title">Swatches</h3>
+        <p class="kw-col-panel-eyebrow">technical</p>
+        <div class="kw-sw-canvas" id="kwSwCanvas"></div>
+        <button class="kw-col-next-btn" id="kwToRa">&#8592; Red Azalea</button>
+      </div>
+
+      <script>
+      (function () {
+        /* ── TAB SWITCHING ── */
+        var current = 0;
+        function showTab(idx) {
+          document.getElementById('kwColPanel' + current).style.display = 'none';
+          document.getElementById('kwTab' + current).classList.remove('active');
+          current = idx;
+          document.getElementById('kwColPanel' + current).style.display = '';
+          document.getElementById('kwTab' + current).classList.add('active');
+        }
+        document.getElementById('kwTab0').addEventListener('click', function () { showTab(0); });
+        document.getElementById('kwTab1').addEventListener('click', function () { showTab(1); });
+        document.getElementById('kwToRa').addEventListener('click', function () { showTab(0); });
+
+        /* ── SWATCHES CANVAS ── */
+        var SWATCHES = [
+          { src: 'knitwear/swatches/1a.png',                      num: '01', name: 'Swatch 01',    tech: '' },
+          { src: 'knitwear/swatches/1b.png',                      num: '02', name: 'Swatch 02',    tech: '' },
+          { src: 'knitwear/swatches/2.png',                       num: '03', name: 'Swatch 03',    tech: '' },
+          { src: 'knitwear/swatches/3.png',                       num: '04', name: 'Swatch 04',    tech: '' },
+          { src: 'knitwear/swatches/4.png',                       num: '05', name: 'Swatch 05',    tech: '' },
+          { src: 'knitwear/swatches/5.png',                       num: '06', name: 'Swatch 06',    tech: '' },
+          { src: 'knitwear/swatches/cable%20knit.png',            num: '07', name: 'Cable Knit',   tech: '' },
+          { src: 'knitwear/swatches/lace%20carraige.png',         num: '08', name: 'Lace Carriage',tech: '' },
+          { src: 'knitwear/swatches/partial%20knit%20swatch.png', num: '09', name: 'Partial Knit', tech: '' },
+          { src: 'knitwear/swatches/6.png',                       num: '10', name: 'Swatch 10',    tech: '' },
+          { src: 'knitwear/swatches/7.png',                       num: '11', name: 'Swatch 11',    tech: '' },
+          { src: 'knitwear/swatches/8.png',                       num: '12', name: 'Swatch 12',    tech: '' },
+          { src: 'knitwear/swatches/9.png',                       num: '13', name: 'Swatch 13',    tech: '' },
+          { src: 'knitwear/swatches/10.png',                      num: '14', name: 'Swatch 14',    tech: '' },
+          { src: 'knitwear/swatches/dubied/1.png',                num: '15', name: 'Dubied I',     tech: '' },
+          { src: 'knitwear/swatches/dubied/2.png',                num: '16', name: 'Dubied II',    tech: '' },
+          { src: 'knitwear/swatches/dubied/3.png',                num: '17', name: 'Dubied III',   tech: '' },
+          { src: 'knitwear/swatches/dubied/4.png',                num: '18', name: 'Dubied IV',    tech: '' },
+        ];
+        var HARDCODED_LAYOUT = [
+          { swIdx: 0,  x:   52, y:  120, w: 448 },
+          { swIdx: 1,  x:  203, y:  663, w: 149 },
+          { swIdx: 2,  x:   44, y: 1216, w: 214 },
+          { swIdx: 3,  x:  811, y:  376, w: 424 },
+          { swIdx: 4,  x:  792, y:  859, w: 537 },
+          { swIdx: 5,  x:  685, y:  769, w: 289 },
+          { swIdx: 6,  x:  212, y: 1152, w: 375 },
+          { swIdx: 7,  x:    0, y: 2000, w: 499 },
+          { swIdx: 8,  x:  357, y: 1357, w: 924 },
+          { swIdx: 9,  x: 1036, y: 3652, w: 281 },
+          { swIdx: 10, x: 1060, y: 2520, w: 257 },
+          { swIdx: 11, x:    0, y: 3258, w: 326 },
+          { swIdx: 12, x:  154, y: 2864, w: 689 },
+          { swIdx: 13, x:  919, y: 2563, w: 307 },
+          { swIdx: 14, x:  648, y: 4486, w: 250 },
+          { swIdx: 15, x:  833, y: 4232, w: 511 },
+          { swIdx: 16, x:  976, y: 3794, w: 260 },
+          { swIdx: 17, x:  179, y: 3959, w: 280 },
+        ];
+        var SAVE_KEY = 'kw-swatches-layout-v2';
+        var canvas = document.getElementById('kwSwCanvas');
+        var photoElMap = {}, lbOrder = [], lbCurIdx = 0, lbClosing = false;
+        var lbFloatImg = null, lbSourceImg = null;
+        var lbDestLeft = 0, lbDestTop = 0, lbDestW = 0;
+        var lbDescH = 80, lbDescGap = 18;
+
+        var lbBackdrop = document.getElementById('kwLbBackdrop');
+        var lbPrev = document.getElementById('kwLbPrev');
+        var lbNext = document.getElementById('kwLbNext');
+        var lbClose = document.getElementById('kwLbClose');
+        var lbCounter = document.getElementById('kwLbCounter');
+        var lbDesc = document.getElementById('kwLbDesc');
+        var lbNum = document.getElementById('kwLbNum');
+        var lbName = document.getElementById('kwLbName');
+        var lbTech = document.getElementById('kwLbTech');
+
+        function buildOrder(layout) {
+          lbOrder = layout.slice().sort(function (a, b) { return a.y - b.y; }).map(function (i) { return i.swIdx; });
+        }
+        function loadSaved() {
+          try { var r = localStorage.getItem(SAVE_KEY); if (r) return JSON.parse(r); } catch (e) {}
+          return null;
+        }
+        function renderAbsolute(layout) {
+          buildOrder(layout);
+          photoElMap = {};
+          canvas.innerHTML = '';
+          canvas.className = 'kw-sw-canvas';
+          var maxBottom = 0;
+          layout.forEach(function (item) { maxBottom = Math.max(maxBottom, item.y + 600); });
+          canvas.style.minHeight = (maxBottom + 300) + 'px';
+          layout.forEach(function (item) {
+            var sw = SWATCHES[item.swIdx]; if (!sw) return;
+            var el = document.createElement('div');
+            el.className = 'kw-sw-item' + (item.swIdx >= 14 ? ' kw-sw-item--dubied' : '');
+            el.style.left = item.x + 'px'; el.style.top = item.y + 'px'; el.style.width = item.w + 'px';
+            var img = document.createElement('img');
+            img.src = sw.src; img.alt = sw.name; img.loading = 'lazy';
+            img.addEventListener('load', function () {
+              var b = item.y + el.offsetHeight + 60;
+              if (b > parseFloat(canvas.style.minHeight || 0)) canvas.style.minHeight = b + 'px';
+            });
+            el.appendChild(img);
+            photoElMap[item.swIdx] = el;
+            (function (idx) { el.addEventListener('click', function () { openLightbox(idx); }); })(item.swIdx);
+            canvas.appendChild(el);
+          });
+        }
+        renderAbsolute(loadSaved() || HARDCODED_LAYOUT);
+
+        function computeSize(natW, natH) {
+          var vw = window.innerWidth, vh = window.innerHeight;
+          var maxW = vw * 0.82, maxH = (vh - lbDescH - lbDescGap - 48) * 0.9, ar = natW / natH, w, h;
+          if (natW <= maxW && natH <= maxH) { w = natW; h = natH; }
+          else if ((natW / maxW) > (natH / maxH)) { w = maxW; h = maxW / ar; }
+          else { h = maxH; w = maxH * ar; }
+          return { w: w, h: h };
+        }
+        function positionDesc(l, t, sw, sh) { lbDesc.style.left = l + 'px'; lbDesc.style.width = sw + 'px'; lbDesc.style.top = (t + sh + lbDescGap) + 'px'; }
+        function showControls(on) {
+          lbBackdrop.className = 'kw-lb-backdrop' + (on ? ' open' : '');
+          lbPrev.className = 'kw-lb-btn kw-lb-prev' + (on ? ' open' : '');
+          lbNext.className = 'kw-lb-btn kw-lb-next' + (on ? ' open' : '');
+          lbClose.className = 'kw-lb-btn kw-lb-close' + (on ? ' open' : '');
+          lbCounter.className = 'kw-lb-counter' + (on ? ' open' : '');
+        }
+        function openLightbox(swIdx) {
+          if (lbClosing || lbFloatImg) return;
+          var sw = SWATCHES[swIdx]; if (!sw) return;
+          lbCurIdx = lbOrder.indexOf(swIdx); if (lbCurIdx < 0) lbCurIdx = 0;
+          var el = photoElMap[swIdx]; if (!el) return;
+          var srcImg = el.querySelector('img');
+          var rect = el.getBoundingClientRect();
+          var natW = srcImg && srcImg.naturalWidth > 0 ? srcImg.naturalWidth : rect.width;
+          var natH = srcImg && srcImg.naturalHeight > 0 ? srcImg.naturalHeight : rect.height;
+          var size = computeSize(natW, natH);
+          var vw = window.innerWidth, vh = window.innerHeight;
+          var totalH = size.h + lbDescGap + lbDescH;
+          lbDestLeft = (vw - size.w) / 2; lbDestTop = (vh - totalH) / 2; lbDestW = size.w;
+          lbSourceImg = srcImg; srcImg.style.transition = 'none'; srcImg.style.opacity = '0';
+          lbFloatImg = document.createElement('img');
+          lbFloatImg.src = srcImg.src;
+          lbFloatImg.style.cssText = 'position:fixed;z-index:1001;margin:0;padding:0;border:none;display:block;left:' + rect.left + 'px;top:' + rect.top + 'px;width:' + rect.width + 'px;height:' + rect.height + 'px;transition:none;' + (swIdx >= 14 ? 'filter:saturate(0.55);' : '');
+          document.body.appendChild(lbFloatImg);
+          lbNum.textContent = sw.num; lbName.textContent = sw.name; lbTech.textContent = sw.tech;
+          positionDesc(lbDestLeft, lbDestTop, size.w, size.h);
+          lbCounter.textContent = (lbCurIdx + 1) + ' / ' + SWATCHES.length;
+          showControls(true);
+          lbFloatImg.offsetHeight;
+          var ease = '0.5s cubic-bezier(0.4,0,0.2,1)';
+          lbFloatImg.style.transition = 'left ' + ease + ',top ' + ease + ',width ' + ease + ',height ' + ease;
+          lbFloatImg.style.left = lbDestLeft + 'px'; lbFloatImg.style.top = lbDestTop + 'px';
+          lbFloatImg.style.width = size.w + 'px'; lbFloatImg.style.height = size.h + 'px';
+          setTimeout(function () { if (lbFloatImg) lbDesc.classList.add('open'); }, 440);
+        }
+        function closeLightbox() {
+          if (lbClosing || !lbFloatImg) return;
+          lbClosing = true; showControls(false); lbDesc.classList.remove('open');
+          var srcImg = lbSourceImg, floatImg = lbFloatImg;
+          if (srcImg) {
+            var rect = srcImg.getBoundingClientRect();
+            var ease = '0.44s cubic-bezier(0.4,0,0.2,1)';
+            floatImg.style.transition = 'left ' + ease + ',top ' + ease + ',width ' + ease + ',height ' + ease;
+            floatImg.style.left = rect.left + 'px'; floatImg.style.top = rect.top + 'px';
+            floatImg.style.width = rect.width + 'px'; floatImg.style.height = rect.height + 'px';
+            var fired = {}, swapped = false;
+            function doSwap() {
+              if (swapped) return; swapped = true;
+              floatImg.removeEventListener('transitionend', onProp);
+              floatImg.style.transition = 'none'; floatImg.style.opacity = '0';
+              srcImg.style.transition = 'none'; srcImg.style.opacity = '1';
+              requestAnimationFrame(function () {
+                if (floatImg.parentNode) floatImg.parentNode.removeChild(floatImg);
+                if (lbFloatImg === floatImg) lbFloatImg = null;
+                lbSourceImg = null; lbClosing = false;
+                requestAnimationFrame(function () { srcImg.style.opacity = ''; srcImg.style.transition = ''; });
+              });
+            }
+            function onProp(e) { fired[e.propertyName] = true; if (fired.left && fired.top && fired.width && fired.height) doSwap(); }
+            floatImg.addEventListener('transitionend', onProp);
+            setTimeout(doSwap, 520);
+          } else {
+            if (floatImg.parentNode) floatImg.parentNode.removeChild(floatImg);
+            lbFloatImg = null; lbSourceImg = null; lbClosing = false;
+          }
+        }
+        function navigate(dir) {
+          if (!lbFloatImg || lbClosing) return;
+          lbDesc.classList.remove('open');
+          if (lbSourceImg) { lbSourceImg.style.opacity = ''; lbSourceImg.style.transition = ''; }
+          lbCurIdx = (lbCurIdx + dir + SWATCHES.length) % SWATCHES.length;
+          var nextSwIdx = lbOrder[lbCurIdx];
+          var sw = SWATCHES[nextSwIdx];
+          lbSourceImg = photoElMap[nextSwIdx] ? photoElMap[nextSwIdx].querySelector('img') : null;
+          if (lbSourceImg) { lbSourceImg.style.transition = 'none'; lbSourceImg.style.opacity = '0'; }
+          var floatImg = lbFloatImg;
+          floatImg.style.transition = 'opacity 0.15s ease'; floatImg.style.opacity = '0';
+          setTimeout(function () {
+            if (floatImg !== lbFloatImg) return;
+            floatImg.src = sw.src; floatImg.style.opacity = '1';
+            lbNum.textContent = sw.num; lbName.textContent = sw.name; lbTech.textContent = sw.tech;
+            positionDesc(lbDestLeft, lbDestTop, lbDestW, parseFloat(floatImg.style.height) || 400);
+            setTimeout(function () { if (lbFloatImg) lbDesc.classList.add('open'); }, 300);
+          }, 150);
+          lbCounter.textContent = (lbCurIdx + 1) + ' / ' + SWATCHES.length;
+        }
+        lbBackdrop.addEventListener('click', closeLightbox);
+        lbClose.addEventListener('click', closeLightbox);
+        lbPrev.addEventListener('click', function (e) { e.stopPropagation(); navigate(-1); });
+        lbNext.addEventListener('click', function (e) { e.stopPropagation(); navigate(1); });
+        document.addEventListener('keydown', function (e) {
+          if (!lbFloatImg) return;
+          if (e.key === 'Escape') closeLightbox();
+          if (e.key === 'ArrowLeft') navigate(-1);
+          if (e.key === 'ArrowRight') navigate(1);
+        });
+      })();
       </script>
 
     </div>
