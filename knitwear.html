@@ -192,7 +192,7 @@
       <!-- Collection tabs -->
       <div class="kw-col-tabs fade-up">
         <button class="kw-col-tab active" id="kwTab0">Red Azalea</button>
-        <button class="kw-col-tab" id="kwTab1">Swatches</button>
+        <a href="knitwear-swatches.html" class="kw-col-tab">Swatches</a>
       </div>
 
       <!-- Panel 0: Red Azalea -->
@@ -279,10 +279,6 @@
           <span class="kw-closing-caption">praising the winter plum.</span>
         </div>
 
-        <div class="fade-up" style="text-align: right;">
-          <button class="kw-col-next-btn" id="kwToEtude">Swatches &#8594;</button>
-        </div>
-
         <script>
         (function () {
           function makeCarousel(prefix, total) {
@@ -302,59 +298,6 @@
         })();
         </script>
       </div>
-
-      <!-- Panel 1: Swatches -->
-      <div class="kw-col-panel" id="kwColPanel1" style="display:none">
-        <h3 class="kw-col-panel-title">Swatches</h3>
-        <p class="kw-col-panel-eyebrow">technical</p>
-
-        <div id="kwStackEditBar" class="kw-sw-edit-bar" style="display:none">
-          <button id="kwStackEditBtn" onclick="kwStackStartEdit()">Edit layout</button>
-          <button id="kwStackDoneBtn" onclick="kwStackFinishEdit()" style="display:none" class="active-edit">Done</button>
-          <button id="kwStackResetBtn" onclick="kwStackReset()" style="display:none">Reset</button>
-          <button id="kwStackExportBtn" onclick="kwStackExport()" style="display:none">Copy code</button>
-          <span id="kwStackHint" class="kw-sw-edit-hint" style="display:none">Drag to move · drag corner to resize · scroll to rotate</span>
-        </div>
-
-        <div class="kw-swatch-stack fade-up" id="kwStack">
-          <a href="knitwear-swatches.html"><img src="knitwear/swatches/1b.png" alt="" /></a>
-          <a href="knitwear-swatches.html"><img src="knitwear/swatches/cable%20knit.png" alt="" /></a>
-          <a href="knitwear-swatches.html"><img src="knitwear/swatches/5.png" alt="" /></a>
-          <a href="knitwear-swatches.html"><img src="knitwear/swatches/3.png" alt="" /></a>
-          <a href="knitwear-swatches.html"><img src="knitwear/swatches/4.png" alt="" /></a>
-          <a href="knitwear-swatches.html"><img src="knitwear/swatches/2.png" alt="" /></a>
-          <a href="knitwear-swatches.html"><img src="knitwear/swatches/1a.png" alt="" /></a>
-          <a href="knitwear-swatches.html"><img src="knitwear/swatches/6.png" alt="" /></a>
-          <a href="knitwear-swatches.html"><img src="knitwear/swatches/7.png" alt="" /></a>
-          <a href="knitwear-swatches.html"><img src="knitwear/swatches/8.png" alt="" /></a>
-          <a href="knitwear-swatches.html"><img src="knitwear/swatches/9.png" alt="" /></a>
-          <a href="knitwear-swatches.html"><img src="knitwear/swatches/10.png" alt="" /></a>
-        </div>
-        <div class="kw-swatch-cta-row fade-up">
-          <a href="knitwear-swatches.html" class="kw-swatch-cta">View swatches &rarr;</a>
-        </div>
-
-        <button class="kw-col-next-btn" id="kwToRa">&#8592; Red Azalea</button>
-      </div>
-
-      <script>
-      (function () {
-        var TOTAL = 2;
-        var current = 0;
-
-        function show(idx) {
-          document.getElementById('kwColPanel' + current).style.display = 'none';
-          document.getElementById('kwTab' + current).classList.remove('active');
-          current = ((idx % TOTAL) + TOTAL) % TOTAL;
-          document.getElementById('kwColPanel' + current).style.display = '';
-          document.getElementById('kwTab' + current).classList.add('active');
-        }
-
-        document.getElementById('kwTab0').addEventListener('click', function () { show(0); });
-        document.getElementById('kwTab1').addEventListener('click', function () { show(1); });
-        document.getElementById('kwToEtude').addEventListener('click', function () { show(1); });
-        document.getElementById('kwToRa').addEventListener('click', function () { show(0); });
-      })();
       </script>
 
     </div>
