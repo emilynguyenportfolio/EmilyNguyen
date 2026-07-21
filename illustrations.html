@@ -8,6 +8,47 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;1,6..96,300;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Outfit:wght@200;300&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .il-tabs {
+      display: flex;
+      gap: 2rem;
+      margin: 0.6rem 0 2.4rem;
+      flex-wrap: wrap;
+    }
+    .il-tab {
+      background: none;
+      border: none;
+      border-bottom: 1px solid transparent;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      padding: 0.2rem 0;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .il-tab:hover { color: var(--text-dark); }
+    .il-tab.active { color: var(--text-dark); border-bottom-color: var(--text-dark); }
+    .il-nav-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2.5rem;
+      padding-bottom: 4rem;
+    }
+    .il-nav-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      color: var(--text-mid);
+      padding: 0.4rem 0;
+      transition: color 0.15s;
+    }
+    .il-nav-btn:hover { color: var(--text-dark); }
+  </style>
 </head>
 <body>
   <aside class="sidebar" id="sidebar">
@@ -47,34 +88,63 @@
 
     <div class="page-body">
 
-      <div class="sub-heading fade-up">
-        <span class="eyebrow">fashion</span>
-        <h2>Fashion Illustrations</h2>
-      </div>
-      <div class="gallery-grid cols-3 fade-up">
-        <div class="g-item tall"><div class="img-placeholder"></div></div>
-        <div class="g-item"><div class="img-placeholder"></div></div>
-        <div class="g-item"><div class="img-placeholder"></div></div>
-        <div class="g-item"><div class="img-placeholder"></div></div>
-        <div class="g-item wide"><div class="img-placeholder"></div></div>
-        <div class="g-item"><div class="img-placeholder"></div></div>
-        <div class="g-item tall"><div class="img-placeholder"></div></div>
-        <div class="g-item"><div class="img-placeholder"></div></div>
-        <div class="g-item"><div class="img-placeholder"></div></div>
+      <div class="il-tabs fade-up">
+        <button class="il-tab active" id="ilTab0">Fashion Illustrations</button>
+        <button class="il-tab" id="ilTab1">Visual Arts</button>
       </div>
 
-      <div class="sub-divider"></div>
+      <!-- Panel 0: Fashion Illustrations -->
+      <div class="il-panel" id="ilPanel0">
+        <div class="gallery-grid cols-3">
+          <div class="g-item tall"><div class="img-placeholder"></div></div>
+          <div class="g-item"><div class="img-placeholder"></div></div>
+          <div class="g-item"><div class="img-placeholder"></div></div>
+          <div class="g-item"><div class="img-placeholder"></div></div>
+          <div class="g-item wide"><div class="img-placeholder"></div></div>
+          <div class="g-item"><div class="img-placeholder"></div></div>
+          <div class="g-item tall"><div class="img-placeholder"></div></div>
+          <div class="g-item"><div class="img-placeholder"></div></div>
+          <div class="g-item"><div class="img-placeholder"></div></div>
+        </div>
+        <div class="il-nav-row">
+          <span></span>
+          <button class="il-nav-btn" id="ilTo1">Visual Arts →</button>
+        </div>
+      </div>
 
-      <div class="sub-heading fade-up">
-        <span class="eyebrow">visual arts</span>
-        <h2>Other Works</h2>
+      <!-- Panel 1: Visual Arts -->
+      <div class="il-panel" id="ilPanel1" style="display:none">
+        <div class="gallery-grid cols-2">
+          <div class="g-item sq"><div class="img-placeholder"></div></div>
+          <div class="g-item sq"><div class="img-placeholder"></div></div>
+          <div class="g-item sq"><div class="img-placeholder"></div></div>
+          <div class="g-item sq"><div class="img-placeholder"></div></div>
+        </div>
+        <div class="il-nav-row">
+          <button class="il-nav-btn" id="ilTo0">← Fashion Illustrations</button>
+          <span></span>
+        </div>
       </div>
-      <div class="gallery-grid cols-2 fade-up">
-        <div class="g-item sq"><div class="img-placeholder"></div></div>
-        <div class="g-item sq"><div class="img-placeholder"></div></div>
-        <div class="g-item sq"><div class="img-placeholder"></div></div>
-        <div class="g-item sq"><div class="img-placeholder"></div></div>
-      </div>
+
+      <script>
+        (function () {
+          var current = 0;
+          function showTab(idx) {
+            document.getElementById('ilPanel' + current).style.display = 'none';
+            document.getElementById('ilTab' + current).classList.remove('active');
+            current = idx;
+            var panel = document.getElementById('ilPanel' + current);
+            panel.style.display = '';
+            document.getElementById('ilTab' + current).classList.add('active');
+            panel.querySelectorAll('.fade-up').forEach(function(el) { el.classList.add('visible'); });
+            window.scrollTo({ top: document.querySelector('.il-tabs').offsetTop - 40, behavior: 'smooth' });
+          }
+          document.getElementById('ilTab0').addEventListener('click', function () { showTab(0); });
+          document.getElementById('ilTab1').addEventListener('click', function () { showTab(1); });
+          document.getElementById('ilTo1').addEventListener('click', function () { showTab(1); });
+          document.getElementById('ilTo0').addEventListener('click', function () { showTab(0); });
+        })();
+      </script>
 
     </div>
 
