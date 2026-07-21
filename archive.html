@@ -8,6 +8,63 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;1,6..96,300;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Outfit:wght@200;300&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .ar-col-tabs {
+      display: flex;
+      gap: 2rem;
+      margin: 0.6rem 0 2.4rem;
+      flex-wrap: wrap;
+    }
+    .ar-col-tab {
+      background: none;
+      border: none;
+      border-bottom: 1px solid transparent;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      padding: 0.2rem 0;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .ar-col-tab:hover { color: var(--text-dark); }
+    .ar-col-tab.active { color: var(--text-dark); border-bottom-color: var(--text-dark); }
+    .ar-col-panel-title {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 300;
+      font-size: 2rem;
+      color: var(--text-dark);
+      margin: 0 0 0.3rem;
+      line-height: 1.1;
+    }
+    .ar-col-panel-eyebrow {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      margin: 0 0 2rem;
+    }
+    .ar-nav-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2.5rem;
+    }
+    .ar-nav-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      color: var(--text-mid);
+      padding: 0.4rem 0;
+      transition: color 0.15s;
+    }
+    .ar-nav-btn:hover { color: var(--text-dark); }
+  </style>
 </head>
 <body>
   <aside class="sidebar" id="sidebar">
@@ -46,72 +103,116 @@
     </section>
 
     <div class="page-body">
-      <div class="sub-heading fade-up">
-        <span class="eyebrow">collection</span>
-        <h2>Fallen Script</h2>
-        <a href="fallen-script.html" class="sub-case-link">View Case Study &#8594;</a>
-      </div>
-      <div class="fs-teaser fade-up">
-        <a href="fallen-script.html" class="fs-teaser-photo" style="left:1%;top:30px;width:34%;transform:rotate(-2deg);">
-          <img src="fallen-script/slide_12.jpg" alt="Fallen Script — Mood Board" />
-        </a>
-        <a href="fallen-script.html" class="fs-teaser-photo" style="left:31%;top:10px;width:18%;transform:rotate(3.2deg);">
-          <img src="fallen-script/slide_15.jpg" alt="Fallen Script — Lineup" />
-        </a>
-        <a href="fallen-script.html" class="fs-teaser-photo" style="left:51%;top:50px;width:27%;transform:rotate(-1.4deg);">
-          <img src="fallen-script/slide_01.jpg" alt="Fallen Script — Cover" />
-        </a>
-        <a href="fallen-script.html" class="fs-teaser-photo" style="left:73%;top:18px;width:14%;transform:rotate(4.8deg);">
-          <img src="fallen-script/slide_16.jpg" alt="Fallen Script — Jacket" />
-        </a>
-        <a href="fallen-script.html" class="fs-teaser-photo" style="left:15%;top:210px;width:22%;transform:rotate(2.6deg);">
-          <img src="fallen-script/slide_14.jpg" alt="Fallen Script — Fabrics" />
-        </a>
-        <a href="fallen-script.html" class="fs-teaser-photo" style="left:58%;top:195px;width:24%;transform:rotate(-2.5deg);">
-          <img src="fallen-script/slide_17.jpg" alt="Fallen Script — Dress" />
-        </a>
+
+      <div class="ar-col-tabs fade-up">
+        <button class="ar-col-tab active" id="arTab0">Fallen Script</button>
+        <button class="ar-col-tab" id="arTab1">Food for Clouds</button>
+        <button class="ar-col-tab" id="arTab2">Tailoring</button>
+        <button class="ar-col-tab" id="arTab3">Millinery</button>
       </div>
 
-
-      <div class="sub-divider"></div>
-
-      <div class="sub-heading fade-up">
-        <span class="eyebrow">collection</span>
-        <h2>Food for Clouds</h2>
+      <!-- Panel 0: Fallen Script -->
+      <div class="ar-col-panel" id="arPanel0">
+        <h3 class="ar-col-panel-title">Fallen Script</h3>
+        <p class="ar-col-panel-eyebrow">collection</p>
+        <div class="fs-teaser fade-up">
+          <a href="fallen-script.html" class="fs-teaser-photo" style="left:1%;top:30px;width:34%;transform:rotate(-2deg);">
+            <img src="fallen-script/slide_12.jpg" alt="Fallen Script — Mood Board" />
+          </a>
+          <a href="fallen-script.html" class="fs-teaser-photo" style="left:31%;top:10px;width:18%;transform:rotate(3.2deg);">
+            <img src="fallen-script/slide_15.jpg" alt="Fallen Script — Lineup" />
+          </a>
+          <a href="fallen-script.html" class="fs-teaser-photo" style="left:51%;top:50px;width:27%;transform:rotate(-1.4deg);">
+            <img src="fallen-script/slide_01.jpg" alt="Fallen Script — Cover" />
+          </a>
+          <a href="fallen-script.html" class="fs-teaser-photo" style="left:73%;top:18px;width:14%;transform:rotate(4.8deg);">
+            <img src="fallen-script/slide_16.jpg" alt="Fallen Script — Jacket" />
+          </a>
+          <a href="fallen-script.html" class="fs-teaser-photo" style="left:15%;top:210px;width:22%;transform:rotate(2.6deg);">
+            <img src="fallen-script/slide_14.jpg" alt="Fallen Script — Fabrics" />
+          </a>
+          <a href="fallen-script.html" class="fs-teaser-photo" style="left:58%;top:195px;width:24%;transform:rotate(-2.5deg);">
+            <img src="fallen-script/slide_17.jpg" alt="Fallen Script — Dress" />
+          </a>
+        </div>
+        <div class="ar-nav-row">
+          <span></span>
+          <button class="ar-nav-btn" id="arTo1">Food for Clouds →</button>
+        </div>
       </div>
-      <div class="gallery-grid cols-3 fade-up">
-        <div class="g-item tall"><div class="img-placeholder"></div></div>
-        <div class="g-item"><div class="img-placeholder"></div></div>
-        <div class="g-item"><div class="img-placeholder"></div></div>
-        <div class="g-item wide"><div class="img-placeholder"></div></div>
-        <div class="g-item"><div class="img-placeholder"></div></div>
+
+      <!-- Panel 1: Food for Clouds -->
+      <div class="ar-col-panel" id="arPanel1" style="display:none">
+        <h3 class="ar-col-panel-title">Food for Clouds</h3>
+        <p class="ar-col-panel-eyebrow">collection</p>
+        <div class="gallery-grid cols-3 fade-up">
+          <div class="g-item tall"><div class="img-placeholder"></div></div>
+          <div class="g-item"><div class="img-placeholder"></div></div>
+          <div class="g-item"><div class="img-placeholder"></div></div>
+          <div class="g-item wide"><div class="img-placeholder"></div></div>
+          <div class="g-item"><div class="img-placeholder"></div></div>
+        </div>
+        <div class="ar-nav-row">
+          <button class="ar-nav-btn" id="arTo0">← Fallen Script</button>
+          <button class="ar-nav-btn" id="arTo2">Tailoring →</button>
+        </div>
       </div>
 
-      <div class="sub-divider"></div>
+      <!-- Panel 2: Tailoring -->
+      <div class="ar-col-panel" id="arPanel2" style="display:none">
+        <h3 class="ar-col-panel-title">Tailoring</h3>
+        <p class="ar-col-panel-eyebrow">specialty</p>
+        <div class="fade-up" style="margin-bottom:2rem;">
+          <a href="tailoring.html" style="display:block;">
+            <img src="tailoring/finalwip.jpeg" alt="Tailoring" style="width:60%;display:block;" />
+          </a>
+        </div>
+        <div class="ar-nav-row">
+          <button class="ar-nav-btn" id="arTo1b">← Food for Clouds</button>
+          <button class="ar-nav-btn" id="arTo3">Millinery →</button>
+        </div>
+      </div>
 
-      <div class="sub-heading fade-up">
-        <span class="eyebrow">specialty</span>
-        <h2>Tailoring</h2>
-        <a href="tailoring.html" class="sub-case-link">View Tailoring &#8594;</a>
-      </div>
-      <div class="fade-up" style="margin-bottom:5rem;">
-        <a href="tailoring.html" style="display:block;">
-          <img src="tailoring/finalwip.jpeg" alt="Tailoring" style="width:60%;display:block;" />
-        </a>
+      <!-- Panel 3: Millinery -->
+      <div class="ar-col-panel" id="arPanel3" style="display:none">
+        <h3 class="ar-col-panel-title">Millinery</h3>
+        <p class="ar-col-panel-eyebrow">specialty</p>
+        <div class="gallery-grid cols-3 fade-up">
+          <div class="g-item"><div class="img-placeholder"></div></div>
+          <div class="g-item wide"><div class="img-placeholder"></div></div>
+          <div class="g-item tall"><div class="img-placeholder"></div></div>
+          <div class="g-item"><div class="img-placeholder"></div></div>
+        </div>
+        <div class="ar-nav-row">
+          <button class="ar-nav-btn" id="arTo2b">← Tailoring</button>
+          <span></span>
+        </div>
       </div>
 
-      <div class="sub-divider"></div>
-
-      <div class="sub-heading fade-up">
-        <span class="eyebrow">specialty</span>
-        <h2>Millinery</h2>
-      </div>
-      <div class="gallery-grid cols-3 fade-up">
-        <div class="g-item"><div class="img-placeholder"></div></div>
-        <div class="g-item wide"><div class="img-placeholder"></div></div>
-        <div class="g-item tall"><div class="img-placeholder"></div></div>
-        <div class="g-item"><div class="img-placeholder"></div></div>
-      </div>
+      <script>
+        (function () {
+          var current = 0;
+          var total = 4;
+          function showTab(idx) {
+            document.getElementById('arPanel' + current).style.display = 'none';
+            document.getElementById('arTab' + current).classList.remove('active');
+            current = idx;
+            document.getElementById('arPanel' + current).style.display = '';
+            document.getElementById('arTab' + current).classList.add('active');
+          }
+          for (var i = 0; i < total; i++) {
+            (function(n) {
+              document.getElementById('arTab' + n).addEventListener('click', function () { showTab(n); });
+            })(i);
+          }
+          document.getElementById('arTo1').addEventListener('click', function () { showTab(1); });
+          document.getElementById('arTo0').addEventListener('click', function () { showTab(0); });
+          document.getElementById('arTo2').addEventListener('click', function () { showTab(2); });
+          document.getElementById('arTo1b').addEventListener('click', function () { showTab(1); });
+          document.getElementById('arTo3').addEventListener('click', function () { showTab(3); });
+          document.getElementById('arTo2b').addEventListener('click', function () { showTab(2); });
+        })();
+      </script>
 
     </div>
 
