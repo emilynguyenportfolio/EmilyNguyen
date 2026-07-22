@@ -1134,6 +1134,20 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .g-item.wide { grid-column: span 1; }
   .hero-veil { display: none; }
   .page-body { padding: 3rem 1.5rem 5rem; }
+  /* prevent full-bleed negative margins from overflowing on mobile */
+  .fs-moodboard,
+  .fs-cf,
+  .fs-lineup { margin-left: 0; margin-right: 0; }
+  /* collapse two-column layouts */
+  .fs-cf { grid-template-columns: 1fr; }
+  .fs-cf-text { border-left: none; border-top: 1px solid var(--border); }
+  .fs-brands-grid,
+  .fs-research-grid,
+  .fs-products-grid { grid-template-columns: 1fr; }
+  /* keep images from overflowing their containers */
+  img { max-width: 100%; height: auto; }
+  /* knitwear carousel: constrain width */
+  .kw-garment-pair { grid-template-columns: 1fr; }
 }
 
 
