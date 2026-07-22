@@ -434,7 +434,7 @@
     }
 
     /* ── WHITE PROJECT ── */
-    .wp-carousel { position: relative; margin: 3rem 0; }
+    .wp-carousel { position: relative; margin: 3rem auto; max-width: 220px; }
     .wp-slide { display: none; }
     .wp-slide.active { display: block; animation: wpFade 0.4s ease; }
     @keyframes wpFade { from { opacity: 0; } to { opacity: 1; } }
@@ -546,7 +546,7 @@
 
         <!-- video -->
         <div class="wp-video-wrap">
-          <video controls preload="metadata">
+          <video autoplay muted loop playsinline controls>
             <source src="food%20for%20clouds/copy_6DEE46E1-BAD4-4CD9-A802-5A1122889AAE.mov" type="video/mp4" />
           </video>
         </div>
