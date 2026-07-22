@@ -432,6 +432,52 @@
       .fs-conclusion { grid-template-columns: 1fr; padding: 4rem 0; }
       .fs-brands-grid { grid-template-columns: 1fr; }
     }
+
+    /* ── WHITE PROJECT ── */
+    .wp-carousel { position: relative; margin: 3rem 0; }
+    .wp-slide { display: none; }
+    .wp-slide.active { display: block; animation: wpFade 0.4s ease; }
+    @keyframes wpFade { from { opacity: 0; } to { opacity: 1; } }
+    .wp-slide img { width: 100%; height: auto !important; display: block; object-fit: contain !important; }
+    .wp-carousel-nav { display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin-top: 0.8rem; }
+    .wp-carousel-btn { background: none; border: none; cursor: pointer; font-family: var(--font-body); font-size: 0.9rem; color: var(--text-mid); padding: 0.3rem 0.6rem; transition: color 0.15s; line-height: 1; }
+    .wp-carousel-btn:hover { color: var(--text-dark); }
+    .wp-carousel-dots { display: flex; align-items: center; gap: 0.5rem; }
+    .wp-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); border: none; cursor: pointer; padding: 0; transition: background 0.2s; }
+    .wp-dot.active { background: var(--text-dark); }
+
+    .wp-video-wrap { margin: 3rem 0; border-top: 1px solid var(--border); padding-top: 3rem; }
+    .wp-video-wrap video { width: 100%; height: auto; display: block; max-height: 80vh; background: #000; }
+
+    .wp-edit-bar { position: sticky; top: 0; z-index: 200; display: flex; align-items: center; gap: 1rem; padding: 0.7rem 0; margin: 2rem 0 0; background: rgba(242,241,238,0.97); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); }
+    .wp-edit-bar button { background: none; border: 1px solid var(--border); font-family: 'Outfit', sans-serif; font-size: 0.6rem; font-weight: 300; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text); padding: 0.4rem 0.9rem; cursor: pointer; transition: background 0.2s, color 0.2s; }
+    .wp-edit-bar button:hover { background: var(--text-dark); color: var(--bg); }
+    .wp-edit-bar button.active-edit { background: var(--text-dark); color: var(--bg); border-color: var(--text-dark); }
+    .wp-edit-hint { font-family: 'Outfit', sans-serif; font-size: 0.58rem; font-weight: 200; letter-spacing: 0.1em; color: var(--text-mid); }
+
+    .wp-photos-canvas { position: relative; margin: 2rem 0 4rem; }
+    .wp-photo-abs { position: absolute; cursor: pointer; }
+    .wp-photo-abs img { display: block; width: 100%; height: auto !important; pointer-events: none; transition: opacity 0.3s ease; object-fit: unset !important; }
+    .wp-photo-abs:hover img { opacity: 0.82; }
+    .wp-photos-canvas.editing .wp-photo-abs { cursor: grab; outline: 1px solid rgba(80,120,255,0.35); }
+    .wp-photos-canvas.editing .wp-photo-abs:active { cursor: grabbing; }
+    .wp-photo-abs .wp-edit-resize { display: none; position: absolute; right: -5px; bottom: -5px; width: 14px; height: 14px; background: #5070ff; border-radius: 2px; cursor: se-resize; z-index: 10; }
+    .wp-photos-canvas.editing .wp-photo-abs .wp-edit-resize { display: block; }
+    .wp-photo-abs .wp-edit-badge { display: none; position: absolute; top: 4px; left: 4px; background: rgba(0,0,0,0.65); color: #fff; font-family: monospace; font-size: 9px; padding: 2px 5px; pointer-events: none; z-index: 10; white-space: nowrap; }
+    .wp-photos-canvas.editing .wp-photo-abs .wp-edit-badge { display: block; }
+
+    .wp-lightbox { position: fixed; inset: 0; z-index: 999; pointer-events: none; }
+    .wp-lightbox.active { pointer-events: all; }
+    .wp-lightbox-close { position: fixed; top: 2rem; right: 2.5rem; z-index: 1002; background: none; border: none; color: rgba(20,19,18,0.4); font-family: 'Outfit', sans-serif; font-size: 0.62rem; font-weight: 200; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; padding: 0; opacity: 0; pointer-events: none; transition: opacity 0.25s ease, color 0.2s; }
+    .wp-lightbox.active .wp-lightbox-close { opacity: 1; pointer-events: all; }
+    .wp-lightbox-close:hover { color: rgba(20,19,18,0.85); }
+    .wp-lightbox-prev, .wp-lightbox-next { position: fixed; top: 50%; transform: translateY(-50%); z-index: 1002; background: none; border: none; color: rgba(20,19,18,0.28); font-size: 1.1rem; cursor: pointer; padding: 1.2rem; opacity: 0; pointer-events: none; transition: opacity 0.25s ease, color 0.2s; }
+    .wp-lightbox.active .wp-lightbox-prev, .wp-lightbox.active .wp-lightbox-next { opacity: 1; pointer-events: all; }
+    .wp-lightbox-prev:hover, .wp-lightbox-next:hover { color: rgba(20,19,18,0.75); }
+    .wp-lightbox-prev { left: 1rem; }
+    .wp-lightbox-next { right: 1rem; }
+    .wp-lightbox-counter { position: fixed; bottom: 1.8rem; left: 50%; transform: translateX(-50%); z-index: 1002; font-family: 'Outfit', sans-serif; font-size: 0.58rem; font-weight: 200; letter-spacing: 0.15em; color: rgba(20,19,18,0.3); opacity: 0; transition: opacity 0.25s ease; }
+    .wp-lightbox.active .wp-lightbox-counter { opacity: 1; }
   </style>
 </head>
 <body>
@@ -479,9 +525,44 @@
         <button class="ar-col-tab" id="arTab3">Millinery</button>
       </div>
 
-      <!-- ── PANEL 0: FOOD FOR CLOUDS ── -->
+      <!-- ── PANEL 0: WHITE PROJECT ── -->
       <div class="ar-col-panel" id="arPanel0">
-        <img src="food%20for%20clouds/front%20back%20side.png" alt="Food for Clouds — Front Back Side" style="width:75%;display:block;margin:0 auto;" />
+
+        <img src="food%20for%20clouds/front%20back%20side.png" alt="Food for Clouds — Front Back Side" style="width:75%;display:block;margin:0 auto 4rem;" />
+
+        <!-- carousel: 1 & 2 -->
+        <div class="wp-carousel" id="wpCarousel">
+          <div class="wp-slide active"><img src="food%20for%20clouds/1.jpg" alt="" loading="lazy" /></div>
+          <div class="wp-slide"><img src="food%20for%20clouds/2.jpeg" alt="" loading="lazy" /></div>
+          <div class="wp-carousel-nav">
+            <button class="wp-carousel-btn" id="wpPrev">&#8592;</button>
+            <div class="wp-carousel-dots">
+              <button class="wp-dot active" data-idx="0"></button>
+              <button class="wp-dot" data-idx="1"></button>
+            </div>
+            <button class="wp-carousel-btn" id="wpNext">&#8594;</button>
+          </div>
+        </div>
+
+        <!-- video -->
+        <div class="wp-video-wrap">
+          <video controls preload="metadata">
+            <source src="food%20for%20clouds/copy_6DEE46E1-BAD4-4CD9-A802-5A1122889AAE.mov" type="video/mp4" />
+          </video>
+        </div>
+
+        <!-- edit bar (visible with ?edit) -->
+        <div class="wp-edit-bar" id="wpEditBar" style="display:none">
+          <button id="wpEditBtn">Edit Layout</button>
+          <span class="wp-edit-hint" id="wpEditHint" style="display:none">Drag to move &nbsp;·&nbsp; drag corner to resize</span>
+          <button id="wpDoneBtn" style="display:none">Done</button>
+          <button id="wpResetBtn" style="display:none">Reset</button>
+          <button id="wpExportBtn" style="display:none">Copy layout code</button>
+        </div>
+
+        <!-- scattered photos -->
+        <div class="wp-photos-canvas" id="wpCanvas"></div>
+
         <div class="ar-nav-row">
           <span></span>
           <button class="ar-nav-btn" id="arTo1">FSF Case Study →</button>
@@ -721,6 +802,244 @@
           document.getElementById('arTo3').addEventListener('click', function () { showTab(3); });
           document.getElementById('arTo2b').addEventListener('click', function () { showTab(2); });
         })();
+      </script>
+
+      <script>
+      /* ── WHITE PROJECT PHOTOS ── */
+      (function () {
+        var FOLDER = 'food%20for%20clouds/';
+        var FILES = [
+          'PICT1052.JPG','PICT1068.JPG','PICT1070.JPG','PICT1078.JPG','PICT1082.JPG',
+          'PICT1091.JPG','PICT1101.JPG','PICT1103.JPG','PICT1104.JPG','PICT1106.JPG'
+        ];
+        var SAVE_KEY = 'wp-photos-layout-v1';
+        var WP_HARDCODED_LAYOUT = [
+          {fileIdx:0, x:0,   y:0,    w:520, h:693},
+          {fileIdx:1, x:560, y:50,   w:310, h:413},
+          {fileIdx:2, x:540, y:510,  w:330, h:440},
+          {fileIdx:3, x:0,   y:760,  w:390, h:520},
+          {fileIdx:4, x:430, y:1050, w:480, h:640},
+          {fileIdx:5, x:0,   y:1340, w:280, h:373},
+          {fileIdx:6, x:0,   y:1910, w:840, h:630},
+          {fileIdx:7, x:0,   y:2630, w:330, h:440},
+          {fileIdx:8, x:370, y:2700, w:500, h:667},
+          {fileIdx:9, x:40,  y:3470, w:720, h:960}
+        ];
+
+        var srcs = FILES.map(function(f){ return FOLDER + encodeURIComponent(f); });
+        var isEditing = false;
+        var visualOrder = [];
+        var photoElMap = {};
+
+        var canvas   = document.getElementById('wpCanvas');
+        var editBar  = document.getElementById('wpEditBar');
+        var editBtn  = document.getElementById('wpEditBtn');
+        var doneBtn  = document.getElementById('wpDoneBtn');
+        var resetBtn = document.getElementById('wpResetBtn');
+        var exportBtn = document.getElementById('wpExportBtn');
+        var editHint = document.getElementById('wpEditHint');
+
+        /* lightbox appended to body so display:none on panel doesn't clip it */
+        var lightbox = document.createElement('div');
+        lightbox.className = 'wp-lightbox';
+        lightbox.innerHTML =
+          '<button class="wp-lightbox-close" id="wpLbClose">close</button>' +
+          '<button class="wp-lightbox-prev" id="wpLbPrev">&#8592;</button>' +
+          '<button class="wp-lightbox-next" id="wpLbNext">&#8594;</button>' +
+          '<span class="wp-lightbox-counter" id="wpLbCtr"></span>';
+        document.body.appendChild(lightbox);
+        var lbClose = document.getElementById('wpLbClose');
+        var lbPrev  = document.getElementById('wpLbPrev');
+        var lbNext  = document.getElementById('wpLbNext');
+        var lbCtr   = document.getElementById('wpLbCtr');
+        var currentIdx = 0, lbClosing = false, lbFloatImg = null, lbSourceEl = null;
+
+        if (location.search.includes('edit')) {
+          editBar.style.display = 'flex';
+          exportBtn.style.display = '';
+        }
+
+        renderAbsolute(loadSaved() || WP_HARDCODED_LAYOUT, false);
+
+        /* ── carousel ── */
+        var slides = document.querySelectorAll('#wpCarousel .wp-slide');
+        var dots   = document.querySelectorAll('#wpCarousel .wp-dot');
+        var carIdx = 0;
+        function carGoTo(n) {
+          slides[carIdx].classList.remove('active');
+          dots[carIdx].classList.remove('active');
+          carIdx = (n + slides.length) % slides.length;
+          slides[carIdx].classList.add('active');
+          dots[carIdx].classList.add('active');
+        }
+        document.getElementById('wpPrev').addEventListener('click', function(){ carGoTo(carIdx - 1); });
+        document.getElementById('wpNext').addEventListener('click', function(){ carGoTo(carIdx + 1); });
+        dots.forEach(function(dot, i){ dot.addEventListener('click', function(){ carGoTo(i); }); });
+
+        /* ── canvas ── */
+        function buildVisualOrder(layout) {
+          visualOrder = layout.slice().sort(function(a,b){ return a.y - b.y; }).map(function(item){ return item.fileIdx; });
+        }
+
+        function renderAbsolute(layout, editing) {
+          buildVisualOrder(layout);
+          photoElMap = {};
+          canvas.innerHTML = '';
+          canvas.className = 'wp-photos-canvas' + (editing ? ' editing' : '');
+          var maxBottom = 0;
+          layout.forEach(function(item){ maxBottom = Math.max(maxBottom, item.y + item.h + 200); });
+          canvas.style.minHeight = maxBottom + 'px';
+          layout.forEach(function(item) {
+            var el = document.createElement('div');
+            el.className = 'wp-photo-abs';
+            el.style.left  = item.x + 'px';
+            el.style.top   = item.y + 'px';
+            el.style.width = item.w + 'px';
+            var img = document.createElement('img');
+            img.src = srcs[item.fileIdx];
+            img.alt = '';
+            img.loading = 'lazy';
+            var badge = document.createElement('div');
+            badge.className = 'wp-edit-badge';
+            badge.textContent = Math.round(item.w) + 'px wide';
+            img.addEventListener('load', function() {
+              var bottom = item.y + el.offsetHeight + 200;
+              if (bottom > parseFloat(canvas.style.minHeight || 0)) canvas.style.minHeight = bottom + 'px';
+              badge.textContent = Math.round(item.w) + 'px wide';
+            });
+            el.appendChild(img);
+            var rh = document.createElement('div');
+            rh.className = 'wp-edit-resize';
+            el.appendChild(rh);
+            el.appendChild(badge);
+            photoElMap[item.fileIdx] = el;
+            if (editing) { makeDraggable(el, item, badge); makeResizable(rh, el, item, badge); }
+            else { (function(idx){ el.addEventListener('click', function(){ openLightbox(idx); }); })(item.fileIdx); }
+            canvas.appendChild(el);
+          });
+        }
+
+        function makeDraggable(el, item, badge) {
+          el.addEventListener('mousedown', function(e) {
+            if (e.target.classList.contains('wp-edit-resize')) return;
+            e.preventDefault();
+            var sx = e.clientX, sy = e.clientY, sl = item.x, st = item.y;
+            el.style.zIndex = '50';
+            function onMove(e) {
+              item.x = Math.max(0, sl + e.clientX - sx);
+              item.y = Math.max(0, st + e.clientY - sy);
+              el.style.left = item.x + 'px'; el.style.top = item.y + 'px';
+              var bottom = item.y + el.offsetHeight + 200;
+              if (bottom > parseFloat(canvas.style.minHeight || 0)) canvas.style.minHeight = bottom + 'px';
+            }
+            function onUp() { el.style.zIndex = ''; autosave(); document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); }
+            document.addEventListener('mousemove', onMove); document.addEventListener('mouseup', onUp);
+          });
+        }
+
+        function makeResizable(rh, el, item, badge) {
+          rh.addEventListener('mousedown', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            var sx = e.clientX, sw = item.w;
+            function onMove(e) { item.w = Math.max(60, sw + e.clientX - sx); el.style.width = item.w + 'px'; badge.textContent = Math.round(item.w) + 'px wide'; }
+            function onUp() { autosave(); document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); }
+            document.addEventListener('mousemove', onMove); document.addEventListener('mouseup', onUp);
+          });
+        }
+
+        editBtn.addEventListener('click', function() {
+          renderAbsolute(loadSaved() || WP_HARDCODED_LAYOUT, true); isEditing = true;
+          editBtn.style.display = 'none'; doneBtn.style.display = ''; resetBtn.style.display = ''; editHint.style.display = '';
+          doneBtn.classList.add('active-edit');
+        });
+        doneBtn.addEventListener('click', function() {
+          autosave(); renderAbsolute(loadSaved(), false); isEditing = false;
+          editBtn.style.display = ''; doneBtn.style.display = 'none'; resetBtn.style.display = 'none'; editHint.style.display = 'none';
+          doneBtn.classList.remove('active-edit');
+        });
+        resetBtn.addEventListener('click', function() {
+          localStorage.removeItem(SAVE_KEY); renderAbsolute(WP_HARDCODED_LAYOUT, false); isEditing = false;
+          editBtn.style.display = ''; doneBtn.style.display = 'none'; resetBtn.style.display = 'none'; editHint.style.display = 'none';
+        });
+        exportBtn.addEventListener('click', function() {
+          var s = loadSaved(); if (!s) { alert('No saved layout yet.'); return; }
+          var code = 'var WP_HARDCODED_LAYOUT = ' + JSON.stringify(s) + ';';
+          navigator.clipboard.writeText(code).then(function() { exportBtn.textContent = 'Copied!'; setTimeout(function(){ exportBtn.textContent = 'Copy layout code'; }, 2000); });
+        });
+
+        function autosave() {
+          var els = canvas.querySelectorAll('.wp-photo-abs'), layout = [];
+          els.forEach(function(el, i) { layout.push({ fileIdx: i, x: parseFloat(el.style.left), y: parseFloat(el.style.top), w: parseFloat(el.style.width), h: el.offsetHeight }); });
+          localStorage.setItem(SAVE_KEY, JSON.stringify(layout));
+        }
+        function loadSaved() {
+          try { var r = localStorage.getItem(SAVE_KEY); if (r) return JSON.parse(r); } catch(e) {} return null;
+        }
+
+        /* ── lightbox ── */
+        function computeFinalSize(nw, nh) {
+          var vw = window.innerWidth, vh = window.innerHeight, maxW = vw*0.86, maxH = vh*0.88, ar = nw/nh, w, h;
+          if (nw<=maxW && nh<=maxH){w=nw;h=nh;} else if ((nw/maxW)>(nh/maxH)){w=maxW;h=maxW/ar;} else {h=maxH;w=maxH*ar;}
+          return {w:w,h:h};
+        }
+        function openLightbox(fileIdx) {
+          if (lbClosing || lbFloatImg) return;
+          currentIdx = visualOrder.indexOf(fileIdx); if (currentIdx === -1) currentIdx = 0;
+          lbSourceEl = photoElMap[fileIdx]; if (!lbSourceEl) return;
+          var rect = lbSourceEl.getBoundingClientRect();
+          var si = lbSourceEl.querySelector('img');
+          var nw = (si && si.naturalWidth > 0) ? si.naturalWidth : rect.width;
+          var nh = (si && si.naturalHeight > 0) ? si.naturalHeight : rect.height;
+          var size = computeFinalSize(nw, nh);
+          var vw = window.innerWidth, vh = window.innerHeight;
+          var dL = (vw-size.w)/2, dT = (vh-size.h)/2;
+          if (si) { si.style.transition='none'; si.style.opacity='0'; }
+          lbFloatImg = document.createElement('img');
+          lbFloatImg.src = srcs[visualOrder[currentIdx]];
+          lbFloatImg.style.cssText = 'position:fixed;z-index:1001;margin:0;padding:0;border:none;display:block;left:'+rect.left+'px;top:'+rect.top+'px;width:'+rect.width+'px;height:'+rect.height+'px;transition:none;';
+          document.body.appendChild(lbFloatImg);
+          lbCtr.textContent = (currentIdx+1) + ' / ' + FILES.length;
+          lightbox.classList.add('active');
+          lbFloatImg.offsetHeight;
+          var ease = '0.5s cubic-bezier(0.4,0,0.2,1)';
+          lbFloatImg.style.transition = 'left '+ease+',top '+ease+',width '+ease+',height '+ease;
+          lbFloatImg.style.left=dL+'px'; lbFloatImg.style.top=dT+'px'; lbFloatImg.style.width=size.w+'px'; lbFloatImg.style.height=size.h+'px';
+        }
+        function closeLightbox() {
+          if (lbClosing || !lbFloatImg) return;
+          lbClosing = true; lightbox.classList.remove('active');
+          var sourceEl = lbSourceEl, floatImg = lbFloatImg;
+          if (sourceEl) {
+            var rect = sourceEl.getBoundingClientRect();
+            var ease = '0.44s cubic-bezier(0.4,0,0.2,1)';
+            floatImg.style.transition = 'left '+ease+',top '+ease+',width '+ease+',height '+ease;
+            floatImg.style.left=rect.left+'px'; floatImg.style.top=rect.top+'px'; floatImg.style.width=rect.width+'px'; floatImg.style.height=rect.height+'px';
+            var img = sourceEl.querySelector('img'), fired = {}, swapped = false;
+            function doSwap(){ if(swapped)return; swapped=true; floatImg.removeEventListener('transitionend',onProp); floatImg.style.transition='none'; floatImg.style.opacity='0'; if(img){img.style.transition='none';img.style.opacity='1';} requestAnimationFrame(function(){ if(floatImg.parentNode)floatImg.parentNode.removeChild(floatImg); if(lbFloatImg===floatImg)lbFloatImg=null; lbSourceEl=null; lbClosing=false; if(img)requestAnimationFrame(function(){img.style.opacity='';img.style.transition='';}); }); }
+            function onProp(e){ fired[e.propertyName]=true; if(fired.left&&fired.top&&fired.width&&fired.height)doSwap(); }
+            floatImg.addEventListener('transitionend', onProp);
+            setTimeout(doSwap, 500);
+          } else { if(floatImg.parentNode)floatImg.parentNode.removeChild(floatImg); lbFloatImg=null; lbSourceEl=null; lbClosing=false; }
+        }
+        function navigate(dir) {
+          if (!lbFloatImg || lbClosing) return;
+          if (lbSourceEl) { var oi = lbSourceEl.querySelector('img'); if(oi) oi.style.opacity=''; }
+          currentIdx = (currentIdx + dir + FILES.length) % FILES.length;
+          var fileIdx = visualOrder[currentIdx] !== undefined ? visualOrder[currentIdx] : currentIdx;
+          lbSourceEl = photoElMap[fileIdx] || null;
+          if (lbSourceEl) { var ni = lbSourceEl.querySelector('img'); if(ni) ni.style.opacity='0'; }
+          var floatImg = lbFloatImg;
+          floatImg.style.transition='opacity 0.15s ease'; floatImg.style.opacity='0';
+          setTimeout(function(){ if(floatImg===lbFloatImg){floatImg.src=srcs[visualOrder[currentIdx]];floatImg.style.opacity='1';} }, 150);
+          lbCtr.textContent = (currentIdx+1) + ' / ' + FILES.length;
+        }
+        lbClose.addEventListener('click', closeLightbox);
+        lbPrev.addEventListener('click', function(e){ e.stopPropagation(); navigate(-1); });
+        lbNext.addEventListener('click', function(e){ e.stopPropagation(); navigate(1); });
+        lightbox.addEventListener('click', closeLightbox);
+        document.addEventListener('keydown', function(e){ if(!lightbox.classList.contains('active'))return; if(e.key==='Escape')closeLightbox(); if(e.key==='ArrowLeft')navigate(-1); if(e.key==='ArrowRight')navigate(1); });
+        window.addEventListener('scroll', function(){ if(lightbox.classList.contains('active'))closeLightbox(); }, { passive: true });
+      })();
       </script>
 
     </div>
