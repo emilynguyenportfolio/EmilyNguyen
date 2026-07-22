@@ -791,20 +791,7 @@
         var VIDEO_SRC = 'food%20for%20clouds/video.mp4';
         var CAR_SRCS  = ['food%20for%20clouds/1.jpg', 'food%20for%20clouds/2.jpeg'];
         var SAVE_KEY = 'wp-photos-layout-v2';
-        var WP_HARDCODED_LAYOUT = [
-          {type:'carousel', x:0,   y:0,    w:240, h:330},
-          {type:'video',    x:270, y:0,    w:530, h:380},
-          {type:'photo', fileIdx:0, x:0,   y:460,  w:520, h:693},
-          {type:'photo', fileIdx:1, x:560, y:510,  w:310, h:413},
-          {type:'photo', fileIdx:2, x:540, y:980,  w:330, h:440},
-          {type:'photo', fileIdx:3, x:0,   y:1230, w:390, h:520},
-          {type:'photo', fileIdx:4, x:430, y:1520, w:480, h:640},
-          {type:'photo', fileIdx:5, x:0,   y:1810, w:280, h:373},
-          {type:'photo', fileIdx:6, x:0,   y:2380, w:840, h:630},
-          {type:'photo', fileIdx:7, x:0,   y:3100, w:330, h:440},
-          {type:'photo', fileIdx:8, x:370, y:3170, w:500, h:667},
-          {type:'photo', fileIdx:9, x:40,  y:3940, w:720, h:960}
-        ];
+        var WP_HARDCODED_LAYOUT = [{"type":"carousel","x":1094,"y":488,"w":148,"h":215},{"type":"video","x":270,"y":0,"w":689,"h":517},{"type":"photo","x":1117,"y":1516,"w":138,"h":225,"fileIdx":0},{"type":"photo","x":60,"y":916,"w":179,"h":267,"fileIdx":1},{"type":"photo","x":262,"y":959,"w":330,"h":451,"fileIdx":2},{"type":"photo","x":132,"y":1737,"w":326,"h":460,"fileIdx":3},{"type":"photo","x":670,"y":2102,"w":480,"h":641,"fileIdx":4},{"type":"photo","x":1111,"y":2832,"w":149,"h":241,"fileIdx":5},{"type":"photo","x":359,"y":3902,"w":267,"h":391,"fileIdx":6},{"type":"photo","x":20,"y":3180,"w":219,"h":301,"fileIdx":7},{"type":"photo","x":253,"y":3179,"w":235,"h":301,"fileIdx":8},{"type":"photo","x":651,"y":3439,"w":520,"h":735,"fileIdx":9}];
 
         var srcs = FILES.map(function(f){ return FOLDER + encodeURIComponent(f); });
         var isEditing = false;
