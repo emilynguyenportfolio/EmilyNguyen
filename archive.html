@@ -788,7 +788,7 @@
           'PICT1052.JPG','PICT1068.JPG','PICT1070.JPG','PICT1078.JPG','PICT1082.JPG',
           'PICT1091.JPG','PICT1101.JPG','PICT1103.JPG','PICT1104.JPG','PICT1106.JPG'
         ];
-        var VIDEO_SRC = 'food%20for%20clouds/video.mov';
+        var VIDEO_SRC = 'food%20for%20clouds/video.mp4';
         var CAR_SRCS  = ['food%20for%20clouds/1.jpg', 'food%20for%20clouds/2.jpeg'];
         var SAVE_KEY = 'wp-photos-layout-v2';
         var WP_HARDCODED_LAYOUT = [
@@ -894,7 +894,7 @@
             vid.setAttribute('playsinline', ''); vid.controls = true;
             vid.style.cssText = 'width:100%;height:auto;display:block;';
             var src = document.createElement('source');
-            src.src = VIDEO_SRC; src.type = 'video/mp4';
+            src.src = VIDEO_SRC; src.type = 'video/mp4; codecs="avc1.42E01E, mp4a.40.2"';
             vid.appendChild(src);
             el.appendChild(vid);
           } else {
