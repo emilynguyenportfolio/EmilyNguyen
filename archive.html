@@ -275,7 +275,7 @@
     }
     .fs-conclusion {
       border-top: 1px solid var(--border);
-      padding: 5rem 0;
+      padding: 3rem 0 2rem;
       display: grid;
       grid-template-columns: 1fr 1.6fr;
       gap: 4rem;
@@ -443,6 +443,7 @@
     .wp-can-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--border); border: none; cursor: pointer; padding: 0; transition: background 0.2s; display: inline-block; }
     .wp-can-dot.active { background: var(--text-dark); }
     .wp-photos-canvas.editing .wp-can-nav { pointer-events: none; opacity: 0.4; }
+    .wp-photos-canvas.editing .wp-photo-abs[data-type="video"] video { pointer-events: none; }
     .wp-photo-abs[data-type="carousel"], .wp-photo-abs[data-type="video"] { cursor: default; }
     .wp-photo-abs video { width: 100%; height: auto; display: block; }
 
@@ -922,7 +923,7 @@
         function makeDraggable(el, item, badge) {
           el.addEventListener('mousedown', function(e) {
             if (e.target.classList.contains('wp-edit-resize')) return;
-            if (e.target.tagName === 'VIDEO' || e.target.tagName === 'BUTTON') return;
+            if (e.target.tagName === 'BUTTON') return;
             e.preventDefault();
             var sx = e.clientX, sy = e.clientY, sl = item.x, st = item.y;
             el.style.zIndex = '50';
