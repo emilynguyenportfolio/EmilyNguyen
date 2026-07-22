@@ -890,7 +890,7 @@
             if (!editing) initCarousel(el);
           } else if (item.type === 'video') {
             var vid = document.createElement('video');
-            vid.autoplay = true; vid.muted = true; vid.loop = true;
+            vid.loop = true;
             vid.setAttribute('playsinline', ''); vid.controls = true;
             vid.style.cssText = 'width:100%;height:auto;display:block;';
             var src = document.createElement('source');
