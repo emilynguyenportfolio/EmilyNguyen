@@ -239,6 +239,7 @@
       <div class="kw-col-tabs fade-up">
         <button class="kw-col-tab active" id="kwTab0">Red Azalea</button>
         <button class="kw-col-tab" id="kwTab1">Swatches</button>
+        <button class="kw-col-tab" id="kwTab2">More Works</button>
       </div>
 
       <!-- Panel 0: Red Azalea -->
@@ -350,7 +351,28 @@
         <h3 class="kw-col-panel-title">Swatches</h3>
         <p class="kw-col-panel-eyebrow">technical</p>
         <div class="kw-sw-canvas" id="kwSwCanvas"></div>
-        <button class="kw-col-next-btn" id="kwToRa">&#8592; Red Azalea</button>
+        <div style="display:flex;justify-content:space-between;margin-top:2.5rem;padding-bottom:4rem;">
+          <button class="kw-col-next-btn" id="kwToRa">&#8592; Red Azalea</button>
+          <button class="kw-col-next-btn" id="kwToMw">More Works &#8594;</button>
+        </div>
+      </div>
+
+      <!-- Panel 2: More Works -->
+      <div class="kw-col-panel" id="kwColPanel2" style="display:none">
+        <h3 class="kw-col-panel-title">More Works</h3>
+        <p class="kw-col-panel-eyebrow">additional pieces</p>
+        <div class="gallery-grid cols-3" style="margin-top:2rem;">
+          <div class="g-item"><div class="img-placeholder"></div></div>
+          <div class="g-item wide"><div class="img-placeholder"></div></div>
+          <div class="g-item tall"><div class="img-placeholder"></div></div>
+          <div class="g-item"><div class="img-placeholder"></div></div>
+          <div class="g-item"><div class="img-placeholder"></div></div>
+          <div class="g-item wide"><div class="img-placeholder"></div></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:2.5rem;padding-bottom:4rem;">
+          <button class="kw-col-next-btn" id="kwToSw">&#8592; Swatches</button>
+          <span></span>
+        </div>
       </div>
 
       <script>
@@ -366,7 +388,10 @@
         }
         document.getElementById('kwTab0').addEventListener('click', function () { showTab(0); });
         document.getElementById('kwTab1').addEventListener('click', function () { showTab(1); });
+        document.getElementById('kwTab2').addEventListener('click', function () { showTab(2); });
         document.getElementById('kwToRa').addEventListener('click', function () { showTab(0); });
+        document.getElementById('kwToMw').addEventListener('click', function () { showTab(2); });
+        document.getElementById('kwToSw').addEventListener('click', function () { showTab(1); });
 
         /* ── SWATCHES CANVAS ── */
         var SWATCHES = [
