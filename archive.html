@@ -446,6 +446,13 @@
     .wp-photos-canvas.editing .wp-photo-abs[data-type="video"] video { pointer-events: none; }
     .wp-photo-abs[data-type="carousel"], .wp-photo-abs[data-type="video"] { cursor: default; }
     .wp-photo-abs video { width: 100%; height: auto; display: block; }
+    @media (max-width: 600px) {
+      .wp-photos-canvas { min-height: 0 !important; }
+      .wp-photo-abs { position: relative !important; left: 0 !important; top: 0 !important; width: 88% !important; max-width: 360px; margin: 1rem auto !important; display: block !important; }
+      .wp-photo-abs[data-type="video"] { width: 100% !important; max-width: 100%; }
+      .wp-photo-abs .wp-edit-resize, .wp-photo-abs .wp-edit-badge { display: none !important; }
+      .wp-edit-bar { display: none !important; }
+    }
 
     .wp-edit-bar { position: sticky; top: 0; z-index: 200; display: flex; align-items: center; gap: 1rem; padding: 0.7rem 0; margin: 2rem 0 0; background: rgba(242,241,238,0.97); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); }
     .wp-edit-bar button { background: none; border: 1px solid var(--border); font-family: 'Outfit', sans-serif; font-size: 0.6rem; font-weight: 300; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text); padding: 0.4rem 0.9rem; cursor: pointer; transition: background 0.2s, color 0.2s; }
@@ -526,7 +533,7 @@
       <!-- ── PANEL 0: WHITE PROJECT ── -->
       <div class="ar-col-panel" id="arPanel0">
 
-        <img src="food%20for%20clouds/front%20back%20side.png" alt="Food for Clouds — Front Back Side" style="width:75%;display:block;margin:0 auto 4rem;" />
+        <img src="food%20for%20clouds/front%20back%20side.jpg" alt="Food for Clouds — Front Back Side" style="width:75%;display:block;margin:0 auto 4rem;" />
 
         <!-- edit bar (visible with ?edit) -->
         <div class="wp-edit-bar" id="wpEditBar" style="display:none">
@@ -919,7 +926,7 @@
           var maxBottom = 0;
           layout.forEach(function(item){ maxBottom = Math.max(maxBottom, item.y + item.h + 200); });
           canvas.style.minHeight = maxBottom + 'px';
-          layout.forEach(function(item){ canvas.appendChild(createCanvasEl(item, editing)); });
+          layout.slice().sort(function(a,b){ return a.y !== b.y ? a.y - b.y : a.x - b.x; }).forEach(function(item){ canvas.appendChild(createCanvasEl(item, editing)); });
           buildVisualOrder();
         }
 
