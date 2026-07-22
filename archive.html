@@ -846,10 +846,13 @@
         }
 
         /* ── canvas ── */
-        function buildVisualOrder(layout) {
-          visualOrder = layout.filter(function(i){ return i.type === 'photo'; })
-            .slice().sort(function(a,b){ return a.y - b.y; })
-            .map(function(item){ return item.fileIdx; });
+        function buildVisualOrder() {
+          var entries = Object.keys(photoElMap).map(function(idx) {
+            var el = photoElMap[idx];
+            return { fileIdx: parseInt(idx), top: el.offsetTop, left: el.offsetLeft };
+          });
+          entries.sort(function(a, b) { return a.top !== b.top ? a.top - b.top : a.left - b.left; });
+          visualOrder = entries.map(function(e) { return e.fileIdx; });
         }
 
         function createCanvasEl(item, editing) {
@@ -910,7 +913,6 @@
         }
 
         function renderAbsolute(layout, editing) {
-          buildVisualOrder(layout);
           photoElMap = {};
           canvas.innerHTML = '';
           canvas.className = 'wp-photos-canvas' + (editing ? ' editing' : '');
@@ -918,6 +920,7 @@
           layout.forEach(function(item){ maxBottom = Math.max(maxBottom, item.y + item.h + 200); });
           canvas.style.minHeight = maxBottom + 'px';
           layout.forEach(function(item){ canvas.appendChild(createCanvasEl(item, editing)); });
+          buildVisualOrder();
         }
 
         function makeDraggable(el, item, badge) {
@@ -990,6 +993,7 @@
         }
         function openLightbox(fileIdx) {
           if (lbClosing || lbFloatImg) return;
+          buildVisualOrder();
           currentIdx = visualOrder.indexOf(fileIdx); if (currentIdx === -1) currentIdx = 0;
           lbSourceEl = photoElMap[fileIdx]; if (!lbSourceEl) return;
           var rect = lbSourceEl.getBoundingClientRect();
