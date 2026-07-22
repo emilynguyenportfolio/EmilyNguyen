@@ -434,20 +434,17 @@
     }
 
     /* ── WHITE PROJECT ── */
-    .wp-carousel { position: relative; margin: 3rem auto; max-width: 160px; }
-    .wp-slide { display: none; }
-    .wp-slide.active { display: block; animation: wpFade 0.4s ease; }
-    @keyframes wpFade { from { opacity: 0; } to { opacity: 1; } }
-    .wp-slide img { width: 100%; max-height: 200px; height: auto !important; display: block; object-fit: contain !important; }
-    .wp-carousel-nav { display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin-top: 0.8rem; }
-    .wp-carousel-btn { background: none; border: none; cursor: pointer; font-family: var(--font-body); font-size: 0.9rem; color: var(--text-mid); padding: 0.3rem 0.6rem; transition: color 0.15s; line-height: 1; }
-    .wp-carousel-btn:hover { color: var(--text-dark); }
-    .wp-carousel-dots { display: flex; align-items: center; gap: 0.5rem; }
-    .wp-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); border: none; cursor: pointer; padding: 0; transition: background 0.2s; }
-    .wp-dot.active { background: var(--text-dark); }
-
-    .wp-video-wrap { margin: 3rem 0; border-top: 1px solid var(--border); padding-top: 3rem; }
-    .wp-video-wrap video { width: 100%; height: auto; display: block; max-height: 80vh; background: #000; }
+    .wp-can-slide { display: none; }
+    .wp-can-slide.active { display: block; }
+    .wp-can-slide img { width: 100%; height: auto !important; display: block; object-fit: contain !important; }
+    .wp-can-nav { display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.4rem 0; }
+    .wp-can-prev, .wp-can-next { background: none; border: none; cursor: pointer; font-family: var(--font-body); font-size: 0.8rem; color: var(--text-mid); padding: 0.15rem 0.4rem; transition: color 0.15s; line-height: 1; }
+    .wp-can-prev:hover, .wp-can-next:hover { color: var(--text-dark); }
+    .wp-can-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--border); border: none; cursor: pointer; padding: 0; transition: background 0.2s; display: inline-block; }
+    .wp-can-dot.active { background: var(--text-dark); }
+    .wp-photos-canvas.editing .wp-can-nav { pointer-events: none; opacity: 0.4; }
+    .wp-photo-abs[data-type="carousel"], .wp-photo-abs[data-type="video"] { cursor: default; }
+    .wp-photo-abs video { width: 100%; height: auto; display: block; }
 
     .wp-edit-bar { position: sticky; top: 0; z-index: 200; display: flex; align-items: center; gap: 1rem; padding: 0.7rem 0; margin: 2rem 0 0; background: rgba(242,241,238,0.97); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); }
     .wp-edit-bar button { background: none; border: 1px solid var(--border); font-family: 'Outfit', sans-serif; font-size: 0.6rem; font-weight: 300; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text); padding: 0.4rem 0.9rem; cursor: pointer; transition: background 0.2s, color 0.2s; }
@@ -529,27 +526,6 @@
       <div class="ar-col-panel" id="arPanel0">
 
         <img src="food%20for%20clouds/front%20back%20side.png" alt="Food for Clouds — Front Back Side" style="width:75%;display:block;margin:0 auto 4rem;" />
-
-        <!-- carousel: 1 & 2 -->
-        <div class="wp-carousel" id="wpCarousel">
-          <div class="wp-slide active"><img src="food%20for%20clouds/1.jpg" alt="" loading="lazy" /></div>
-          <div class="wp-slide"><img src="food%20for%20clouds/2.jpeg" alt="" loading="lazy" /></div>
-          <div class="wp-carousel-nav">
-            <button class="wp-carousel-btn" id="wpPrev">&#8592;</button>
-            <div class="wp-carousel-dots">
-              <button class="wp-dot active" data-idx="0"></button>
-              <button class="wp-dot" data-idx="1"></button>
-            </div>
-            <button class="wp-carousel-btn" id="wpNext">&#8594;</button>
-          </div>
-        </div>
-
-        <!-- video -->
-        <div class="wp-video-wrap">
-          <video autoplay muted loop playsinline controls>
-            <source src="food%20for%20clouds/copy_6DEE46E1-BAD4-4CD9-A802-5A1122889AAE.mov" type="video/mp4" />
-          </video>
-        </div>
 
         <!-- edit bar (visible with ?edit) -->
         <div class="wp-edit-bar" id="wpEditBar" style="display:none">
@@ -805,25 +781,29 @@
       </script>
 
       <script>
-      /* ── WHITE PROJECT PHOTOS ── */
+      /* ── WHITE PROJECT CANVAS ── */
       (function () {
         var FOLDER = 'food%20for%20clouds/';
         var FILES = [
           'PICT1052.JPG','PICT1068.JPG','PICT1070.JPG','PICT1078.JPG','PICT1082.JPG',
           'PICT1091.JPG','PICT1101.JPG','PICT1103.JPG','PICT1104.JPG','PICT1106.JPG'
         ];
-        var SAVE_KEY = 'wp-photos-layout-v1';
+        var VIDEO_SRC = 'food%20for%20clouds/copy_6DEE46E1-BAD4-4CD9-A802-5A1122889AAE.mov';
+        var CAR_SRCS  = ['food%20for%20clouds/1.jpg', 'food%20for%20clouds/2.jpeg'];
+        var SAVE_KEY = 'wp-photos-layout-v2';
         var WP_HARDCODED_LAYOUT = [
-          {fileIdx:0, x:0,   y:0,    w:520, h:693},
-          {fileIdx:1, x:560, y:50,   w:310, h:413},
-          {fileIdx:2, x:540, y:510,  w:330, h:440},
-          {fileIdx:3, x:0,   y:760,  w:390, h:520},
-          {fileIdx:4, x:430, y:1050, w:480, h:640},
-          {fileIdx:5, x:0,   y:1340, w:280, h:373},
-          {fileIdx:6, x:0,   y:1910, w:840, h:630},
-          {fileIdx:7, x:0,   y:2630, w:330, h:440},
-          {fileIdx:8, x:370, y:2700, w:500, h:667},
-          {fileIdx:9, x:40,  y:3470, w:720, h:960}
+          {type:'carousel', x:0,   y:0,    w:240, h:330},
+          {type:'video',    x:270, y:0,    w:530, h:380},
+          {type:'photo', fileIdx:0, x:0,   y:460,  w:520, h:693},
+          {type:'photo', fileIdx:1, x:560, y:510,  w:310, h:413},
+          {type:'photo', fileIdx:2, x:540, y:980,  w:330, h:440},
+          {type:'photo', fileIdx:3, x:0,   y:1230, w:390, h:520},
+          {type:'photo', fileIdx:4, x:430, y:1520, w:480, h:640},
+          {type:'photo', fileIdx:5, x:0,   y:1810, w:280, h:373},
+          {type:'photo', fileIdx:6, x:0,   y:2380, w:840, h:630},
+          {type:'photo', fileIdx:7, x:0,   y:3100, w:330, h:440},
+          {type:'photo', fileIdx:8, x:370, y:3170, w:500, h:667},
+          {type:'photo', fileIdx:9, x:40,  y:3940, w:720, h:960}
         ];
 
         var srcs = FILES.map(function(f){ return FOLDER + encodeURIComponent(f); });
@@ -831,15 +811,14 @@
         var visualOrder = [];
         var photoElMap = {};
 
-        var canvas   = document.getElementById('wpCanvas');
-        var editBar  = document.getElementById('wpEditBar');
-        var editBtn  = document.getElementById('wpEditBtn');
-        var doneBtn  = document.getElementById('wpDoneBtn');
-        var resetBtn = document.getElementById('wpResetBtn');
+        var canvas    = document.getElementById('wpCanvas');
+        var editBar   = document.getElementById('wpEditBar');
+        var editBtn   = document.getElementById('wpEditBtn');
+        var doneBtn   = document.getElementById('wpDoneBtn');
+        var resetBtn  = document.getElementById('wpResetBtn');
         var exportBtn = document.getElementById('wpExportBtn');
-        var editHint = document.getElementById('wpEditHint');
+        var editHint  = document.getElementById('wpEditHint');
 
-        /* lightbox appended to body so display:none on panel doesn't clip it */
         var lightbox = document.createElement('div');
         lightbox.className = 'wp-lightbox';
         lightbox.innerHTML =
@@ -861,24 +840,85 @@
 
         renderAbsolute(loadSaved() || WP_HARDCODED_LAYOUT, false);
 
-        /* ── carousel ── */
-        var slides = document.querySelectorAll('#wpCarousel .wp-slide');
-        var dots   = document.querySelectorAll('#wpCarousel .wp-dot');
-        var carIdx = 0;
-        function carGoTo(n) {
-          slides[carIdx].classList.remove('active');
-          dots[carIdx].classList.remove('active');
-          carIdx = (n + slides.length) % slides.length;
-          slides[carIdx].classList.add('active');
-          dots[carIdx].classList.add('active');
+        /* ── inline carousel init ── */
+        function initCarousel(containerEl) {
+          var slides = containerEl.querySelectorAll('.wp-can-slide');
+          var dots   = containerEl.querySelectorAll('.wp-can-dot');
+          var idx = 0;
+          function goTo(n) {
+            slides[idx].classList.remove('active'); dots[idx].classList.remove('active');
+            idx = (n + slides.length) % slides.length;
+            slides[idx].classList.add('active'); dots[idx].classList.add('active');
+          }
+          var prevBtn = containerEl.querySelector('.wp-can-prev');
+          var nextBtn = containerEl.querySelector('.wp-can-next');
+          if (prevBtn) prevBtn.addEventListener('click', function(e){ e.stopPropagation(); goTo(idx - 1); });
+          if (nextBtn) nextBtn.addEventListener('click', function(e){ e.stopPropagation(); goTo(idx + 1); });
+          dots.forEach(function(d, i){ d.addEventListener('click', function(e){ e.stopPropagation(); goTo(i); }); });
         }
-        document.getElementById('wpPrev').addEventListener('click', function(){ carGoTo(carIdx - 1); });
-        document.getElementById('wpNext').addEventListener('click', function(){ carGoTo(carIdx + 1); });
-        dots.forEach(function(dot, i){ dot.addEventListener('click', function(){ carGoTo(i); }); });
 
         /* ── canvas ── */
         function buildVisualOrder(layout) {
-          visualOrder = layout.slice().sort(function(a,b){ return a.y - b.y; }).map(function(item){ return item.fileIdx; });
+          visualOrder = layout.filter(function(i){ return i.type === 'photo'; })
+            .slice().sort(function(a,b){ return a.y - b.y; })
+            .map(function(item){ return item.fileIdx; });
+        }
+
+        function createCanvasEl(item, editing) {
+          var el = document.createElement('div');
+          el.className = 'wp-photo-abs';
+          el.style.left  = item.x + 'px';
+          el.style.top   = item.y + 'px';
+          el.style.width = item.w + 'px';
+          el.dataset.type = item.type || 'photo';
+          if (item.type === 'photo') el.dataset.fileIdx = item.fileIdx;
+
+          var badge = document.createElement('div');
+          badge.className = 'wp-edit-badge';
+          badge.textContent = Math.round(item.w) + 'px wide';
+
+          if (item.type === 'carousel') {
+            el.innerHTML =
+              '<div class="wp-can-slide active"><img src="' + CAR_SRCS[0] + '" loading="lazy" /></div>' +
+              '<div class="wp-can-slide"><img src="' + CAR_SRCS[1] + '" loading="lazy" /></div>' +
+              '<div class="wp-can-nav">' +
+                '<button class="wp-can-prev">&#8592;</button>' +
+                '<span class="wp-can-dot active"></span>' +
+                '<span class="wp-can-dot"></span>' +
+                '<button class="wp-can-next">&#8594;</button>' +
+              '</div>';
+            if (!editing) initCarousel(el);
+          } else if (item.type === 'video') {
+            var vid = document.createElement('video');
+            vid.autoplay = true; vid.muted = true; vid.loop = true;
+            vid.setAttribute('playsinline', ''); vid.controls = true;
+            vid.style.cssText = 'width:100%;height:auto;display:block;';
+            var src = document.createElement('source');
+            src.src = VIDEO_SRC; src.type = 'video/mp4';
+            vid.appendChild(src);
+            el.appendChild(vid);
+          } else {
+            var img = document.createElement('img');
+            img.src = srcs[item.fileIdx]; img.alt = ''; img.loading = 'lazy';
+            img.addEventListener('load', function() {
+              badge.textContent = Math.round(item.w) + 'px wide';
+              var bottom = item.y + el.offsetHeight + 200;
+              if (bottom > parseFloat(canvas.style.minHeight || 0)) canvas.style.minHeight = bottom + 'px';
+            });
+            el.appendChild(img);
+            if (!editing) {
+              (function(idx){ el.addEventListener('click', function(){ openLightbox(idx); }); })(item.fileIdx);
+            }
+            photoElMap[item.fileIdx] = el;
+          }
+
+          var rh = document.createElement('div');
+          rh.className = 'wp-edit-resize';
+          el.appendChild(rh);
+          el.appendChild(badge);
+
+          if (editing) { makeDraggable(el, item, badge); makeResizable(rh, el, item, badge); }
+          return el;
         }
 
         function renderAbsolute(layout, editing) {
@@ -889,39 +929,13 @@
           var maxBottom = 0;
           layout.forEach(function(item){ maxBottom = Math.max(maxBottom, item.y + item.h + 200); });
           canvas.style.minHeight = maxBottom + 'px';
-          layout.forEach(function(item) {
-            var el = document.createElement('div');
-            el.className = 'wp-photo-abs';
-            el.style.left  = item.x + 'px';
-            el.style.top   = item.y + 'px';
-            el.style.width = item.w + 'px';
-            var img = document.createElement('img');
-            img.src = srcs[item.fileIdx];
-            img.alt = '';
-            img.loading = 'lazy';
-            var badge = document.createElement('div');
-            badge.className = 'wp-edit-badge';
-            badge.textContent = Math.round(item.w) + 'px wide';
-            img.addEventListener('load', function() {
-              var bottom = item.y + el.offsetHeight + 200;
-              if (bottom > parseFloat(canvas.style.minHeight || 0)) canvas.style.minHeight = bottom + 'px';
-              badge.textContent = Math.round(item.w) + 'px wide';
-            });
-            el.appendChild(img);
-            var rh = document.createElement('div');
-            rh.className = 'wp-edit-resize';
-            el.appendChild(rh);
-            el.appendChild(badge);
-            photoElMap[item.fileIdx] = el;
-            if (editing) { makeDraggable(el, item, badge); makeResizable(rh, el, item, badge); }
-            else { (function(idx){ el.addEventListener('click', function(){ openLightbox(idx); }); })(item.fileIdx); }
-            canvas.appendChild(el);
-          });
+          layout.forEach(function(item){ canvas.appendChild(createCanvasEl(item, editing)); });
         }
 
         function makeDraggable(el, item, badge) {
           el.addEventListener('mousedown', function(e) {
             if (e.target.classList.contains('wp-edit-resize')) return;
+            if (e.target.tagName === 'VIDEO' || e.target.tagName === 'BUTTON') return;
             e.preventDefault();
             var sx = e.clientX, sy = e.clientY, sl = item.x, st = item.y;
             el.style.zIndex = '50';
@@ -969,14 +983,18 @@
 
         function autosave() {
           var els = canvas.querySelectorAll('.wp-photo-abs'), layout = [];
-          els.forEach(function(el, i) { layout.push({ fileIdx: i, x: parseFloat(el.style.left), y: parseFloat(el.style.top), w: parseFloat(el.style.width), h: el.offsetHeight }); });
+          els.forEach(function(el) {
+            var entry = { type: el.dataset.type, x: parseFloat(el.style.left), y: parseFloat(el.style.top), w: parseFloat(el.style.width), h: el.offsetHeight };
+            if (el.dataset.type === 'photo') entry.fileIdx = parseInt(el.dataset.fileIdx);
+            layout.push(entry);
+          });
           localStorage.setItem(SAVE_KEY, JSON.stringify(layout));
         }
         function loadSaved() {
           try { var r = localStorage.getItem(SAVE_KEY); if (r) return JSON.parse(r); } catch(e) {} return null;
         }
 
-        /* ── lightbox ── */
+        /* ── lightbox (photos only) ── */
         function computeFinalSize(nw, nh) {
           var vw = window.innerWidth, vh = window.innerHeight, maxW = vw*0.86, maxH = vh*0.88, ar = nw/nh, w, h;
           if (nw<=maxW && nh<=maxH){w=nw;h=nh;} else if ((nw/maxW)>(nh/maxH)){w=maxW;h=maxW/ar;} else {h=maxH;w=maxH*ar;}
