@@ -184,5 +184,43 @@
 
   <script src="script.js"></script>
   <script src="editor.js"></script>
+  <script>
+  /* ── STYLING SIZE EDIT ── */
+  (function () {
+    if (!window.location.search.includes('edit')) return;
+    var s = document.createElement('style');
+    s.textContent = [
+      '.ir-bar{position:fixed;top:0;left:0;right:0;z-index:10000;height:38px;background:#fafaf8;border-bottom:1px solid #d8d7d4;display:flex;align-items:center;gap:1.5rem;padding:0 2rem;font-family:"Outfit",sans-serif;font-size:0.72rem;}',
+      '.ir-bar button{background:#1a1a18;color:#f2f1ee;border:none;padding:0.28rem 0.9rem;cursor:pointer;font-family:"Outfit",sans-serif;font-size:0.72rem;letter-spacing:0.08em;}',
+      '.ir-wrap{display:block;resize:horizontal;overflow:auto;min-width:80px;max-width:100%;border:1px dashed rgba(0,0,0,0.15);}',
+      '.ir-wrap img{display:block;width:100%;height:auto;pointer-events:none;}'
+    ].join('');
+    document.head.appendChild(s);
+    var bar = document.createElement('div');
+    bar.className = 'ir-bar';
+    bar.innerHTML = '<span style="color:#aaa;text-transform:uppercase;letter-spacing:0.12em">size edit</span><button id="irCopy">Copy Sizes</button>';
+    document.body.prepend(bar);
+    document.body.style.paddingTop = '38px';
+    document.querySelectorAll('.ow-img-block img').forEach(function (img) {
+      if (img.parentNode.classList.contains('ir-wrap')) return;
+      var w = document.createElement('div');
+      w.className = 'ir-wrap';
+      w.style.width = '620px';
+      img.parentNode.insertBefore(w, img);
+      w.appendChild(img);
+    });
+    document.getElementById('irCopy').addEventListener('click', function () {
+      var out = [];
+      document.querySelectorAll('.ir-wrap').forEach(function (w) {
+        var img = w.querySelector('img');
+        out.push({ src: img.getAttribute('src').split('/').pop(), width: w.offsetWidth });
+      });
+      navigator.clipboard.writeText(JSON.stringify(out, null, 2));
+      this.textContent = 'Copied!';
+      var btn = this;
+      setTimeout(function () { btn.textContent = 'Copy Sizes'; }, 2000);
+    });
+  })();
+  </script>
 </body>
 </html>
