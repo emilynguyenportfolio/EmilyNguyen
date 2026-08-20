@@ -57,15 +57,16 @@
     }
 
     /* ── CONCEPT CAROUSEL ── */
-    .snc-carousel { position: relative; overflow: hidden; }
+    .snc-carousel { position: relative; }
+    .snc-clip { overflow: hidden; }
     .snc-track { display: flex; transition: transform 0.4s ease; }
     .snc-slide { flex: 0 0 100%; }
     .snc-slide img { width: 115%; height: auto; display: block; }
     .snc-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; background: rgba(242,241,238,0.82); border: none; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.75rem; color: var(--text-dark); backdrop-filter: blur(4px); transition: background 0.2s, transform 0.2s; user-select: none; }
     .snc-arrow:hover { background: rgba(242,241,238,1); transform: translateY(-50%) scale(1.08); }
     .snc-arrow.hidden { opacity: 0; pointer-events: none; }
-    .snc-prev { left: 0.6rem; }
-    .snc-next { right: 0.6rem; }
+    .snc-prev { left: 0.5rem; }
+    .snc-next { right: 0.5rem; }
   </style>
 </head>
 <body>
@@ -117,9 +118,11 @@
       <div class="sn-concept-left">
         <div class="sn-concept-lineup">
           <div class="snc-carousel">
-            <div class="snc-track">
-              <div class="snc-slide"><img src="speak-nearby/photos/backdrop.png" alt="Speak Nearby backdrop" /></div>
-              <div class="snc-slide"><img src="lineup%20transparent%20background.png" alt="Speak Nearby lineup" /></div>
+            <div class="snc-clip">
+              <div class="snc-track">
+                <div class="snc-slide"><img src="speak-nearby/photos/backdrop.png" alt="Speak Nearby backdrop" /></div>
+                <div class="snc-slide"><img src="lineup%20transparent%20background.png" alt="Speak Nearby lineup" /></div>
+              </div>
             </div>
             <button class="snc-arrow snc-prev" aria-label="Previous">&#8592;</button>
             <button class="snc-arrow snc-next" aria-label="Next">&#8594;</button>
