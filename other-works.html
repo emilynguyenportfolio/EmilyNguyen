@@ -185,40 +185,76 @@
   <script src="script.js"></script>
   <script src="editor.js"></script>
   <script>
-  /* ── STYLING SIZE EDIT ── */
+  /* ── STYLING LAYOUT EDIT ── */
   (function () {
     if (!window.location.search.includes('edit')) return;
     var s = document.createElement('style');
-    s.textContent = [
-      '.ir-bar{position:fixed;top:0;left:0;right:0;z-index:10000;height:38px;background:#fafaf8;border-bottom:1px solid #d8d7d4;display:flex;align-items:center;gap:1.5rem;padding:0 2rem;font-family:"Outfit",sans-serif;font-size:0.72rem;}',
-      '.ir-bar button{background:#1a1a18;color:#f2f1ee;border:none;padding:0.28rem 0.9rem;cursor:pointer;font-family:"Outfit",sans-serif;font-size:0.72rem;letter-spacing:0.08em;}',
-      '.ir-wrap{display:block;resize:horizontal;overflow:auto;min-width:80px;max-width:100%;border:1px dashed rgba(0,0,0,0.15);}',
-      '.ir-wrap img{display:block;width:100%;height:auto;pointer-events:none;}'
-    ].join('');
+    s.textContent = '.ir-bar{position:fixed;top:0;left:0;right:0;z-index:10000;height:38px;background:#fafaf8;border-bottom:1px solid #d8d7d4;display:flex;align-items:center;gap:1.5rem;padding:0 2rem;font-family:"Outfit",sans-serif;font-size:0.72rem;}.ir-bar button{background:#1a1a18;color:#f2f1ee;border:none;padding:0.28rem 0.9rem;cursor:pointer;font-family:"Outfit",sans-serif;font-size:0.72rem;letter-spacing:0.08em;}.ir-canvas{position:relative;min-height:1600px;}.ir-item{position:absolute;cursor:move;user-select:none;outline:1px dashed rgba(0,0,0,0.18);}.ir-item img{display:block;width:100%;height:auto;pointer-events:none;}.ir-handle{position:absolute;right:0;bottom:0;width:16px;height:16px;background:#1a1a18;cursor:se-resize;z-index:2;}';
     document.head.appendChild(s);
     var bar = document.createElement('div');
     bar.className = 'ir-bar';
-    bar.innerHTML = '<span style="color:#aaa;text-transform:uppercase;letter-spacing:0.12em">size edit</span><button id="irCopy">Copy Sizes</button>';
+    bar.innerHTML = '<span style="color:#aaa;text-transform:uppercase;letter-spacing:0.12em">layout edit</span><button id="irCopy">Copy Layout</button>';
     document.body.prepend(bar);
     document.body.style.paddingTop = '38px';
-    document.querySelectorAll('.ow-img-block img').forEach(function (img) {
-      if (img.parentNode.classList.contains('ir-wrap')) return;
-      var w = document.createElement('div');
-      w.className = 'ir-wrap';
-      w.style.width = '620px';
-      img.parentNode.insertBefore(w, img);
-      w.appendChild(img);
-    });
+    function makeDraggable(el) {
+      el.addEventListener('mousedown', function (e) {
+        if (e.target.classList.contains('ir-handle')) return;
+        e.preventDefault();
+        var ox = e.clientX - el.offsetLeft, oy = e.clientY - el.offsetTop;
+        function onMove(e) { el.style.left = Math.max(0, e.clientX - ox) + 'px'; el.style.top = Math.max(0, e.clientY - oy) + 'px'; }
+        function onUp() { document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); }
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      });
+    }
+    function makeResizable(el) {
+      var h = document.createElement('div');
+      h.className = 'ir-handle';
+      el.appendChild(h);
+      h.addEventListener('mousedown', function (e) {
+        e.preventDefault(); e.stopPropagation();
+        var sx = e.clientX, sw = el.offsetWidth;
+        function onMove(e) { el.style.width = Math.max(60, sw + e.clientX - sx) + 'px'; }
+        function onUp() { document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); }
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      });
+    }
+    var panel = document.getElementById('owPanel0');
+    if (panel) {
+      var srcs = Array.from(panel.querySelectorAll('img')).map(function (i) { return i.getAttribute('src'); });
+      var nav = panel.querySelector('.ow-nav-row');
+      panel.innerHTML = '';
+      if (nav) panel.appendChild(nav);
+      var canvas = document.createElement('div');
+      canvas.className = 'ir-canvas';
+      panel.insertBefore(canvas, nav || null);
+      var y = 10;
+      srcs.forEach(function (src) {
+        var el = document.createElement('div');
+        el.className = 'ir-item';
+        el.style.cssText = 'left:10px;top:' + y + 'px;width:500px;';
+        el.dataset.src = src;
+        var img = document.createElement('img');
+        img.src = src;
+        img.onload = function () {
+          var b = el.offsetTop + el.offsetHeight + 80;
+          if (b > parseInt(canvas.style.minHeight || 1600)) canvas.style.minHeight = b + 'px';
+        };
+        el.appendChild(img);
+        canvas.appendChild(el);
+        makeDraggable(el);
+        makeResizable(el);
+        y += 380;
+      });
+    }
     document.getElementById('irCopy').addEventListener('click', function () {
-      var out = [];
-      document.querySelectorAll('.ir-wrap').forEach(function (w) {
-        var img = w.querySelector('img');
-        out.push({ src: img.getAttribute('src').split('/').pop(), width: w.offsetWidth });
+      var out = Array.from(document.querySelectorAll('.ir-item')).map(function (el) {
+        return { src: el.dataset.src, x: Math.round(parseFloat(el.style.left)), y: Math.round(parseFloat(el.style.top)), w: el.offsetWidth };
       });
       navigator.clipboard.writeText(JSON.stringify(out, null, 2));
       this.textContent = 'Copied!';
-      var btn = this;
-      setTimeout(function () { btn.textContent = 'Copy Sizes'; }, 2000);
+      var btn = this; setTimeout(function () { btn.textContent = 'Copy Layout'; }, 2000);
     });
   })();
   </script>
