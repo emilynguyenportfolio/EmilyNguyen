@@ -692,6 +692,22 @@
     applyEl(quote,   'quote');
     applyEl(textBox, 'text');
 
+    /* apply carousel arrow positions if saved */
+    var prevArrow = document.querySelector('.snc-prev');
+    var nextArrow = document.querySelector('.snc-next');
+    if (prevArrow && saved.arrowPrev) {
+      concept.appendChild(prevArrow);
+      prevArrow.style.position = 'absolute';
+      prevArrow.style.left = saved.arrowPrev.x + 'px';
+      prevArrow.style.top  = saved.arrowPrev.y + 'px';
+    }
+    if (nextArrow && saved.arrowNext) {
+      concept.appendChild(nextArrow);
+      nextArrow.style.position = 'absolute';
+      nextArrow.style.left = saved.arrowNext.x + 'px';
+      nextArrow.style.top  = saved.arrowNext.y + 'px';
+    }
+
     var arrowData = saved.arrow;
     if (arrowData) {
       var arrowBtn = document.getElementById('snBackTop');
@@ -874,6 +890,47 @@
     makeEditable(lineup,  'lineup', 'lineup');
     makeEditable(quote,   'quote',  'quote');
     makeEditable(textBox, 'text',   'concept text');
+
+    /* ── make carousel arrows independently draggable ── */
+    var prevArrow = document.querySelector('.snc-prev');
+    var nextArrow = document.querySelector('.snc-next');
+    if (prevArrow && nextArrow) {
+      var lineupX = parseInt(lineup.style.left) || 0;
+      var lineupY = parseInt(lineup.style.top)  || 41;
+      var lineupW = parseInt(lineup.style.width) || 782;
+
+      /* detach from carousel → direct child of concept canvas */
+      concept.appendChild(prevArrow);
+      concept.appendChild(nextArrow);
+
+      function placeArrow(el, key, defX, defY) {
+        var sv = saved[key] || {};
+        el.style.position = 'absolute';
+        el.style.left = (sv.x != null ? sv.x : defX) + 'px';
+        el.style.top  = (sv.y != null ? sv.y : defY) + 'px';
+        el.style.cursor = 'move';
+        el.title = 'drag to reposition';
+        el.addEventListener('mousedown', function (e) {
+          var startX = e.clientX, startY = e.clientY;
+          var ox = e.clientX - el.offsetLeft, oy = e.clientY - el.offsetTop;
+          var moved = false;
+          function mm(ev) {
+            if (Math.abs(ev.clientX - startX) > 3 || Math.abs(ev.clientY - startY) > 3) moved = true;
+            if (moved) { e.preventDefault(); el.style.left = (ev.clientX - ox) + 'px'; el.style.top = (ev.clientY - oy) + 'px'; }
+          }
+          function mu() {
+            if (moved) { saved[key] = { x: el.offsetLeft, y: el.offsetTop }; persist(); }
+            document.removeEventListener('mousemove', mm);
+            document.removeEventListener('mouseup', mu);
+          }
+          document.addEventListener('mousemove', mm);
+          document.addEventListener('mouseup', mu);
+        });
+      }
+
+      placeArrow(prevArrow, 'arrowPrev', lineupX + 8,               lineupY + 150);
+      placeArrow(nextArrow, 'arrowNext', lineupX + lineupW - 42,    lineupY + 150);
+    }
 
     setTimeout(updateHeight, 120);
 
