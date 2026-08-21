@@ -655,8 +655,8 @@
   /* ── APPLY CONCEPT LAYOUT (non-edit mode) ─────────────────────────── */
   (function () {
     if (window.location.search.includes('edit')) return;
-    var STORAGE_KEY = 'sn-concept-layout-v2';
-    var HARDCODED = {"lineup":{"x":-19,"y":41,"w":782,"h":506},"quote":{"x":50,"y":600,"w":1069,"h":95},"text":{"x":779,"y":74,"w":245,"h":451},"arrow":{"right":"46px","bottom":"82px"}};
+    var STORAGE_KEY = 'sn-concept-layout-v3';
+    var HARDCODED = {"lineup":{"x":0,"y":41,"w":600},"quote":{"x":50,"y":680,"w":620,"h":95},"text":{"x":640,"y":74,"w":245,"h":451},"arrow":{"right":"46px","bottom":"82px"}};
     var saved = HARDCODED;
     try { var s = JSON.parse(localStorage.getItem(STORAGE_KEY)); if (s && Object.keys(s).length) saved = s; } catch(e) {}
 
@@ -717,7 +717,7 @@
   (function () {
     if (!window.location.search.includes('edit')) return;
 
-    var STORAGE_KEY = 'sn-concept-layout-v2';
+    var STORAGE_KEY = 'sn-concept-layout-v3';
 
     /* ── styles ── */
     var style = document.createElement('style');
