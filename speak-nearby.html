@@ -656,7 +656,7 @@
   (function () {
     if (window.location.search.includes('edit')) return;
     var STORAGE_KEY = 'sn-concept-layout-v3';
-    var HARDCODED = {"lineup":{"x":60,"y":41,"w":782},"quote":{"x":50,"y":600,"w":1069,"h":95},"text":{"x":879,"y":74,"w":245,"h":451},"arrow":{"right":"46px","bottom":"82px"},"arrowPrev":{"x":14,"y":220},"arrowNext":{"x":856,"y":220}};
+    var HARDCODED = {"lineup":{"x":10,"y":41,"w":782},"quote":{"x":50,"y":600,"w":1069,"h":95},"text":{"x":879,"y":74,"w":245,"h":451},"arrow":{"right":"46px","bottom":"82px"},"arrowPrev":{"x":14,"y":220},"arrowNext":{"x":806,"y":220}};
     var saved = HARDCODED;
     try { var s = JSON.parse(localStorage.getItem(STORAGE_KEY)); if (s && Object.keys(s).length) saved = s; } catch(e) {}
 
