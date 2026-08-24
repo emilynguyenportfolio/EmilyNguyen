@@ -656,18 +656,19 @@
       copyBtn.style.display = '';
     }
 
-    /* Init scatter */
+    /* Activate fashion panel by default, then render scatter on top */
+    activatePanel('fashionCanvas', FASHION_GROUPS, SAVE_KEY_FASHION, FASHION_DEFAULT);
     var savedScatter = loadScatter();
     renderScatter(savedScatter || defaultScatterLayout(), false);
 
-    /* Activate fashion panel by default */
-    activatePanel('fashionCanvas', FASHION_GROUPS, SAVE_KEY_FASHION, FASHION_DEFAULT);
+    function activateFashion() { activatePanel('fashionCanvas', FASHION_GROUPS, SAVE_KEY_FASHION, FASHION_DEFAULT); renderScatter(scatterLayout || loadScatter() || defaultScatterLayout(), false); }
+    function activateCad()     { activatePanel('cadCanvas', CAD_GROUPS, SAVE_KEY_CAD, CAD_DEFAULT); }
 
     /* Switch panels on tab change */
-    document.getElementById('ilTab0').addEventListener('click', function(){ activatePanel('fashionCanvas', FASHION_GROUPS, SAVE_KEY_FASHION, FASHION_DEFAULT); });
-    document.getElementById('ilTab1').addEventListener('click', function(){ activatePanel('cadCanvas', CAD_GROUPS, SAVE_KEY_CAD, CAD_DEFAULT); });
-    document.getElementById('ilTo1').addEventListener('click', function(){ activatePanel('cadCanvas', CAD_GROUPS, SAVE_KEY_CAD, CAD_DEFAULT); });
-    document.getElementById('ilTo0').addEventListener('click', function(){ activatePanel('fashionCanvas', FASHION_GROUPS, SAVE_KEY_FASHION, FASHION_DEFAULT); });
+    document.getElementById('ilTab0').addEventListener('click', activateFashion);
+    document.getElementById('ilTab1').addEventListener('click', activateCad);
+    document.getElementById('ilTo1').addEventListener('click', activateCad);
+    document.getElementById('ilTo0').addEventListener('click', activateFashion);
 
   })();
   </script>
