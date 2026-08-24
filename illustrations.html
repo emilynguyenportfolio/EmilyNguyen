@@ -9,14 +9,71 @@
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;1,6..96,300;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Outfit:wght@200;300&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <style>
+    /* ── TABS ── */
     .il-tabs { display: flex; gap: 2rem; margin: 0.6rem 0 2.8rem; flex-wrap: wrap; }
     .il-tab { background: none; border: none; border-bottom: 1px solid transparent; cursor: pointer; font-family: var(--font-body); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-mid); padding: 0.2rem 0; transition: color 0.15s, border-color 0.15s; }
     .il-tab:hover { color: var(--text-dark); }
     .il-tab.active { color: var(--text-dark); border-bottom-color: var(--text-dark); }
-    .il-nav-row { display: flex; justify-content: space-between; margin-top: 2.5rem; padding-bottom: 4rem; }
+
+    /* ── CAROUSEL CANVAS ── */
+    .il-canvas { position: relative; width: 100%; }
+
+    /* ── CAROUSEL BLOCK ── */
+    .il-carblock { position: absolute; box-sizing: border-box; }
+    .il-carblock-inner { width: 100%; }
+
+    /* carousel clip + track */
+    .il-clip { overflow: hidden; }
+    .il-track { display: flex; transition: transform 0.48s cubic-bezier(0.4,0,0.2,1); }
+    .il-slide { flex: 0 0 100%; display: flex; justify-content: center; align-items: flex-start; }
+    .il-slide img { display: block; width: 100%; height: auto; cursor: zoom-in; }
+
+    /* controls below image */
+    .il-controls { display: flex; align-items: center; gap: 1.2rem; margin-top: 0.8rem; }
+    .il-arrow { background: rgba(242,241,238,0.85); border: none; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.7rem; color: var(--text-dark); backdrop-filter: blur(4px); transition: background 0.2s, transform 0.2s; flex-shrink: 0; }
+    .il-arrow:hover { background: rgba(242,241,238,1); transform: scale(1.08); }
+    .il-ctr { font-family: 'Outfit', sans-serif; font-size: 0.56rem; font-weight: 200; letter-spacing: 0.18em; color: var(--text-mid); }
+
+    /* ── EDIT MODE ── */
+    .il-canvas.editing .il-carblock { outline: 1px solid rgba(80,120,255,0.3); cursor: grab; }
+    .il-canvas.editing .il-carblock:active { cursor: grabbing; }
+    .il-canvas.editing .il-slide img { cursor: default; pointer-events: none; }
+    .il-canvas.editing .il-arrow { pointer-events: none; }
+
+    .il-resize-handle { display: none; position: absolute; right: -6px; top: 0; bottom: 0; width: 12px; cursor: ew-resize; z-index: 20; }
+    .il-resize-handle::after { content: ''; position: absolute; right: 3px; top: 50%; transform: translateY(-50%); height: 40px; width: 3px; background: rgba(80,120,255,0.5); border-radius: 2px; }
+    .il-canvas.editing .il-resize-handle { display: block; }
+
+    .il-block-badge { display: none; position: absolute; top: 4px; left: 4px; background: rgba(80,120,255,0.75); color: #fff; font-family: monospace; font-size: 9px; padding: 2px 6px; pointer-events: none; z-index: 10; white-space: nowrap; border-radius: 2px; }
+    .il-canvas.editing .il-block-badge { display: block; }
+
+    /* ── EDIT BAR ── */
+    .il-edit-bar { position: sticky; top: 0; z-index: 200; display: flex; align-items: center; gap: 1rem; padding: 0.7rem 0; background: rgba(242,241,238,0.97); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); margin-bottom: 1rem; }
+    .il-edit-bar button { background: none; border: 1px solid var(--border); font-family: 'Outfit', sans-serif; font-size: 0.6rem; font-weight: 300; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text); padding: 0.4rem 0.9rem; cursor: pointer; transition: background 0.2s, color 0.2s; }
+    .il-edit-bar button:hover { background: var(--text-dark); color: var(--bg); }
+    .il-edit-bar button.active-edit { background: var(--text-dark); color: var(--bg); border-color: var(--text-dark); }
+    .il-edit-hint { font-family: 'Outfit', sans-serif; font-size: 0.58rem; font-weight: 200; letter-spacing: 0.1em; color: var(--text-mid); }
+
+    /* ── NAV ROW ── */
+    .il-nav-row { display: flex; justify-content: space-between; padding-bottom: 4rem; }
     .il-nav-btn { background: none; border: none; cursor: pointer; font-family: var(--font-body); font-size: 0.78rem; letter-spacing: 0.1em; color: var(--text-mid); padding: 0.4rem 0; transition: color 0.15s; }
     .il-nav-btn:hover { color: var(--text-dark); }
-    .il-blank { min-height: 40vh; }
+
+    /* ── LIGHTBOX ── */
+    .il-lightbox { position: fixed; inset: 0; z-index: 999; pointer-events: none; }
+    .il-lightbox.active { pointer-events: all; }
+    .il-lb-bg { position: fixed; inset: 0; background: rgba(242,241,238,0.92); backdrop-filter: blur(8px); z-index: 1000; opacity: 0; transition: opacity 0.3s ease; }
+    .il-lightbox.active .il-lb-bg { opacity: 1; }
+    .il-lb-close { position: fixed; top: 2rem; right: 2.5rem; z-index: 1002; background: none; border: none; color: rgba(20,19,18,0.4); font-family: 'Outfit', sans-serif; font-size: 0.62rem; font-weight: 200; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; padding: 0; opacity: 0; pointer-events: none; transition: opacity 0.25s ease, color 0.2s; }
+    .il-lightbox.active .il-lb-close { opacity: 1; pointer-events: all; }
+    .il-lb-close:hover { color: rgba(20,19,18,0.85); }
+    .il-lb-prev, .il-lb-next { position: fixed; top: 50%; transform: translateY(-50%); z-index: 1002; background: none; border: none; color: rgba(20,19,18,0.28); font-size: 1.1rem; cursor: pointer; padding: 1.2rem; opacity: 0; pointer-events: none; transition: opacity 0.25s ease, color 0.2s; }
+    .il-lightbox.active .il-lb-prev, .il-lightbox.active .il-lb-next { opacity: 1; pointer-events: all; }
+    .il-lb-prev:hover, .il-lb-next:hover { color: rgba(20,19,18,0.75); }
+    .il-lb-prev { left: 1rem; }
+    .il-lb-next { right: 1rem; }
+    .il-lb-counter { position: fixed; bottom: 1.8rem; left: 50%; transform: translateX(-50%); z-index: 1002; font-family: 'Outfit', sans-serif; font-size: 0.58rem; font-weight: 200; letter-spacing: 0.15em; color: rgba(20,19,18,0.3); opacity: 0; transition: opacity 0.25s ease; pointer-events: none; }
+    .il-lightbox.active .il-lb-counter { opacity: 1; }
   </style>
 </head>
 <body>
@@ -55,6 +112,15 @@
 
     <div class="page-body">
 
+      <!-- Edit bar (shown in ?edit mode) -->
+      <div class="il-edit-bar" id="ilEditBar" style="display:none">
+        <button id="ilEditBtn">Edit Layout</button>
+        <span class="il-edit-hint" id="ilEditHint" style="display:none">Drag to move &nbsp;·&nbsp; right edge to resize</span>
+        <button id="ilDoneBtn" style="display:none" class="active-edit">Done</button>
+        <button id="ilResetBtn" style="display:none">Reset</button>
+        <button id="ilCopyBtn" style="display:none">Copy layout</button>
+      </div>
+
       <div class="il-tabs fade-up">
         <button class="il-tab active" id="ilTab0">Fashion Illustrations</button>
         <button class="il-tab" id="ilTab1">CAD</button>
@@ -63,8 +129,8 @@
 
       <!-- Panel 0: Fashion Illustrations -->
       <div id="ilPanel0">
-        <div class="il-blank"></div>
-        <div class="il-nav-row">
+        <div class="il-canvas" id="fashionCanvas"></div>
+        <div class="il-nav-row" id="fashionNavRow" style="margin-top:2rem">
           <span></span>
           <button class="il-nav-btn" id="ilTo1">CAD →</button>
         </div>
@@ -72,8 +138,8 @@
 
       <!-- Panel 1: CAD -->
       <div id="ilPanel1" style="display:none">
-        <div class="il-blank"></div>
-        <div class="il-nav-row">
+        <div class="il-canvas" id="cadCanvas"></div>
+        <div class="il-nav-row" id="cadNavRow" style="margin-top:2rem">
           <button class="il-nav-btn" id="ilTo0">← Fashion Illustrations</button>
           <button class="il-nav-btn" id="ilTo2">Visual Arts →</button>
         </div>
@@ -81,13 +147,22 @@
 
       <!-- Panel 2: Visual Arts -->
       <div id="ilPanel2" style="display:none">
-        <div class="il-blank"></div>
+        <div style="min-height:40vh"></div>
         <div class="il-nav-row">
           <button class="il-nav-btn" id="ilTo1b">← CAD</button>
           <span></span>
         </div>
       </div>
 
+    </div>
+
+    <!-- Lightbox -->
+    <div class="il-lightbox" id="ilLightbox">
+      <div class="il-lb-bg" id="ilLbBg"></div>
+      <button class="il-lb-close" id="ilLbClose">close</button>
+      <button class="il-lb-prev" id="ilLbPrev">&#8592;</button>
+      <button class="il-lb-next" id="ilLbNext">&#8594;</button>
+      <div class="il-lb-counter" id="ilLbCounter"></div>
     </div>
 
     <footer class="footer">
@@ -100,25 +175,390 @@
 
   <script src="script.js"></script>
   <script src="editor.js"></script>
+
   <script>
-    (function () {
-      var current = 0;
-      function showTab(idx) {
-        document.getElementById('ilPanel' + current).style.display = 'none';
-        document.getElementById('ilTab' + current).classList.remove('active');
-        current = idx;
-        document.getElementById('ilPanel' + current).style.display = '';
-        document.getElementById('ilTab' + current).classList.add('active');
-        window.scrollTo({ top: document.querySelector('.il-tabs').offsetTop - 40, behavior: 'smooth' });
-      }
-      for (var i = 0; i < 3; i++) {
-        (function(n){ document.getElementById('ilTab' + n).addEventListener('click', function(){ showTab(n); }); })(i);
-      }
-      document.getElementById('ilTo1').addEventListener('click', function(){ showTab(1); });
-      document.getElementById('ilTo0').addEventListener('click', function(){ showTab(0); });
-      document.getElementById('ilTo2').addEventListener('click', function(){ showTab(2); });
-      document.getElementById('ilTo1b').addEventListener('click', function(){ showTab(1); });
-    })();
+  /* ── TAB SWITCHING ── */
+  (function () {
+    var current = 0;
+    function showTab(idx) {
+      document.getElementById('ilPanel' + current).style.display = 'none';
+      document.getElementById('ilTab' + current).classList.remove('active');
+      current = idx;
+      document.getElementById('ilPanel' + current).style.display = '';
+      document.getElementById('ilTab' + current).classList.add('active');
+      window.scrollTo({ top: document.querySelector('.il-tabs').offsetTop - 40, behavior: 'smooth' });
+    }
+    for (var i = 0; i < 3; i++) {
+      (function(n){ document.getElementById('ilTab' + n).addEventListener('click', function(){ showTab(n); }); })(i);
+    }
+    document.getElementById('ilTo1').addEventListener('click', function(){ showTab(1); });
+    document.getElementById('ilTo0').addEventListener('click', function(){ showTab(0); });
+    document.getElementById('ilTo2').addEventListener('click', function(){ showTab(2); });
+    document.getElementById('ilTo1b').addEventListener('click', function(){ showTab(1); });
+  })();
   </script>
+
+  <script>
+  /* ── ILLUSTRATIONS SYSTEM ── */
+  (function () {
+
+    /* ── DATA ── */
+    var FASHION_GROUPS = [
+      {
+        label: '1',
+        folder: 'illustrations/1/',
+        files: [
+          'full 15.jpg',
+          'IMG_9430.jpeg','IMG_9433.jpeg','IMG_9445.jpeg',
+          'IMG_9458.jpeg','IMG_9459.jpeg','IMG_9460.jpeg','IMG_9461.jpeg','IMG_9467.jpeg',
+          'IMG_9474.jpeg','IMG_9478.jpeg','IMG_9480.jpeg','IMG_9482.jpeg','IMG_9483.jpeg',
+          'IMG_9485.jpeg','IMG_9487.jpeg','IMG_9507.jpeg',
+          'IMG_9840.jpeg','IMG_9841.jpeg','IMG_9842.jpeg','backdrop.jpeg'
+        ]
+      },
+      {
+        label: '2',
+        folder: 'illustrations/2/',
+        files: [
+          'IMG_8476.jpeg','IMG_8479.jpeg','IMG_8502.jpeg','IMG_8503.jpeg','IMG_8518.jpeg'
+        ]
+      },
+      {
+        label: '3',
+        folder: 'illustrations/3/',
+        files: [
+          'IMG_7860.jpeg','IMG_7861.jpeg','IMG_7866.jpeg','IMG_7868.jpeg','IMG_7869.jpeg',
+          'IMG_7871.jpeg','IMG_7872.jpeg','IMG_7874.jpeg','IMG_7875.jpeg','IMG_7876.jpeg',
+          'IMG_7881.jpeg','IMG_7882.jpeg','IMG_7885.jpeg','IMG_7886.jpeg','IMG_7887.jpeg'
+        ]
+      }
+    ];
+
+    var CAD_GROUPS = [
+      {
+        label: 'cad',
+        folder: 'illustrations/digital:cad/',
+        files: [
+          'IMG_0418.jpeg','IMG_0419.jpeg','IMG_0420.jpeg',
+          'IMG_0421.jpeg','IMG_0422.jpeg','IMG_0906.PNG'
+        ]
+      },
+      {
+        label: 'bruxism',
+        folder: 'illustrations/digital:cad/bruxism/',
+        files: [
+          'IMG_0521.PNG','IMG_0537.PNG','IMG_0553.PNG','IMG_0570.PNG','IMG_0630.PNG',
+          'IMG_0663.PNG','IMG_0664.PNG','IMG_0679.PNG','IMG_0695.PNG',
+          'IMG_0706.PNG','IMG_0707.PNG','IMG_0708.PNG','IMG_0721.PNG'
+        ]
+      }
+    ];
+
+    /* Default layouts: [{x, y, w}, ...] — one entry per group, same index */
+    var FASHION_DEFAULT = [
+      { x: 20,  y: 60,   w: 750 },
+      { x: 260, y: 900,  w: 440 },
+      { x: 60,  y: 1540, w: 640 }
+    ];
+
+    var CAD_DEFAULT = [
+      { x: 20,  y: 60,  w: 680 },
+      { x: 120, y: 760, w: 660 }
+    ];
+
+    var SAVE_KEY_FASHION = 'il-fashion-canvas-v1';
+    var SAVE_KEY_CAD     = 'il-cad-canvas-v1';
+
+    /* ── LIGHTBOX ── */
+    var lb       = document.getElementById('ilLightbox');
+    var lbBg     = document.getElementById('ilLbBg');
+    var lbClose  = document.getElementById('ilLbClose');
+    var lbPrev   = document.getElementById('ilLbPrev');
+    var lbNext   = document.getElementById('ilLbNext');
+    var lbCtr    = document.getElementById('ilLbCounter');
+    var lbImg    = null, lbSrcEl = null, lbClosing = false;
+    var lbColl   = [], lbIdx = 0;
+
+    function openLB(srcs, idx, srcEl) {
+      if (lbClosing || lbImg) return;
+      lbColl = srcs; lbIdx = idx; lbSrcEl = srcEl || null;
+      var src  = lbColl[lbIdx];
+      var rect = srcEl ? srcEl.getBoundingClientRect() : null;
+      var flip = rect && rect.width > 0;
+
+      lbImg = document.createElement('img');
+      lbImg.src = src;
+      lbImg.style.cssText = 'position:fixed;z-index:1001;margin:0;padding:0;border:none;display:block;object-fit:contain;transition:none;';
+
+      if (flip) {
+        lbImg.style.left = rect.left + 'px'; lbImg.style.top  = rect.top  + 'px';
+        lbImg.style.width = rect.width + 'px'; lbImg.style.height = rect.height + 'px';
+      } else {
+        lbImg.style.opacity = '0';
+        var s = finalSize(800, 600);
+        lbImg.style.left = ((innerWidth - s.w) / 2) + 'px'; lbImg.style.top = ((innerHeight - s.h) / 2) + 'px';
+        lbImg.style.width = s.w + 'px'; lbImg.style.height = s.h + 'px';
+      }
+      document.body.appendChild(lbImg);
+      if (srcEl) { var si = imgEl(srcEl); if (si) si.style.opacity = '0'; }
+      lb.classList.add('active');
+      lbCtr.textContent = (lbIdx + 1) + ' / ' + lbColl.length;
+      lbImg.offsetHeight;
+      if (flip) {
+        function doFlip() { animCenter(); }
+        lbImg.complete ? doFlip() : lbImg.addEventListener('load', doFlip);
+      } else {
+        lbImg.complete ? (lbImg.style.opacity='1', animCenter()) : lbImg.addEventListener('load', function(){ lbImg.style.transition='opacity 0.3s'; lbImg.style.opacity='1'; animCenter(); });
+      }
+    }
+
+    function imgEl(el) { return el.tagName === 'IMG' ? el : el.querySelector('img'); }
+
+    function animCenter() {
+      var nw = lbImg.naturalWidth || 800, nh = lbImg.naturalHeight || 600;
+      var s = finalSize(nw, nh);
+      var e = '0.5s cubic-bezier(0.4,0,0.2,1)';
+      lbImg.style.transition = 'left '+e+',top '+e+',width '+e+',height '+e;
+      lbImg.style.left = ((innerWidth - s.w) / 2) + 'px'; lbImg.style.top = ((innerHeight - s.h) / 2) + 'px';
+      lbImg.style.width = s.w + 'px'; lbImg.style.height = s.h + 'px';
+    }
+
+    function finalSize(nw, nh) {
+      var mw = innerWidth * 0.86, mh = innerHeight * 0.88, ar = nw / nh, w, h;
+      if (nw <= mw && nh <= mh) { w = nw; h = nh; }
+      else if (nw/mw > nh/mh) { w = mw; h = mw/ar; }
+      else { h = mh; w = mh*ar; }
+      return { w: w, h: h };
+    }
+
+    function closeLB() {
+      if (lbClosing || !lbImg) return;
+      lbClosing = true; lb.classList.remove('active');
+      var fi = lbImg, se = lbSrcEl;
+      if (se) {
+        var rect = se.getBoundingClientRect();
+        var e = '0.44s cubic-bezier(0.4,0,0.2,1)';
+        fi.style.transition = 'left '+e+',top '+e+',width '+e+',height '+e+',opacity 0.44s ease';
+        fi.style.left = rect.left+'px'; fi.style.top = rect.top+'px';
+        fi.style.width = rect.width+'px'; fi.style.height = rect.height+'px';
+        var done = false;
+        function finish() { if (done) return; done = true; if (fi.parentNode) fi.parentNode.removeChild(fi); if (lbImg===fi) lbImg=null; lbSrcEl=null; lbClosing=false; var si=imgEl(se); if (si) { si.style.transition='none'; si.style.opacity=''; } }
+        fi.addEventListener('transitionend', function h(e){ if (['left','top','width','height'].includes(e.propertyName)){ fi.removeEventListener('transitionend',h); finish(); } });
+        setTimeout(finish, 500);
+      } else {
+        fi.style.transition='opacity 0.25s'; fi.style.opacity='0';
+        setTimeout(function(){ if (fi.parentNode) fi.parentNode.removeChild(fi); lbImg=null; lbClosing=false; }, 280);
+      }
+    }
+
+    function lbNav(dir) {
+      if (!lbImg || lbClosing || lbColl.length < 2) return;
+      if (lbSrcEl) { var si = imgEl(lbSrcEl); if (si) si.style.opacity = ''; }
+      lbIdx = (lbIdx + dir + lbColl.length) % lbColl.length;
+      lbSrcEl = null;
+      var fi = lbImg;
+      fi.style.transition = 'opacity 0.15s'; fi.style.opacity = '0';
+      setTimeout(function(){ if (fi !== lbImg) return; fi.src = lbColl[lbIdx]; fi.style.transition='opacity 0.15s'; fi.style.opacity='1'; }, 160);
+      lbCtr.textContent = (lbIdx + 1) + ' / ' + lbColl.length;
+    }
+
+    lbClose.addEventListener('click', closeLB);
+    lbBg.addEventListener('click', closeLB);
+    lbPrev.addEventListener('click', function(e){ e.stopPropagation(); lbNav(-1); });
+    lbNext.addEventListener('click', function(e){ e.stopPropagation(); lbNav(1); });
+    document.addEventListener('keydown', function(e){ if (!lb.classList.contains('active')) return; if (e.key==='Escape') closeLB(); if (e.key==='ArrowLeft') lbNav(-1); if (e.key==='ArrowRight') lbNav(1); });
+    window.addEventListener('scroll', function(){ if (lb.classList.contains('active')) closeLB(); }, { passive: true });
+
+    /* ── CAROUSEL BLOCK BUILDER ── */
+    function buildBlock(group, pos, isEditing, blockLabel) {
+      var srcs = group.files.map(function(f){ return group.folder + encodeURIComponent(f); });
+      var block = document.createElement('div');
+      block.className = 'il-carblock';
+      block.style.left  = pos.x + 'px';
+      block.style.top   = pos.y + 'px';
+      block.style.width = pos.w + 'px';
+
+      var inner = document.createElement('div');
+      inner.className = 'il-carblock-inner';
+
+      /* carousel */
+      var clip  = document.createElement('div'); clip.className = 'il-clip';
+      var track = document.createElement('div'); track.className = 'il-track';
+      srcs.forEach(function(src, i) {
+        var slide = document.createElement('div'); slide.className = 'il-slide';
+        var img   = document.createElement('img'); img.src = src; img.loading = i === 0 ? 'eager' : 'lazy';
+        slide.appendChild(img); track.appendChild(slide);
+      });
+      clip.appendChild(track);
+
+      /* controls */
+      var controls = document.createElement('div'); controls.className = 'il-controls';
+      var prev = document.createElement('button'); prev.className = 'il-arrow'; prev.innerHTML = '&#8592;';
+      var ctr  = document.createElement('span');   ctr.className  = 'il-ctr';
+      var next = document.createElement('button'); next.className = 'il-arrow'; next.innerHTML = '&#8594;';
+      controls.appendChild(prev); controls.appendChild(ctr); controls.appendChild(next);
+
+      inner.appendChild(clip); inner.appendChild(controls);
+
+      /* badge for edit mode */
+      var badge = document.createElement('div'); badge.className = 'il-block-badge';
+      badge.textContent = blockLabel + ' — ' + Math.round(pos.w) + 'px';
+
+      /* resize handle */
+      var rh = document.createElement('div'); rh.className = 'il-resize-handle';
+
+      block.appendChild(inner);
+      block.appendChild(badge);
+      block.appendChild(rh);
+
+      /* carousel state */
+      var idx = 0, total = srcs.length;
+      function go(n) {
+        idx = (n + total) % total;
+        track.style.transform = 'translateX(-' + (idx * 100) + '%)';
+        ctr.textContent = (idx + 1) + ' / ' + total;
+      }
+      prev.addEventListener('click', function(e){ e.stopPropagation(); go(idx - 1); });
+      next.addEventListener('click', function(e){ e.stopPropagation(); go(idx + 1); });
+      go(0);
+
+      /* lightbox on slide click (non-edit) */
+      srcs.forEach(function(_, i) {
+        track.children[i].addEventListener('click', function(){
+          if (track.closest('.il-canvas.editing')) return;
+          openLB(srcs, i, track.children[i].querySelector('img'));
+        });
+      });
+
+      /* drag (edit) */
+      block.addEventListener('mousedown', function(e) {
+        if (!block.closest('.il-canvas.editing')) return;
+        if (e.target === rh || rh.contains(e.target)) return;
+        e.preventDefault();
+        var sx = e.clientX, sy = e.clientY, ox = pos.x, oy = pos.y;
+        block.style.zIndex = '50';
+        function onMove(e) { pos.x = Math.max(0, ox + e.clientX - sx); pos.y = Math.max(0, oy + e.clientY - sy); block.style.left = pos.x+'px'; block.style.top = pos.y+'px'; updateBadge(); }
+        function onUp()   { block.style.zIndex=''; saveActive(); document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); }
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      });
+
+      /* resize (edit) */
+      rh.addEventListener('mousedown', function(e) {
+        e.preventDefault(); e.stopPropagation();
+        var sx = e.clientX, ow = pos.w;
+        function onMove(e) { pos.w = Math.max(120, ow + e.clientX - sx); block.style.width = pos.w+'px'; updateBadge(); }
+        function onUp()   { saveActive(); document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); }
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      });
+
+      function updateBadge() { badge.textContent = blockLabel + ' — ' + Math.round(pos.w) + 'px'; }
+
+      return block;
+    }
+
+    /* ── CANVAS RENDERER ── */
+    var activeCanvasId = null, activeGroups = null, activeLayout = null, activeSaveKey = null;
+
+    function renderCanvas(canvasId, groups, layout, isEditing) {
+      var canvas = document.getElementById(canvasId);
+      canvas.innerHTML = '';
+      canvas.className = 'il-canvas' + (isEditing ? ' editing' : '');
+
+      var maxBottom = 0;
+      layout.forEach(function(pos) { var est = pos.y + 800; if (est > maxBottom) maxBottom = est; });
+      canvas.style.minHeight = maxBottom + 'px';
+      canvas.style.marginBottom = '3rem';
+
+      groups.forEach(function(group, i) {
+        var block = buildBlock(group, layout[i], isEditing, group.label);
+        canvas.appendChild(block);
+
+        /* update canvas height as images load */
+        var firstImg = block.querySelector('img');
+        if (firstImg) {
+          firstImg.addEventListener('load', function() {
+            var b = layout[i].y + block.offsetHeight + 120;
+            if (b > parseFloat(canvas.style.minHeight||0)) canvas.style.minHeight = b + 'px';
+          });
+        }
+      });
+    }
+
+    /* ── SAVE / LOAD ── */
+    function saveLayout(key, layout) { try { localStorage.setItem(key, JSON.stringify(layout)); } catch(e){} }
+    function loadLayout(key) { try { var r = localStorage.getItem(key); return r ? JSON.parse(r) : null; } catch(e){ return null; } }
+    function deepCopy(obj) { return JSON.parse(JSON.stringify(obj)); }
+    function saveActive() { if (activeSaveKey && activeLayout) saveLayout(activeSaveKey, activeLayout); }
+
+    /* ── EDIT MODE ── */
+    var isEditing = false;
+    var editBtn  = document.getElementById('ilEditBtn');
+    var doneBtn  = document.getElementById('ilDoneBtn');
+    var resetBtn = document.getElementById('ilResetBtn');
+    var copyBtn  = document.getElementById('ilCopyBtn');
+    var editHint = document.getElementById('ilEditHint');
+
+    function startEdit() {
+      isEditing = true;
+      renderCanvas(activeCanvasId, activeGroups, activeLayout, true);
+      editBtn.style.display = 'none'; doneBtn.style.display = ''; resetBtn.style.display = ''; editHint.style.display = '';
+    }
+    function finishEdit() {
+      isEditing = false;
+      saveActive();
+      renderCanvas(activeCanvasId, activeGroups, activeLayout, false);
+      editBtn.style.display = ''; doneBtn.style.display = 'none'; resetBtn.style.display = 'none'; editHint.style.display = 'none';
+    }
+    function resetLayout() {
+      var defaults = activeCanvasId === 'fashionCanvas' ? FASHION_DEFAULT : CAD_DEFAULT;
+      activeLayout = deepCopy(defaults);
+      localStorage.removeItem(activeSaveKey);
+      renderCanvas(activeCanvasId, activeGroups, activeLayout, false);
+      isEditing = false;
+      editBtn.style.display = ''; doneBtn.style.display = 'none'; resetBtn.style.display = 'none'; editHint.style.display = 'none';
+    }
+
+    editBtn.addEventListener('click', startEdit);
+    doneBtn.addEventListener('click', finishEdit);
+    resetBtn.addEventListener('click', resetLayout);
+    copyBtn.addEventListener('click', function() {
+      navigator.clipboard.writeText(JSON.stringify(activeLayout)).then(function(){ copyBtn.textContent='Copied!'; setTimeout(function(){ copyBtn.textContent='Copy layout'; }, 2000); });
+    });
+
+    /* ── PANEL ACTIVATION ── */
+    function activatePanel(canvasId, groups, saveKey, defaultLayout) {
+      activeCanvasId = canvasId;
+      activeGroups   = groups;
+      activeSaveKey  = saveKey;
+      var saved = loadLayout(saveKey);
+      if (saved && saved.length === groups.length) {
+        activeLayout = saved;
+      } else {
+        activeLayout = deepCopy(defaultLayout);
+      }
+      if (isEditing) { isEditing = false; editBtn.style.display=''; doneBtn.style.display='none'; resetBtn.style.display='none'; editHint.style.display='none'; }
+      renderCanvas(canvasId, groups, activeLayout, false);
+    }
+
+    /* ── INIT ── */
+    if (location.search.includes('edit')) {
+      document.getElementById('ilEditBar').style.display = 'flex';
+      copyBtn.style.display = '';
+    }
+
+    /* Activate fashion panel by default */
+    activatePanel('fashionCanvas', FASHION_GROUPS, SAVE_KEY_FASHION, FASHION_DEFAULT);
+
+    /* Switch panels on tab change */
+    document.getElementById('ilTab0').addEventListener('click', function(){ activatePanel('fashionCanvas', FASHION_GROUPS, SAVE_KEY_FASHION, FASHION_DEFAULT); });
+    document.getElementById('ilTab1').addEventListener('click', function(){ activatePanel('cadCanvas', CAD_GROUPS, SAVE_KEY_CAD, CAD_DEFAULT); });
+    document.getElementById('ilTo1').addEventListener('click', function(){ activatePanel('cadCanvas', CAD_GROUPS, SAVE_KEY_CAD, CAD_DEFAULT); });
+    document.getElementById('ilTo0').addEventListener('click', function(){ activatePanel('fashionCanvas', FASHION_GROUPS, SAVE_KEY_FASHION, FASHION_DEFAULT); });
+
+  })();
+  </script>
+
 </body>
 </html>
