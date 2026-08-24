@@ -510,7 +510,7 @@
       'IMG_9457.jpeg','IMG_9764.jpeg'
     ];
     var SCATTER_SRCS = SCATTER_FILES.map(function(f){ return SCATTER_FOLDER + encodeURIComponent(f); });
-    var SAVE_KEY_SCATTER = 'il-fashion-scatter-v4';
+    var SAVE_KEY_SCATTER = 'il-fashion-scatter-v5';
     var scatterLayout = null;
 
     function pr(s) { var x = Math.sin(s * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
@@ -525,7 +525,7 @@
         var w = 220 + Math.floor(pr(i * 3 + 1) * 80);   /* 220–300 px — stays within column */
         var xOff = Math.floor(pr(i * 7 + 2) * 18);       /* tiny jitter only (0–18 px) */
         layout.push({ fileIdx: i, x: cols[c].x + xOff, y: cols[c].y, w: w });
-        cols[c].y += Math.floor(w * 1.55) + 130 + Math.floor(pr(i * 11 + 3) * 80);
+        cols[c].y += Math.floor(w * 2.1) + 200 + Math.floor(pr(i * 11 + 3) * 100);
       }
       return layout;
     }
