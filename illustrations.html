@@ -265,9 +265,9 @@
 
     /* Default layouts: [{x, y, w}, ...] — one entry per group, same index */
     var FASHION_DEFAULT = [
-      { x: 20,  y: 60,   w: 750 },
-      { x: 260, y: 900,  w: 440 },
-      { x: 60,  y: 1540, w: 640 }
+      { x: 30,  y: 2000, w: 700 },
+      { x: 200, y: 4600, w: 450 },
+      { x: 50,  y: 7000, w: 620 }
     ];
 
     var CAD_DEFAULT = [
@@ -275,7 +275,7 @@
       { x: 120, y: 760, w: 660 }
     ];
 
-    var SAVE_KEY_FASHION = 'il-fashion-canvas-v1';
+    var SAVE_KEY_FASHION = 'il-fashion-canvas-v2';
     var SAVE_KEY_CAD     = 'il-cad-canvas-v1';
 
     /* ── LIGHTBOX ── */
@@ -510,7 +510,7 @@
       'IMG_9457.jpeg','IMG_9764.jpeg'
     ];
     var SCATTER_SRCS = SCATTER_FILES.map(function(f){ return SCATTER_FOLDER + encodeURIComponent(f); });
-    var SAVE_KEY_SCATTER = 'il-fashion-scatter-v2';
+    var SAVE_KEY_SCATTER = 'il-fashion-scatter-v3';
     var scatterLayout = null;
 
     function pr(s) { var x = Math.sin(s * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
@@ -528,11 +528,7 @@
       return layout;
     }
 
-    function scatterStartY() {
-      /* Start scatter below the last carousel in the default layout */
-      var lastY = FASHION_DEFAULT[FASHION_DEFAULT.length - 1].y;
-      return lastY + 900;
-    }
+    function scatterStartY() { return 0; }
 
     function renderScatter(layout, isEditing) {
       scatterLayout = layout;
