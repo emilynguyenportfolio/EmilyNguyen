@@ -139,7 +139,6 @@
       <!-- Panel 0: Fashion Illustrations -->
       <div id="ilPanel0">
         <div class="il-canvas" id="fashionCanvas"></div>
-        <div class="il-canvas" id="fashionScatter" style="margin-top:3rem"></div>
         <div class="il-nav-row" id="fashionNavRow" style="margin-top:2rem">
           <span></span>
           <button class="il-nav-btn" id="ilTo1">CAD →</button>
@@ -515,8 +514,9 @@
     var scatterLayout = null;
 
     function pr(s) { var x = Math.sin(s * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
-    function genScatterLayout(n) {
-      var cols = [{ x: 0, y: 0 }, { x: 400, y: 100 }, { x: 790, y: 40 }];
+    function genScatterLayout(n, startY) {
+      var sy = startY || 0;
+      var cols = [{ x: 0, y: sy }, { x: 400, y: sy + 100 }, { x: 790, y: sy + 40 }];
       var layout = [];
       for (var i = 0; i < n; i++) {
         var c = i % 3;
@@ -528,12 +528,18 @@
       return layout;
     }
 
+    function scatterStartY() {
+      /* Start scatter below the last carousel in the default layout */
+      var lastY = FASHION_DEFAULT[FASHION_DEFAULT.length - 1].y;
+      return lastY + 900;
+    }
+
     function renderScatter(layout, isEditing) {
       scatterLayout = layout;
-      var canvas = document.getElementById('fashionScatter');
-      canvas.innerHTML = '';
-      canvas.className = 'il-canvas' + (isEditing ? ' editing' : '');
-      var maxB = 0;
+      var canvas = document.getElementById('fashionCanvas');
+      /* Remove any existing scatter items before re-adding */
+      Array.prototype.forEach.call(canvas.querySelectorAll('.il-photo-abs'), function(el){ el.parentNode.removeChild(el); });
+      var maxB = parseFloat(canvas.style.minHeight || 0);
       layout.forEach(function(item) { var e = item.y + item.w * 1.5 + 200; if (e > maxB) maxB = e; });
       canvas.style.minHeight = maxB + 'px';
 
@@ -587,6 +593,7 @@
 
     function saveScatter() { try { localStorage.setItem(SAVE_KEY_SCATTER, JSON.stringify(scatterLayout)); } catch(e){} }
     function loadScatter() { try { var r = localStorage.getItem(SAVE_KEY_SCATTER); return r ? JSON.parse(r) : null; } catch(e){ return null; } }
+    function defaultScatterLayout() { return genScatterLayout(SCATTER_FILES.length, scatterStartY()); }
 
     /* ── SAVE / LOAD ── */
     function saveLayout(key, layout) { try { localStorage.setItem(key, JSON.stringify(layout)); } catch(e){} }
@@ -605,7 +612,7 @@
     function startEdit() {
       isEditing = true;
       renderCanvas(activeCanvasId, activeGroups, activeLayout, true);
-      if (activeCanvasId === 'fashionCanvas') renderScatter(scatterLayout || loadScatter() || genScatterLayout(SCATTER_FILES.length), true);
+      if (activeCanvasId === 'fashionCanvas') renderScatter(scatterLayout || loadScatter() || defaultScatterLayout(), true);
       editBtn.style.display = 'none'; doneBtn.style.display = ''; resetBtn.style.display = ''; editHint.style.display = '';
     }
     function finishEdit() {
@@ -620,7 +627,7 @@
       activeLayout = deepCopy(defaults);
       localStorage.removeItem(activeSaveKey);
       renderCanvas(activeCanvasId, activeGroups, activeLayout, false);
-      if (activeCanvasId === 'fashionCanvas') { localStorage.removeItem(SAVE_KEY_SCATTER); renderScatter(genScatterLayout(SCATTER_FILES.length), false); }
+      if (activeCanvasId === 'fashionCanvas') { localStorage.removeItem(SAVE_KEY_SCATTER); renderScatter(defaultScatterLayout(), false); }
       isEditing = false;
       editBtn.style.display = ''; doneBtn.style.display = 'none'; resetBtn.style.display = 'none'; editHint.style.display = 'none';
     }
@@ -655,7 +662,7 @@
 
     /* Init scatter */
     var savedScatter = loadScatter();
-    renderScatter(savedScatter || genScatterLayout(SCATTER_FILES.length), false);
+    renderScatter(savedScatter || defaultScatterLayout(), false);
 
     /* Activate fashion panel by default */
     activatePanel('fashionCanvas', FASHION_GROUPS, SAVE_KEY_FASHION, FASHION_DEFAULT);
