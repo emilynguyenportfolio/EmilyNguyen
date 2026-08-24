@@ -18,6 +18,15 @@
     /* ── CAROUSEL CANVAS ── */
     .il-canvas { position: relative; width: 100%; }
 
+    /* ── SCATTER IMAGES ── */
+    .il-photo-abs { position: absolute; cursor: pointer; }
+    .il-photo-abs img { display: block; width: 100%; height: auto; transition: opacity 0.3s ease; pointer-events: none; }
+    .il-photo-abs:hover img { opacity: 0.82; }
+    .il-canvas.editing .il-photo-abs { cursor: grab; outline: 1px solid rgba(80,120,255,0.3); }
+    .il-canvas.editing .il-photo-abs:active { cursor: grabbing; }
+    .il-photo-abs .il-resize-ph { display: none; position: absolute; right: -6px; bottom: -6px; width: 14px; height: 14px; background: #5070ff; border-radius: 2px; cursor: se-resize; z-index: 10; }
+    .il-canvas.editing .il-photo-abs .il-resize-ph { display: block; }
+
     /* ── CAROUSEL BLOCK ── */
     .il-carblock { position: absolute; box-sizing: border-box; }
     .il-carblock-inner { width: 100%; }
@@ -130,6 +139,7 @@
       <!-- Panel 0: Fashion Illustrations -->
       <div id="ilPanel0">
         <div class="il-canvas" id="fashionCanvas"></div>
+        <div class="il-canvas" id="fashionScatter" style="margin-top:3rem"></div>
         <div class="il-nav-row" id="fashionNavRow" style="margin-top:2rem">
           <span></span>
           <button class="il-nav-btn" id="ilTo1">CAD →</button>
@@ -486,6 +496,98 @@
       });
     }
 
+    /* ── SCATTER DATA ── */
+    var SCATTER_FOLDER = 'illustrations/';
+    var SCATTER_FILES = [
+      '210FFCE1-B058-4F23-A5EE-1D9BF2339E8C.jpg',
+      '223124F1-F0AA-474A-B470-C0CF965D35FD.jpg',
+      '7CA58E30-7A31-4C05-9B69-9B3C3F83F828.jpg',
+      'IMG_5877.jpeg','IMG_6015.jpeg','IMG_6017.jpeg','IMG_6018.jpeg','IMG_6020.jpeg','IMG_6023.jpeg',
+      'IMG_6780.jpeg','IMG_6781.jpeg','IMG_6782.jpeg','IMG_6783.jpeg','IMG_6785.jpeg','IMG_6786.jpeg',
+      'IMG_7240.jpeg','IMG_7247.jpeg','IMG_7557.jpeg','IMG_7559.jpeg',
+      'IMG_8122.jpeg','IMG_8125.jpeg','IMG_8127.jpeg','IMG_8128.jpeg','IMG_8129.jpeg',
+      'IMG_8132.jpeg','IMG_8133.jpeg','IMG_8134.jpeg','IMG_8135.jpeg','IMG_8136.jpeg','IMG_8137.jpeg','IMG_8138.jpeg',
+      'IMG_8555.jpeg','IMG_8564.jpeg','IMG_8601.jpeg','IMG_8602.jpeg','IMG_8620.jpeg',
+      'IMG_9457.jpeg','IMG_9764.jpeg'
+    ];
+    var SCATTER_SRCS = SCATTER_FILES.map(function(f){ return SCATTER_FOLDER + encodeURIComponent(f); });
+    var SAVE_KEY_SCATTER = 'il-fashion-scatter-v2';
+    var scatterLayout = null;
+
+    function pr(s) { var x = Math.sin(s * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
+    function genScatterLayout(n) {
+      var cols = [{ x: 0, y: 0 }, { x: 400, y: 100 }, { x: 790, y: 40 }];
+      var layout = [];
+      for (var i = 0; i < n; i++) {
+        var c = i % 3;
+        var w = 260 + Math.floor(pr(i * 3 + 1) * 110);
+        var xOff = Math.floor(pr(i * 7 + 2) * 80);
+        layout.push({ fileIdx: i, x: cols[c].x + xOff, y: cols[c].y, w: w });
+        cols[c].y += Math.floor(w * 1.38) + 80 + Math.floor(pr(i * 11 + 3) * 60);
+      }
+      return layout;
+    }
+
+    function renderScatter(layout, isEditing) {
+      scatterLayout = layout;
+      var canvas = document.getElementById('fashionScatter');
+      canvas.innerHTML = '';
+      canvas.className = 'il-canvas' + (isEditing ? ' editing' : '');
+      var maxB = 0;
+      layout.forEach(function(item) { var e = item.y + item.w * 1.5 + 200; if (e > maxB) maxB = e; });
+      canvas.style.minHeight = maxB + 'px';
+
+      layout.forEach(function(item) {
+        var el = document.createElement('div');
+        el.className = 'il-photo-abs';
+        el.style.left  = item.x + 'px';
+        el.style.top   = item.y + 'px';
+        el.style.width = item.w + 'px';
+
+        var img = document.createElement('img');
+        img.src = SCATTER_SRCS[item.fileIdx]; img.loading = 'lazy';
+        img.addEventListener('load', function() {
+          var b = item.y + el.offsetHeight + 100;
+          if (b > parseFloat(canvas.style.minHeight || 0)) canvas.style.minHeight = b + 'px';
+        });
+
+        var rh = document.createElement('div'); rh.className = 'il-resize-ph';
+        el.appendChild(img); el.appendChild(rh);
+
+        if (isEditing) {
+          el.addEventListener('mousedown', function(e) {
+            if (e.target === rh || rh.contains(e.target)) return;
+            e.preventDefault();
+            var sx = e.clientX, sy = e.clientY, ox = item.x, oy = item.y;
+            el.style.zIndex = '50';
+            function mv(e) { item.x = Math.max(0, ox + e.clientX - sx); item.y = Math.max(0, oy + e.clientY - sy); el.style.left = item.x+'px'; el.style.top = item.y+'px'; }
+            function up() { el.style.zIndex=''; saveScatter(); document.removeEventListener('mousemove', mv); document.removeEventListener('mouseup', up); }
+            document.addEventListener('mousemove', mv); document.addEventListener('mouseup', up);
+          });
+          rh.addEventListener('mousedown', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            var sx = e.clientX, ow = item.w;
+            function mv(e) { item.w = Math.max(60, ow + e.clientX - sx); el.style.width = item.w+'px'; }
+            function up() { saveScatter(); document.removeEventListener('mousemove', mv); document.removeEventListener('mouseup', up); }
+            document.addEventListener('mousemove', mv); document.addEventListener('mouseup', up);
+          });
+        } else {
+          (function(pi) {
+            el.addEventListener('click', function() {
+              var sorted = layout.slice().sort(function(a,b){ return a.y - b.y; });
+              var coll   = sorted.map(function(it){ return SCATTER_SRCS[it.fileIdx]; });
+              var ci     = sorted.findIndex(function(it){ return it.fileIdx === pi; });
+              openLB(coll, ci, el);
+            });
+          })(item.fileIdx);
+        }
+        canvas.appendChild(el);
+      });
+    }
+
+    function saveScatter() { try { localStorage.setItem(SAVE_KEY_SCATTER, JSON.stringify(scatterLayout)); } catch(e){} }
+    function loadScatter() { try { var r = localStorage.getItem(SAVE_KEY_SCATTER); return r ? JSON.parse(r) : null; } catch(e){ return null; } }
+
     /* ── SAVE / LOAD ── */
     function saveLayout(key, layout) { try { localStorage.setItem(key, JSON.stringify(layout)); } catch(e){} }
     function loadLayout(key) { try { var r = localStorage.getItem(key); return r ? JSON.parse(r) : null; } catch(e){ return null; } }
@@ -503,12 +605,14 @@
     function startEdit() {
       isEditing = true;
       renderCanvas(activeCanvasId, activeGroups, activeLayout, true);
+      if (activeCanvasId === 'fashionCanvas') renderScatter(scatterLayout || loadScatter() || genScatterLayout(SCATTER_FILES.length), true);
       editBtn.style.display = 'none'; doneBtn.style.display = ''; resetBtn.style.display = ''; editHint.style.display = '';
     }
     function finishEdit() {
       isEditing = false;
       saveActive();
       renderCanvas(activeCanvasId, activeGroups, activeLayout, false);
+      if (activeCanvasId === 'fashionCanvas') { saveScatter(); renderScatter(scatterLayout, false); }
       editBtn.style.display = ''; doneBtn.style.display = 'none'; resetBtn.style.display = 'none'; editHint.style.display = 'none';
     }
     function resetLayout() {
@@ -516,6 +620,7 @@
       activeLayout = deepCopy(defaults);
       localStorage.removeItem(activeSaveKey);
       renderCanvas(activeCanvasId, activeGroups, activeLayout, false);
+      if (activeCanvasId === 'fashionCanvas') { localStorage.removeItem(SAVE_KEY_SCATTER); renderScatter(genScatterLayout(SCATTER_FILES.length), false); }
       isEditing = false;
       editBtn.style.display = ''; doneBtn.style.display = 'none'; resetBtn.style.display = 'none'; editHint.style.display = 'none';
     }
@@ -547,6 +652,10 @@
       document.getElementById('ilEditBar').style.display = 'flex';
       copyBtn.style.display = '';
     }
+
+    /* Init scatter */
+    var savedScatter = loadScatter();
+    renderScatter(savedScatter || genScatterLayout(SCATTER_FILES.length), false);
 
     /* Activate fashion panel by default */
     activatePanel('fashionCanvas', FASHION_GROUPS, SAVE_KEY_FASHION, FASHION_DEFAULT);
