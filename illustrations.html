@@ -510,7 +510,7 @@
       'IMG_9457.jpeg','IMG_9764.jpeg'
     ];
     var SCATTER_SRCS = SCATTER_FILES.map(function(f){ return SCATTER_FOLDER + encodeURIComponent(f); });
-    var SAVE_KEY_SCATTER = 'il-fashion-scatter-v6';
+    var SAVE_KEY_SCATTER = 'il-fashion-scatter-v7';
     var scatterLayout = null;
 
     function pr(s) { var x = Math.sin(s * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
@@ -520,12 +520,12 @@
       /* col 0: x=0, w=220-300 → max right 320 | col 1: x=370 | col 2: x=740 */
       var cols = [{ x: 0, y: sy }, { x: 380, y: sy + 120 }, { x: 760, y: sy + 40 }];
       var layout = [];
+      var SLOT = 1100; /* fixed slot height — even distribution */
       for (var i = 0; i < n; i++) {
         var c = i % 3;
-        var w = 200 + Math.floor(pr(i * 3 + 1) * 60);   /* 200–260 px */
-        var xOff = Math.floor(pr(i * 7 + 2) * 14);
-        layout.push({ fileIdx: i, x: cols[c].x + xOff, y: cols[c].y, w: w });
-        cols[c].y += Math.floor(w * 5.0) + 500 + Math.floor(pr(i * 11 + 3) * 120);
+        var w = 230;   /* fixed width for uniform look */
+        layout.push({ fileIdx: i, x: cols[c].x, y: cols[c].y, w: w });
+        cols[c].y += SLOT;
       }
       return layout;
     }
