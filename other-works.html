@@ -57,7 +57,7 @@
     .ow-img-block img { width: 100%; height: auto; display: block; }
     .g-item img { width: 100%; height: auto; display: block; object-fit: cover; }
     /* lookbook image hover */
-    .ir-item { cursor: zoom-in; }
+    .ir-item { cursor: pointer; }
     .ir-item img { transition: opacity 0.25s; }
     .ir-item:hover img { opacity: 0.82; }
     /* lightbox */
@@ -246,7 +246,7 @@
         if (si) { si.style.transition = 'none'; si.style.opacity = '0'; }
         lbFloatImg = document.createElement('img');
         lbFloatImg.src = el.dataset.src;
-        lbFloatImg.style.cssText = 'position:fixed;z-index:1001;margin:0;padding:0;border:none;display:block;left:' + rect.left + 'px;top:' + rect.top + 'px;width:' + rect.width + 'px;height:' + rect.height + 'px;transition:none;cursor:zoom-out;';
+        lbFloatImg.style.cssText = 'position:fixed;z-index:1001;margin:0;padding:0;border:none;display:block;left:' + rect.left + 'px;top:' + rect.top + 'px;width:' + rect.width + 'px;height:' + rect.height + 'px;transition:none;cursor:pointer;';
         lbFloatImg.addEventListener('click', closeLb);
         document.body.appendChild(lbFloatImg);
         lb.classList.add('active');
