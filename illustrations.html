@@ -510,7 +510,7 @@
       'IMG_9457.jpeg','IMG_9764.jpeg'
     ];
     var SCATTER_SRCS = SCATTER_FILES.map(function(f){ return SCATTER_FOLDER + encodeURIComponent(f); });
-    var SAVE_KEY_SCATTER = 'il-fashion-scatter-v5';
+    var SAVE_KEY_SCATTER = 'il-fashion-scatter-v6';
     var scatterLayout = null;
 
     function pr(s) { var x = Math.sin(s * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
@@ -518,14 +518,14 @@
       var sy = startY || 0;
       /* Columns spaced so max right edge of col N never reaches left edge of col N+1 */
       /* col 0: x=0, w=220-300 → max right 320 | col 1: x=370 | col 2: x=740 */
-      var cols = [{ x: 0, y: sy }, { x: 370, y: sy + 90 }, { x: 740, y: sy + 30 }];
+      var cols = [{ x: 0, y: sy }, { x: 380, y: sy + 120 }, { x: 760, y: sy + 40 }];
       var layout = [];
       for (var i = 0; i < n; i++) {
         var c = i % 3;
-        var w = 220 + Math.floor(pr(i * 3 + 1) * 80);   /* 220–300 px — stays within column */
-        var xOff = Math.floor(pr(i * 7 + 2) * 18);       /* tiny jitter only (0–18 px) */
+        var w = 200 + Math.floor(pr(i * 3 + 1) * 60);   /* 200–260 px */
+        var xOff = Math.floor(pr(i * 7 + 2) * 14);
         layout.push({ fileIdx: i, x: cols[c].x + xOff, y: cols[c].y, w: w });
-        cols[c].y += Math.floor(w * 2.1) + 200 + Math.floor(pr(i * 11 + 3) * 100);
+        cols[c].y += Math.floor(w * 5.0) + 500 + Math.floor(pr(i * 11 + 3) * 120);
       }
       return layout;
     }
