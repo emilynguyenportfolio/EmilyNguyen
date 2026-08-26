@@ -263,11 +263,6 @@
           'IMG_0663.PNG','IMG_0664.PNG','IMG_0679.PNG','IMG_0695.PNG',
           'IMG_0706.PNG','IMG_0707.PNG','IMG_0708.PNG','IMG_0721.PNG'
         ]
-      },
-      {
-        label: 'flats',
-        folder: 'illustrations/digital:cad/',
-        files: ['IMG_0906.PNG']
       }
     ];
 
@@ -279,13 +274,12 @@
     ];
 
     var CAD_DEFAULT = [
-      { x: 0,   y: 15,   w: 1236 },
-      { x: 49,  y: 558,  w: 1139 },
-      { x: 365, y: 1096, w: 494 }
+      { x: 0,  y: 15,  w: 1236 },
+      { x: 49, y: 558, w: 1139 }
     ];
 
     var SAVE_KEY_FASHION = 'il-fashion-canvas-v5';
-    var SAVE_KEY_CAD     = 'il-cad-canvas-v5';
+    var SAVE_KEY_CAD     = 'il-cad-canvas-v6';
 
     /* ── LIGHTBOX ── */
     var lb       = document.getElementById('ilLightbox');
@@ -523,7 +517,8 @@
       'IMG_9457.jpeg','IMG_9764.jpeg'
     ];
     var SCATTER_SRCS = SCATTER_FILES.map(function(f){ return SCATTER_FOLDER + encodeURIComponent(f); });
-    var SAVE_KEY_SCATTER = 'il-fashion-scatter-v8';
+    SCATTER_SRCS.push('illustrations/digital:cad/IMG_0906.PNG'); /* fileIdx 38 */
+    var SAVE_KEY_SCATTER = 'il-fashion-scatter-v9';
     var scatterLayout = null;
 
     function pr(s) { var x = Math.sin(s * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
@@ -604,7 +599,7 @@
 
     function saveScatter() { try { localStorage.setItem(SAVE_KEY_SCATTER, JSON.stringify(scatterLayout)); } catch(e){} }
     function loadScatter() { try { var r = localStorage.getItem(SAVE_KEY_SCATTER); return r ? JSON.parse(r) : null; } catch(e){ return null; } }
-    var SCATTER_DEFAULT = [{"fileIdx":0,"x":617,"y":330,"w":304},{"fileIdx":1,"x":1036,"y":811,"w":230},{"fileIdx":2,"x":45,"y":17,"w":426},{"fileIdx":3,"x":73,"y":1901,"w":151},{"fileIdx":4,"x":278,"y":1968,"w":408},{"fileIdx":5,"x":861,"y":1432,"w":230},{"fileIdx":6,"x":1075,"y":2769,"w":169},{"fileIdx":7,"x":709,"y":3158,"w":167},{"fileIdx":8,"x":863,"y":2770,"w":195},{"fileIdx":9,"x":892,"y":4084,"w":317},{"fileIdx":10,"x":0,"y":3463,"w":455},{"fileIdx":11,"x":0,"y":3818,"w":455},{"fileIdx":12,"x":344,"y":4579,"w":187},{"fileIdx":13,"x":1052,"y":4934,"w":230},{"fileIdx":14,"x":780,"y":5102,"w":230},{"fileIdx":15,"x":984,"y":5986,"w":201},{"fileIdx":16,"x":706,"y":6048,"w":230},{"fileIdx":17,"x":292,"y":8059,"w":216},{"fileIdx":18,"x":561,"y":7928,"w":289},{"fileIdx":19,"x":472,"y":6661,"w":478},{"fileIdx":20,"x":7,"y":7211,"w":230},{"fileIdx":21,"x":118,"y":7560,"w":179},{"fileIdx":22,"x":951,"y":7517,"w":356},{"fileIdx":23,"x":50,"y":6513,"w":359},{"fileIdx":24,"x":1069,"y":8633,"w":155},{"fileIdx":25,"x":458,"y":8818,"w":230},{"fileIdx":26,"x":0,"y":8529,"w":427},{"fileIdx":27,"x":898,"y":11155,"w":415},{"fileIdx":28,"x":22,"y":9595,"w":230},{"fileIdx":29,"x":928,"y":9154,"w":469},{"fileIdx":30,"x":871,"y":9933,"w":140},{"fileIdx":31,"x":95,"y":11824,"w":230},{"fileIdx":32,"x":364,"y":11903,"w":230},{"fileIdx":33,"x":1026,"y":10847,"w":230},{"fileIdx":34,"x":702,"y":12443,"w":352},{"fileIdx":35,"x":1180,"y":12133,"w":149},{"fileIdx":36,"x":0,"y":12992,"w":289},{"fileIdx":37,"x":329,"y":13152,"w":532}];
+    var SCATTER_DEFAULT = [{"fileIdx":0,"x":617,"y":330,"w":304},{"fileIdx":1,"x":1036,"y":811,"w":230},{"fileIdx":2,"x":45,"y":17,"w":426},{"fileIdx":3,"x":73,"y":1901,"w":151},{"fileIdx":4,"x":278,"y":1968,"w":408},{"fileIdx":5,"x":861,"y":1432,"w":230},{"fileIdx":6,"x":1075,"y":2769,"w":169},{"fileIdx":7,"x":709,"y":3158,"w":167},{"fileIdx":8,"x":863,"y":2770,"w":195},{"fileIdx":9,"x":892,"y":4084,"w":317},{"fileIdx":10,"x":0,"y":3463,"w":455},{"fileIdx":11,"x":0,"y":3818,"w":455},{"fileIdx":12,"x":344,"y":4579,"w":187},{"fileIdx":13,"x":1052,"y":4934,"w":230},{"fileIdx":14,"x":780,"y":5102,"w":230},{"fileIdx":15,"x":984,"y":5986,"w":201},{"fileIdx":16,"x":706,"y":6048,"w":230},{"fileIdx":17,"x":292,"y":8059,"w":216},{"fileIdx":18,"x":561,"y":7928,"w":289},{"fileIdx":19,"x":472,"y":6661,"w":478},{"fileIdx":20,"x":7,"y":7211,"w":230},{"fileIdx":21,"x":118,"y":7560,"w":179},{"fileIdx":22,"x":951,"y":7517,"w":356},{"fileIdx":23,"x":50,"y":6513,"w":359},{"fileIdx":24,"x":1069,"y":8633,"w":155},{"fileIdx":25,"x":458,"y":8818,"w":230},{"fileIdx":26,"x":0,"y":8529,"w":427},{"fileIdx":27,"x":898,"y":11155,"w":415},{"fileIdx":28,"x":22,"y":9595,"w":230},{"fileIdx":29,"x":928,"y":9154,"w":469},{"fileIdx":30,"x":871,"y":9933,"w":140},{"fileIdx":31,"x":95,"y":11824,"w":230},{"fileIdx":32,"x":364,"y":11903,"w":230},{"fileIdx":33,"x":1026,"y":10847,"w":230},{"fileIdx":34,"x":702,"y":12443,"w":352},{"fileIdx":35,"x":1180,"y":12133,"w":149},{"fileIdx":36,"x":0,"y":12992,"w":289},{"fileIdx":37,"x":329,"y":13152,"w":532},{"fileIdx":38,"x":400,"y":14200,"w":320}];
     function defaultScatterLayout() { return SCATTER_DEFAULT; }
 
     /* ── SAVE / LOAD ── */
