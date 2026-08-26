@@ -136,7 +136,6 @@
       <div class="il-tabs fade-up">
         <button class="il-tab active" id="ilTab0">Fashion Illustrations</button>
         <button class="il-tab" id="ilTab1">CAD</button>
-        <button class="il-tab" id="ilTab2">Visual Arts</button>
       </div>
 
       <!-- Panel 0: Fashion Illustrations -->
@@ -153,16 +152,6 @@
         <div class="il-canvas" id="cadCanvas"></div>
         <div class="il-nav-row" id="cadNavRow" style="margin-top:2rem">
           <button class="il-nav-btn" id="ilTo0">← Fashion Illustrations</button>
-          <button class="il-nav-btn" id="ilTo2">Visual Arts →</button>
-        </div>
-      </div>
-
-      <!-- Panel 2: Visual Arts -->
-      <div id="ilPanel2" style="display:none">
-        <div style="min-height:40vh"></div>
-        <div class="il-nav-row">
-          <button class="il-nav-btn" id="ilTo1b">← CAD</button>
-          <span></span>
         </div>
       </div>
 
@@ -200,13 +189,11 @@
       document.getElementById('ilTab' + current).classList.add('active');
       window.scrollTo({ top: document.querySelector('.il-tabs').offsetTop - 40, behavior: 'smooth' });
     }
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < 2; i++) {
       (function(n){ document.getElementById('ilTab' + n).addEventListener('click', function(){ showTab(n); }); })(i);
     }
     document.getElementById('ilTo1').addEventListener('click', function(){ showTab(1); });
     document.getElementById('ilTo0').addEventListener('click', function(){ showTab(0); });
-    document.getElementById('ilTo2').addEventListener('click', function(){ showTab(2); });
-    document.getElementById('ilTo1b').addEventListener('click', function(){ showTab(1); });
   })();
   </script>
 

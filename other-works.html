@@ -108,61 +108,15 @@
 
     <div class="page-body">
 
-      <div class="ow-tabs fade-up">
-        <button class="ow-tab active" id="owTab0">Styling</button>
-        <button class="ow-tab" id="owTab1">Jewelry</button>
-      </div>
-
-      <!-- Panel 0: Styling -->
-      <div class="ow-panel" id="owPanel0">
+      <!-- Styling / Lookbook -->
+      <div id="owPanel0">
         <div class="ow-section">
           <div class="ow-section-header">
             <span class="eyebrow">lookbook</span>
           </div>
           <div class="ir-canvas" id="stylingCanvas" style="position:relative;min-height:3500px;"></div>
         </div>
-        <div class="ow-nav-row">
-          <span></span>
-          <button class="ow-nav-btn" id="owTo1">Jewelry →</button>
-        </div>
       </div>
-
-      <!-- Panel 1: Jewelry -->
-      <div class="ow-panel" id="owPanel1" style="display:none">
-        <div class="gallery-grid cols-3">
-          <div class="g-item wide"><div class="img-placeholder"></div></div>
-          <div class="g-item tall"><div class="img-placeholder"></div></div>
-          <div class="g-item"><div class="img-placeholder"></div></div>
-          <div class="g-item"><div class="img-placeholder"></div></div>
-          <div class="g-item"><div class="img-placeholder"></div></div>
-          <div class="g-item wide"><div class="img-placeholder"></div></div>
-          <div class="g-item"><div class="img-placeholder"></div></div>
-        </div>
-        <div class="ow-nav-row">
-          <button class="ow-nav-btn" id="owTo0">← Styling</button>
-          <span></span>
-        </div>
-      </div>
-
-      <script>
-        (function () {
-          var current = 0;
-          function showTab(idx) {
-            document.getElementById('owPanel' + current).style.display = 'none';
-            document.getElementById('owTab' + current).classList.remove('active');
-            current = idx;
-            var panel = document.getElementById('owPanel' + current);
-            panel.style.display = '';
-            document.getElementById('owTab' + current).classList.add('active');
-            panel.querySelectorAll('.fade-up').forEach(function(el) { el.classList.add('visible'); });
-            window.scrollTo({ top: document.querySelector('.ow-tabs').offsetTop - 40, behavior: 'smooth' });
-          }
-          document.getElementById('owTab0').addEventListener('click', function () { showTab(0); });
-          document.getElementById('owTab1').addEventListener('click', function () { showTab(1); });
-          document.getElementById('owTo1').addEventListener('click', function () { showTab(1); });
-          document.getElementById('owTo0').addEventListener('click', function () { showTab(0); });
-        })();
-      </script>
 
     </div>
 
