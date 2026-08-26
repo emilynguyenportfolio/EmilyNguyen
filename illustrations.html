@@ -32,22 +32,25 @@
     .il-carblock-inner { width: 100%; }
 
     /* carousel clip + track */
+    .il-car-frame { position: relative; }
     .il-clip { overflow: hidden; }
     .il-track { display: flex; transition: transform 0.48s cubic-bezier(0.4,0,0.2,1); }
     .il-slide { flex: 0 0 100%; display: flex; justify-content: center; align-items: flex-start; }
-    .il-slide img { display: block; width: 100%; height: auto; cursor: zoom-in; }
+    .il-slide img { display: block; max-width: 100%; max-height: 440px; width: auto; height: auto; cursor: zoom-in; object-fit: contain; margin: 0 auto; }
 
-    /* controls below image */
-    .il-controls { display: flex; align-items: center; gap: 1.2rem; margin-top: 0.8rem; }
-    .il-arrow { background: rgba(242,241,238,0.85); border: none; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.7rem; color: var(--text-dark); backdrop-filter: blur(4px); transition: background 0.2s, transform 0.2s; flex-shrink: 0; }
-    .il-arrow:hover { background: rgba(242,241,238,1); transform: scale(1.08); }
+    /* side arrows */
+    .il-controls { display: flex; justify-content: center; margin-top: 0.5rem; }
+    .il-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(242,241,238,0.85); border: none; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.7rem; color: var(--text-dark); backdrop-filter: blur(4px); transition: background 0.2s, transform 0.2s; flex-shrink: 0; z-index: 5; }
+    .il-arrow.il-prev { left: 8px; }
+    .il-arrow.il-next { right: 8px; }
+    .il-arrow:hover { background: rgba(242,241,238,1); }
     .il-ctr { font-family: 'Outfit', sans-serif; font-size: 0.56rem; font-weight: 200; letter-spacing: 0.18em; color: var(--text-mid); }
 
     /* ── EDIT MODE ── */
     .il-canvas.editing .il-carblock { outline: 1px solid rgba(80,120,255,0.3); cursor: grab; }
     .il-canvas.editing .il-carblock:active { cursor: grabbing; }
     .il-canvas.editing .il-slide img { cursor: default; pointer-events: none; }
-    .il-canvas.editing .il-arrow { pointer-events: none; }
+    .il-canvas.editing .il-arrow { pointer-events: none; opacity: 0.4; }
 
     .il-resize-handle { display: none; position: absolute; right: -6px; top: 0; bottom: 0; width: 12px; cursor: ew-resize; z-index: 20; }
     .il-resize-handle::after { content: ''; position: absolute; right: 3px; top: 50%; transform: translateY(-50%); height: 40px; width: 3px; background: rgba(80,120,255,0.5); border-radius: 2px; }
@@ -400,14 +403,18 @@
       });
       clip.appendChild(track);
 
-      /* controls */
-      var controls = document.createElement('div'); controls.className = 'il-controls';
-      var prev = document.createElement('button'); prev.className = 'il-arrow'; prev.innerHTML = '&#8592;';
-      var ctr  = document.createElement('span');   ctr.className  = 'il-ctr';
-      var next = document.createElement('button'); next.className = 'il-arrow'; next.innerHTML = '&#8594;';
-      controls.appendChild(prev); controls.appendChild(ctr); controls.appendChild(next);
+      /* side arrows + frame */
+      var frame = document.createElement('div'); frame.className = 'il-car-frame';
+      var prev = document.createElement('button'); prev.className = 'il-arrow il-prev'; prev.innerHTML = '&#8592;';
+      var next = document.createElement('button'); next.className = 'il-arrow il-next'; next.innerHTML = '&#8594;';
+      frame.appendChild(clip); frame.appendChild(prev); frame.appendChild(next);
 
-      inner.appendChild(clip); inner.appendChild(controls);
+      /* counter below */
+      var controls = document.createElement('div'); controls.className = 'il-controls';
+      var ctr = document.createElement('span'); ctr.className = 'il-ctr';
+      controls.appendChild(ctr);
+
+      inner.appendChild(frame); inner.appendChild(controls);
 
       /* badge for edit mode */
       var badge = document.createElement('div'); badge.className = 'il-block-badge';
