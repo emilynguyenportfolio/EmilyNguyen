@@ -103,17 +103,12 @@
 
       <!-- Panel 0: Styling -->
       <div class="ow-panel" id="owPanel0">
-
         <div class="ow-section">
           <div class="ow-section-header">
             <span class="eyebrow">lookbook</span>
           </div>
-          <div class="ow-img-block"><img src="styling/16ADBF8B-354B-4D36-B103-0369201E3C60.jpg" alt="Portrait — plaid shirt, metallic skirt" /></div>
-          <div class="ow-img-block"><img src="styling/4A8152B1-32F8-450C-B0CB-A177C66092AA.jpg" alt="Portrait — graphic tee, crochet scarf" /></div>
-          <div class="ow-img-block"><img src="styling/841268ED-67D4-426F-8DA5-3E5ABBDD7B00.jpg" alt="Portrait — hooded cardigan, striped shorts" /></div>
-          <div class="ow-img-block"><img src="styling/65FC755F-F4EF-4371-AD59-25A30BA1AD1F.jpg" alt="Portrait — brocade headscarf" /></div>
+          <div class="ir-canvas" id="stylingCanvas" style="position:relative;min-height:3500px;"></div>
         </div>
-
         <div class="ow-nav-row">
           <span></span>
           <button class="ow-nav-btn" id="owTo1">Jewelry →</button>
@@ -173,17 +168,46 @@
   <script src="script.js"></script>
   <script src="editor.js"></script>
   <script>
-  /* ── STYLING LAYOUT EDIT ── */
+  /* ── STYLING LOOKBOOK CANVAS ── */
   (function () {
-    if (!window.location.search.includes('edit')) return;
+    var LAYOUT = [
+      {"src":"styling/45062DCC-AAD5-45BD-A3CD-577490F4AB1B.jpeg","x":81,"y":7,"w":500},
+      {"src":"styling/8664385C-59E2-463B-BD96-E79B1C750882.jpeg","x":667,"y":9,"w":500},
+      {"src":"styling/D53565DA-40C3-447C-A10E-DB668EBDEAC9.jpeg","x":360,"y":623,"w":500},
+      {"src":"styling/AE45A5B3-D459-4339-9D3A-4A3D437A0EE2.jpeg","x":360,"y":1151,"w":500},
+      {"src":"styling/16ADBF8B-354B-4D36-B103-0369201E3C60.jpg","x":0,"y":1584,"w":362},
+      {"src":"styling/4A8152B1-32F8-450C-B0CB-A177C66092AA.jpg","x":539,"y":1711,"w":644},
+      {"src":"styling/841268ED-67D4-426F-8DA5-3E5ABBDD7B00.jpg","x":140,"y":2427,"w":363},
+      {"src":"styling/65FC755F-F4EF-4371-AD59-25A30BA1AD1F.jpg","x":707,"y":2698,"w":534}
+    ];
+
+    var isEdit = window.location.search.includes('edit');
+    var canvas = document.getElementById('stylingCanvas');
+
+    /* render items */
+    LAYOUT.forEach(function (item) {
+      var el = document.createElement('div');
+      el.className = 'ir-item';
+      el.style.cssText = 'position:absolute;left:' + item.x + 'px;top:' + item.y + 'px;width:' + item.w + 'px;' + (isEdit ? 'cursor:move;user-select:none;outline:1px dashed rgba(0,0,0,0.18);' : '');
+      el.dataset.src = item.src;
+      var img = document.createElement('img');
+      img.src = item.src; img.style.cssText = 'display:block;width:100%;height:auto;pointer-events:none;';
+      el.appendChild(img);
+      canvas.appendChild(el);
+    });
+
+    if (!isEdit) return;
+
+    /* edit bar */
     var s = document.createElement('style');
-    s.textContent = '.ir-bar{position:fixed;top:0;left:0;right:0;z-index:10000;height:38px;background:#fafaf8;border-bottom:1px solid #d8d7d4;display:flex;align-items:center;gap:1.5rem;padding:0 2rem;font-family:"Outfit",sans-serif;font-size:0.72rem;}.ir-bar button{background:#1a1a18;color:#f2f1ee;border:none;padding:0.28rem 0.9rem;cursor:pointer;font-family:"Outfit",sans-serif;font-size:0.72rem;letter-spacing:0.08em;}.ir-canvas{position:relative;min-height:1600px;}.ir-item{position:absolute;cursor:move;user-select:none;outline:1px dashed rgba(0,0,0,0.18);}.ir-item img{display:block;width:100%;height:auto;pointer-events:none;}.ir-handle{position:absolute;right:0;bottom:0;width:16px;height:16px;background:#1a1a18;cursor:se-resize;z-index:2;}';
+    s.textContent = '.ir-bar{position:fixed;top:0;left:0;right:0;z-index:10000;height:38px;background:#fafaf8;border-bottom:1px solid #d8d7d4;display:flex;align-items:center;gap:1.5rem;padding:0 2rem;font-family:"Outfit",sans-serif;font-size:0.72rem;}.ir-bar button{background:#1a1a18;color:#f2f1ee;border:none;padding:0.28rem 0.9rem;cursor:pointer;font-family:"Outfit",sans-serif;font-size:0.72rem;letter-spacing:0.08em;}.ir-handle{position:absolute;right:0;bottom:0;width:16px;height:16px;background:#1a1a18;cursor:se-resize;z-index:2;}';
     document.head.appendChild(s);
     var bar = document.createElement('div');
     bar.className = 'ir-bar';
     bar.innerHTML = '<span style="color:#aaa;text-transform:uppercase;letter-spacing:0.12em">layout edit</span><button id="irCopy">Copy Layout</button>';
     document.body.prepend(bar);
     document.body.style.paddingTop = '38px';
+
     function makeDraggable(el) {
       el.addEventListener('mousedown', function (e) {
         if (e.target.classList.contains('ir-handle')) return;
@@ -196,9 +220,7 @@
       });
     }
     function makeResizable(el) {
-      var h = document.createElement('div');
-      h.className = 'ir-handle';
-      el.appendChild(h);
+      var h = document.createElement('div'); h.className = 'ir-handle'; el.appendChild(h);
       h.addEventListener('mousedown', function (e) {
         e.preventDefault(); e.stopPropagation();
         var sx = e.clientX, sw = el.offsetWidth;
@@ -208,36 +230,13 @@
         document.addEventListener('mouseup', onUp);
       });
     }
-    var panel = document.getElementById('owPanel0');
-    if (panel) {
-      var srcs = Array.from(panel.querySelectorAll('img')).map(function (i) { return i.getAttribute('src'); });
-      var nav = panel.querySelector('.ow-nav-row');
-      panel.innerHTML = '';
-      if (nav) panel.appendChild(nav);
-      var canvas = document.createElement('div');
-      canvas.className = 'ir-canvas';
-      panel.insertBefore(canvas, nav || null);
-      var y = 10;
-      srcs.forEach(function (src) {
-        var el = document.createElement('div');
-        el.className = 'ir-item';
-        el.style.cssText = 'left:10px;top:' + y + 'px;width:500px;';
-        el.dataset.src = src;
-        var img = document.createElement('img');
-        img.src = src;
-        img.onload = function () {
-          var b = el.offsetTop + el.offsetHeight + 80;
-          if (b > parseInt(canvas.style.minHeight || 1600)) canvas.style.minHeight = b + 'px';
-        };
-        el.appendChild(img);
-        canvas.appendChild(el);
-        makeDraggable(el);
-        makeResizable(el);
-        y += 380;
-      });
-    }
+
+    Array.from(canvas.querySelectorAll('.ir-item')).forEach(function (el) {
+      makeDraggable(el); makeResizable(el);
+    });
+
     document.getElementById('irCopy').addEventListener('click', function () {
-      var out = Array.from(document.querySelectorAll('.ir-item')).map(function (el) {
+      var out = Array.from(canvas.querySelectorAll('.ir-item')).map(function (el) {
         return { src: el.dataset.src, x: Math.round(parseFloat(el.style.left)), y: Math.round(parseFloat(el.style.top)), w: el.offsetWidth };
       });
       navigator.clipboard.writeText(JSON.stringify(out, null, 2));
