@@ -56,14 +56,11 @@
 
     </section>
 
-    <footer class="footer">
-      <span class="footer-name"><img src="emily%20nguyen%20transparent.png" alt="emily nguyen." class="logo-img logo-img--footer" /></span>
-      <div class="footer-links">
-        
-        <a href="contact.html">contact</a>
-      </div>
-      <span class="footer-copy">© 2026 Emily Nguyen</span>
-    </footer>
+    <!-- senior thesis embedded below hero -->
+    <div id="snSection" style="opacity:0;transition:opacity 0.5s ease;">
+      <iframe id="snFrame" src="speak-nearby.html?embed" scrolling="no" frameborder="0"
+        style="width:100%;border:none;display:block;height:7000px;"></iframe>
+    </div>
 
   </div>
 
@@ -71,20 +68,30 @@
   <script src="editor.js?v=6"></script>
   <script>
   (function () {
-    var going = false;
-    function goNext() {
-      if (going) return;
-      going = true;
-      document.body.style.transition = 'opacity 0.45s ease';
-      document.body.style.opacity = '0';
-      setTimeout(function () { window.location.href = 'speak-nearby.html'; }, 450);
-    }
-    /* wheel */
-    window.addEventListener('wheel', function (e) { if (e.deltaY > 0) goNext(); }, { passive: true });
-    /* touch swipe up */
-    var touchStartY = 0;
-    window.addEventListener('touchstart', function (e) { touchStartY = e.touches[0].clientY; }, { passive: true });
-    window.addEventListener('touchend', function (e) { if (touchStartY - e.changedTouches[0].clientY > 40) goNext(); }, { passive: true });
+    /* fade in senior thesis section as user scrolls past hero */
+    var snSection = document.getElementById('snSection');
+    window.addEventListener('scroll', function () {
+      var t = Math.max(0, Math.min(1, (window.scrollY - 80) / 500));
+      snSection.style.opacity = t;
+    }, { passive: true });
+    /* auto-resize iframe once speak-nearby posts its height */
+    window.addEventListener('message', function (e) {
+      if (e.data && e.data.type === 'snHeight') {
+        document.getElementById('snFrame').style.height = e.data.height + 'px';
+      }
+    });
+  })();
+  </script>
+  <button id="backTop" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+  <style>
+    #backTop { position: fixed; bottom: 5rem; right: 2rem; z-index: 500; width: 2.6rem; height: 2.6rem; border-radius: 50%; border: 1px solid var(--border); background: rgba(242,241,238,0.85); backdrop-filter: blur(6px); color: var(--text-mid); font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; opacity: 0; pointer-events: none; transition: opacity 0.3s, color 0.2s; }
+    #backTop.visible { opacity: 1; pointer-events: all; }
+    #backTop:hover { color: var(--text-dark); }
+  </style>
+  <script>
+  (function () {
+    var btn = document.getElementById('backTop');
+    window.addEventListener('scroll', function () { btn.classList.toggle('visible', window.scrollY > 300); }, { passive: true });
   })();
   </script>
 </body>

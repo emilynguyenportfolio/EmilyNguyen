@@ -968,5 +968,22 @@
     });
   })();
   </script>
+  <script>
+  /* embed mode: hide sidebar when loaded inside index.html iframe */
+  (function () {
+    if (!window.location.search.includes('embed')) return;
+    var s = document.createElement('style');
+    s.textContent = '.sidebar,.sidebar-toggle,#snBackTop,#backTop{display:none!important}.content{margin-right:0!important}';
+    document.head.appendChild(s);
+    var base = document.createElement('base');
+    base.target = '_top';
+    document.head.prepend(base);
+    function sendHeight() {
+      window.parent.postMessage({type:'snHeight', height: document.documentElement.scrollHeight}, '*');
+    }
+    window.addEventListener('load', sendHeight);
+    new ResizeObserver(sendHeight).observe(document.body);
+  })();
+  </script>
 </body>
 </html>
