@@ -56,36 +56,23 @@
 
     </section>
 
-    <!-- senior thesis embedded below hero -->
-    <div id="snSection" style="opacity:0;transition:opacity 0.5s ease;">
-      <iframe id="snFrame" src="speak-nearby.html?embed" scrolling="no" frameborder="0"
-        style="width:100%;border:none;display:block;height:7000px;"></iframe>
-    </div>
-
   </div>
 
   <script src="script.js"></script>
   <script src="editor.js?v=6"></script>
   <script>
   (function () {
-    var snSection = document.getElementById('snSection');
     var navigating = false;
     window.addEventListener('scroll', function () {
-      var t = Math.max(0, Math.min(1, (window.scrollY - 80) / 500));
-      snSection.style.opacity = t;
-      /* once faded in enough, commit to the full senior thesis page */
-      if (!navigating && t >= 0.85) {
+      /* fade the hero out as user scrolls — starts at 100px, gone by 500px */
+      var t = Math.max(0, Math.min(1, (window.scrollY - 100) / 400));
+      document.querySelector('.hero').style.opacity = 1 - t;
+      /* once mostly faded, navigate to senior thesis */
+      if (!navigating && t >= 0.9) {
         navigating = true;
-        document.body.style.transition = 'opacity 0.3s ease';
-        document.body.style.opacity = '0';
-        setTimeout(function () { window.location.href = 'speak-nearby.html'; }, 300);
+        setTimeout(function () { window.location.href = 'speak-nearby.html'; }, 80);
       }
     }, { passive: true });
-    window.addEventListener('message', function (e) {
-      if (e.data && e.data.type === 'snHeight') {
-        document.getElementById('snFrame').style.height = e.data.height + 'px';
-      }
-    });
   })();
   </script>
   <button id="backTop" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
