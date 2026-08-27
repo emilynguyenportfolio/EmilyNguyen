@@ -100,6 +100,23 @@
         history.pushState({}, '', 'speak-nearby.html');
         document.title = 'Speak Nearby — Emily Nguyen';
         iframe.style.pointerEvents = 'auto';
+        /* rewire back-to-top to scroll the iframe content, not the hidden main page */
+        var btn = document.getElementById('backTop');
+        function wireBackTop() {
+          try {
+            var iw = iframe.contentWindow;
+            btn.onclick = function () { iw.scrollTo({ top: 0, behavior: 'smooth' }); };
+            iw.addEventListener('scroll', function () {
+              btn.classList.toggle('visible', (iw.scrollY || 0) > 300);
+            }, { passive: true });
+            btn.classList.toggle('visible', (iw.scrollY || 0) > 300);
+          } catch (e) {}
+        }
+        if (iframe.contentDocument && iframe.contentDocument.readyState === 'complete') {
+          wireBackTop();
+        } else {
+          iframe.addEventListener('load', wireBackTop);
+        }
       }
     }, { passive: true });
   })();
