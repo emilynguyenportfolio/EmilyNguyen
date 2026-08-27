@@ -63,8 +63,12 @@
       </div>
       <span class="footer-copy">© 2026 Emily Nguyen</span>
     </footer>
-    <!-- spacer so page is tall enough to scroll; navigation fires before user reaches it -->
-    <div style="height:400px;background:var(--bg);"></div>
+
+    <!-- senior thesis fades in as it scrolls into view -->
+    <div id="snWrapper" style="opacity:0;">
+      <iframe id="snFrame" src="speak-nearby.html?embed" scrolling="no" frameborder="0"
+        style="width:100%;border:none;display:block;height:7000px;"></iframe>
+    </div>
 
   </div>
 
@@ -72,17 +76,26 @@
   <script src="editor.js?v=6"></script>
   <script>
   (function () {
+    var snWrapper = document.getElementById('snWrapper');
     var navigating = false;
     window.addEventListener('scroll', function () {
-      /* fade the hero out as user scrolls — starts at 100px, gone by 500px */
-      var t = Math.max(0, Math.min(1, (window.scrollY - 100) / 400));
-      document.querySelector('.hero').style.opacity = 1 - t;
-      /* once mostly faded, navigate to senior thesis */
-      if (!navigating && t >= 0.9) {
+      var rect = snWrapper.getBoundingClientRect();
+      var vh = window.innerHeight;
+      /* t: 0 when wrapper top hits viewport bottom, 1 when wrapper top hits viewport top */
+      var t = Math.max(0, Math.min(1, (vh - rect.top) / vh));
+      snWrapper.style.opacity = t;
+      /* navigate once fully in view and aligned at top */
+      if (!navigating && t >= 0.98) {
         navigating = true;
-        setTimeout(function () { window.location.href = 'speak-nearby.html'; }, 80);
+        sessionStorage.setItem('fromHome', '1');
+        window.location.href = 'speak-nearby.html';
       }
     }, { passive: true });
+    window.addEventListener('message', function (e) {
+      if (e.data && e.data.type === 'snHeight') {
+        document.getElementById('snFrame').style.height = e.data.height + 'px';
+      }
+    });
   })();
   </script>
   <button id="backTop" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>

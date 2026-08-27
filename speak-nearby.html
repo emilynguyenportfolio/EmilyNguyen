@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;1,6..96,300;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Outfit:wght@200;300&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <style>
+    html { background: #f2f1ee; }
     body { opacity: 0; transition: opacity 0.35s ease; }
     /* ── embedded final photos ── */
     .sn-photos-canvas { padding: 0 4rem 6rem; }
@@ -970,8 +971,11 @@
   })();
   </script>
   <script>
-  /* fade in on page load */
+  /* fade in on page load — fast if arriving from homepage scroll */
   document.addEventListener('DOMContentLoaded', function () {
+    var fast = sessionStorage.getItem('fromHome');
+    sessionStorage.removeItem('fromHome');
+    document.body.style.transition = fast ? 'opacity 0.12s ease' : 'opacity 0.35s ease';
     document.body.style.opacity = '1';
   });
   /* embed mode: hide sidebar when loaded inside index.html iframe */
