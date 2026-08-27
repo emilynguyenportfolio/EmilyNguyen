@@ -632,7 +632,22 @@
       var floatImg = lbFloatImg;
       floatImg.style.transition='opacity 0.15s ease'; floatImg.style.opacity='0';
       var nextSrc = srcs[visualOrder[currentIdx]];
-      setTimeout(function(){ if(floatImg===lbFloatImg){floatImg.src=nextSrc;floatImg.style.opacity='1';} }, 150);
+      /* grab natural dimensions from the already-loaded grid image */
+      var newSize = null;
+      if (lbSourceEl) {
+        var srcImg = lbSourceEl.querySelector('img');
+        if (srcImg && srcImg.naturalWidth > 0) newSize = computeFinalSize(srcImg.naturalWidth, srcImg.naturalHeight);
+      }
+      setTimeout(function(){
+        if (floatImg !== lbFloatImg) return;
+        floatImg.src = nextSrc;
+        if (newSize) {
+          var vw = window.innerWidth, vh = window.innerHeight;
+          floatImg.style.width = newSize.w + 'px'; floatImg.style.height = newSize.h + 'px';
+          floatImg.style.left = ((vw - newSize.w) / 2) + 'px'; floatImg.style.top = ((vh - newSize.h) / 2) + 'px';
+        }
+        floatImg.style.opacity = '1';
+      }, 150);
       lbCtr.textContent = (currentIdx+1) + ' / ' + FILES.length;
     }
     lbClose.addEventListener('click', closeLightbox);
@@ -982,7 +997,7 @@
   (function () {
     if (!window.location.search.includes('embed')) return;
     var s = document.createElement('style');
-    s.textContent = '.sidebar,.sidebar-toggle,#snBackTop,#backTop{display:none!important}.content{margin-right:0!important}';
+    s.textContent = '.sidebar,.sidebar-toggle,#snBackTop,#backTop{display:none!important}';
     document.head.appendChild(s);
     var base = document.createElement('base');
     base.target = '_top';
