@@ -362,110 +362,46 @@
         <h3 class="kw-col-panel-title">2000</h3>
         <p class="kw-col-panel-eyebrow">nails of the 2000s · knitwear</p>
 
-        <!-- Concept -->
-        <div class="kw-concept fade-up">
-          <div class="kw-concept-text">
-            <p>
-              A tribute to the Vietnamese-American nail salons of the early 2000s — their warm,
-              lived-in interiors, acrylic scent, and the quiet labor of women building community
-              inside small storefronts. Before minimalism took over, these spaces were saturated:
-              jewel tones, swirl motifs, flower decals, tiled floors.
-            </p>
-            <p>
-              That excess is translated here into knitwear. Punch card–patterned intarsia banding
-              runs along extended sleeves and neckline — swirls and blossoms in mauve, dusty blue,
-              and burgundy against a deep navy charcoal ground. The silhouette is an off-shoulder
-              crop, close and deliberate.
-            </p>
-          </div>
-          <div class="kw-concept-img">
-            <img src="knitwear/2000/progress.jpeg" alt="2000 collection garment in progress" />
-          </div>
-        </div>
+        <!-- Free-form image canvas — all images individually positionable in ?edit mode -->
+        <div class="kw-free-canvas" style="position:relative;min-height:4200px;margin-top:2rem;">
 
-        <!-- Collection document carousel (5 slides) -->
-        <div class="kw-photo-carousel fade-up">
-          <div class="kw-photo-slide" id="kw20Slide0">
-            <div class="kw-garment-full">
-              <img src="knitwear/2000/collection_page1.jpeg" alt="Mood board — Nails of the 2000s" />
-            </div>
+          <div class="kw-free-img" style="position:absolute;left:0;top:0;width:100%;">
+            <img src="knitwear/2000/collection_page1.jpeg" alt="Mood board — Nails of the 2000s" style="width:100%;display:block;" />
           </div>
-          <div class="kw-photo-slide" id="kw20Slide1" style="display:none">
-            <div class="kw-garment-full">
-              <img src="knitwear/2000/collection_page2.jpeg" alt="Color and fabric" />
-            </div>
-          </div>
-          <div class="kw-photo-slide" id="kw20Slide2" style="display:none">
-            <div class="kw-garment-full">
-              <img src="knitwear/2000/collection_page3.jpeg" alt="History research" />
-            </div>
-          </div>
-          <div class="kw-photo-slide" id="kw20Slide3" style="display:none">
-            <div class="kw-garment-full">
-              <img src="knitwear/2000/collection_page4.jpeg" alt="Ideation — punch card and design sketches" />
-            </div>
-          </div>
-          <div class="kw-photo-slide" id="kw20Slide4" style="display:none">
-            <div class="kw-garment-full">
-              <img src="knitwear/2000/collection_page5.jpeg" alt="Collection illustration" />
-            </div>
-          </div>
-          <button class="kw-carousel-side-btn kw-carousel-side-btn--prev" id="kw20Prev" aria-label="Previous">&#8592;</button>
-          <button class="kw-carousel-side-btn kw-carousel-side-btn--next" id="kw20Next" aria-label="Next">&#8594;</button>
-          <div class="kw-photo-nav">
-            <span class="kw-photo-counter" id="kw20Counter">1 / 5</span>
-          </div>
-        </div>
 
-        <div class="sub-divider"></div>
-
-        <!-- Process section -->
-        <div class="sub-heading fade-up">
-          <span class="eyebrow">behind the work</span>
-          <h2>Process</h2>
-        </div>
-        <div class="kw-photo-carousel fade-up">
-          <div class="kw-photo-slide" id="kw20PrSlide0">
-            <div class="kw-garment-full">
-              <img src="knitwear/2000/progress.png" alt="Process — pattern pieces, knitting machine, technical notes" />
-            </div>
+          <div class="kw-free-img" style="position:absolute;left:0;top:560px;width:65%;">
+            <img src="knitwear/2000/collection_page2.jpeg" alt="Color and fabric" style="width:100%;display:block;" />
           </div>
-          <div class="kw-photo-slide" id="kw20PrSlide1" style="display:none">
-            <div class="kw-garment-full">
-              <img src="knitwear/2000/detail.jpeg" alt="Sleeve intarsia detail" />
-            </div>
-          </div>
-          <button class="kw-carousel-side-btn kw-carousel-side-btn--prev" id="kw20PrPrev" aria-label="Previous">&#8592;</button>
-          <button class="kw-carousel-side-btn kw-carousel-side-btn--next" id="kw20PrNext" aria-label="Next">&#8594;</button>
-          <div class="kw-photo-nav">
-            <span class="kw-photo-counter" id="kw20PrCounter">1 / 2</span>
-          </div>
-        </div>
 
-        <!-- Closing -->
-        <div class="kw-closing fade-up">
-          <img src="knitwear/2000/final%20garment.png" alt="2000 — final garment, front and back" />
-          <span class="kw-closing-caption">nails of the 2000s.</span>
-        </div>
+          <div class="kw-free-img" style="position:absolute;left:0;top:980px;width:100%;">
+            <img src="knitwear/2000/collection_page3.jpeg" alt="History" style="width:100%;display:block;" />
+          </div>
 
-        <script>
-        (function () {
-          function makeCarousel(prefix, total) {
-            var current = 0;
-            var counter = document.getElementById(prefix + 'Counter');
-            function show(idx) {
-              document.getElementById(prefix + 'Slide' + current).style.display = 'none';
-              current = (idx + total) % total;
-              document.getElementById(prefix + 'Slide' + current).style.display = '';
-              counter.textContent = (current + 1) + ' / ' + total;
-            }
-            document.getElementById(prefix + 'Prev').addEventListener('click', function () { show(current - 1); });
-            document.getElementById(prefix + 'Next').addEventListener('click', function () { show(current + 1); });
-          }
-          makeCarousel('kw20', 5);
-          makeCarousel('kw20Pr', 2);
-        })();
-        </script>
+          <div class="kw-free-img" style="position:absolute;left:0;top:1540px;width:54%;">
+            <img src="knitwear/2000/collection_page4.jpeg" alt="Ideation — punch card and design sketches" style="width:100%;display:block;" />
+          </div>
+
+          <div class="kw-free-img" style="position:absolute;left:57%;top:1580px;width:43%;">
+            <img src="knitwear/2000/collection_page5.jpeg" alt="Collection illustration" style="width:100%;display:block;" />
+          </div>
+
+          <div class="kw-free-img" style="position:absolute;left:0;top:2200px;width:100%;">
+            <img src="knitwear/2000/progress.png" alt="Process — pattern pieces, knitting machine, technical notes" style="width:100%;display:block;" />
+          </div>
+
+          <div class="kw-free-img" style="position:absolute;left:0;top:2980px;width:42%;">
+            <img src="knitwear/2000/progress.jpeg" alt="Garment in progress on dress form" style="width:100%;display:block;" />
+          </div>
+
+          <div class="kw-free-img" style="position:absolute;left:45%;top:2940px;width:55%;">
+            <img src="knitwear/2000/detail.jpeg" alt="Sleeve intarsia detail" style="width:100%;display:block;" />
+          </div>
+
+          <div class="kw-free-img" style="position:absolute;left:0;top:3680px;width:100%;">
+            <img src="knitwear/2000/final%20garment.png" alt="2000 — final garment, front and back" style="width:100%;display:block;" />
+          </div>
+
+        </div>
 
         <div style="display:flex;justify-content:space-between;margin-top:2.5rem;padding-bottom:4rem;">
           <button class="kw-col-next-btn" id="kwToSw">&#8592; Swatches</button>
@@ -486,9 +422,9 @@
         }
         document.getElementById('kwTab0').addEventListener('click', function () { showTab(0); });
         document.getElementById('kwTab1').addEventListener('click', function () { showTab(1); });
-        document.getElementById('kwTab2').addEventListener('click', function () { showTab(2); });
+        document.getElementById('kwTab2').addEventListener('click', function () { showTab(2); if (window._editorEnableFreeImgs) window._editorEnableFreeImgs(); });
         document.getElementById('kwToRa').addEventListener('click', function () { showTab(0); });
-        document.getElementById('kwToMw').addEventListener('click', function () { showTab(2); });
+        document.getElementById('kwToMw').addEventListener('click', function () { showTab(2); if (window._editorEnableFreeImgs) window._editorEnableFreeImgs(); });
         document.getElementById('kwToSw').addEventListener('click', function () { showTab(1); });
 
         /* ── SWATCHES CANVAS ── */

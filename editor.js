@@ -102,7 +102,7 @@
       disablePhotoHandles();
       disableLogoHandle();
       exitPlaceMode();
-      document.querySelectorAll('.sheer-rect').forEach(disableRect);
+      document.querySelectorAll('.sheer-rect, .kw-free-img').forEach(disableRect);
     }
   }
 
@@ -118,9 +118,9 @@
 
     if (tool === 'rects') {
       disableTextMode();
-      document.querySelectorAll('.sheer-rect').forEach(enableRect);
+      document.querySelectorAll('.sheer-rect, .kw-free-img').forEach(enableRect);
     } else if (tool === 'text') {
-      document.querySelectorAll('.sheer-rect').forEach(disableRect);
+      document.querySelectorAll('.sheer-rect, .kw-free-img').forEach(disableRect);
       enableTextMode();
     }
   }
@@ -130,6 +130,7 @@
   // ══════════════════════════════════════════════════════════════════════
 
   function enableRect(el) {
+    if (!el.offsetWidth && !el.offsetHeight) return; // skip hidden (display:none panel)
     captureRectState(el);
     el.style.pointerEvents = 'auto';
     el.style.cursor        = 'grab';
@@ -1141,5 +1142,11 @@
   function on(t, e, fn)   { t.addEventListener(e, fn); }
   function off(t, e, fn)  { t.removeEventListener(e, fn); }
   function pct(px, total) { return ((px / total) * 100).toFixed(1) + '%'; }
+
+  // Called by knitwear tab-switch when the 2000 panel becomes visible in edit mode
+  window._editorEnableFreeImgs = function () {
+    if (!editMode || activeTool !== 'rects') return;
+    document.querySelectorAll('.kw-free-img').forEach(enableRect);
+  };
 
 })();
