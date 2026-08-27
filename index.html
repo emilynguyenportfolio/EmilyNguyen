@@ -69,5 +69,23 @@
 
   <script src="script.js"></script>
   <script src="editor.js?v=6"></script>
+  <script>
+  (function () {
+    var going = false;
+    function goNext() {
+      if (going) return;
+      going = true;
+      document.body.style.transition = 'opacity 0.45s ease';
+      document.body.style.opacity = '0';
+      setTimeout(function () { window.location.href = 'speak-nearby.html'; }, 450);
+    }
+    /* wheel */
+    window.addEventListener('wheel', function (e) { if (e.deltaY > 0) goNext(); }, { passive: true });
+    /* touch swipe up */
+    var touchStartY = 0;
+    window.addEventListener('touchstart', function (e) { touchStartY = e.touches[0].clientY; }, { passive: true });
+    window.addEventListener('touchend', function (e) { if (touchStartY - e.changedTouches[0].clientY > 40) goNext(); }, { passive: true });
+  })();
+  </script>
 </body>
 </html>
