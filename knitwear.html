@@ -239,7 +239,7 @@
       <div class="kw-col-tabs fade-up">
         <button class="kw-col-tab active" id="kwTab0">Red Azalea</button>
         <button class="kw-col-tab" id="kwTab1">Swatches</button>
-        <button class="kw-col-tab" id="kwTab2">More Works</button>
+        <button class="kw-col-tab" id="kwTab2">2000</button>
       </div>
 
       <!-- Panel 0: Red Azalea -->
@@ -357,18 +357,116 @@
         </div>
       </div>
 
-      <!-- Panel 2: More Works -->
+      <!-- Panel 2: 2000 -->
       <div class="kw-col-panel" id="kwColPanel2" style="display:none">
-        <h3 class="kw-col-panel-title">More Works</h3>
-        <p class="kw-col-panel-eyebrow">additional pieces</p>
-        <div class="gallery-grid cols-3" style="margin-top:2rem;">
-          <div class="g-item"><div class="img-placeholder"></div></div>
-          <div class="g-item wide"><div class="img-placeholder"></div></div>
-          <div class="g-item tall"><div class="img-placeholder"></div></div>
-          <div class="g-item"><div class="img-placeholder"></div></div>
-          <div class="g-item"><div class="img-placeholder"></div></div>
-          <div class="g-item wide"><div class="img-placeholder"></div></div>
+        <h3 class="kw-col-panel-title">2000</h3>
+        <p class="kw-col-panel-eyebrow">nails of the 2000s · knitwear</p>
+
+        <!-- Concept -->
+        <div class="kw-concept fade-up">
+          <div class="kw-concept-text">
+            <p>
+              A tribute to the Vietnamese-American nail salons of the early 2000s — their warm,
+              lived-in interiors, acrylic scent, and the quiet labor of women building community
+              inside small storefronts. Before minimalism took over, these spaces were saturated:
+              jewel tones, swirl motifs, flower decals, tiled floors.
+            </p>
+            <p>
+              That excess is translated here into knitwear. Punch card–patterned intarsia banding
+              runs along extended sleeves and neckline — swirls and blossoms in mauve, dusty blue,
+              and burgundy against a deep navy charcoal ground. The silhouette is an off-shoulder
+              crop, close and deliberate.
+            </p>
+          </div>
+          <div class="kw-concept-img">
+            <img src="knitwear/2000/progress.jpeg" alt="2000 collection garment in progress" />
+          </div>
         </div>
+
+        <!-- Collection document carousel (5 slides) -->
+        <div class="kw-photo-carousel fade-up">
+          <div class="kw-photo-slide" id="kw20Slide0">
+            <div class="kw-garment-full">
+              <img src="knitwear/2000/collection_page1.jpeg" alt="Mood board — Nails of the 2000s" />
+            </div>
+          </div>
+          <div class="kw-photo-slide" id="kw20Slide1" style="display:none">
+            <div class="kw-garment-full">
+              <img src="knitwear/2000/collection_page2.jpeg" alt="Color and fabric" />
+            </div>
+          </div>
+          <div class="kw-photo-slide" id="kw20Slide2" style="display:none">
+            <div class="kw-garment-full">
+              <img src="knitwear/2000/collection_page3.jpeg" alt="History research" />
+            </div>
+          </div>
+          <div class="kw-photo-slide" id="kw20Slide3" style="display:none">
+            <div class="kw-garment-full">
+              <img src="knitwear/2000/collection_page4.jpeg" alt="Ideation — punch card and design sketches" />
+            </div>
+          </div>
+          <div class="kw-photo-slide" id="kw20Slide4" style="display:none">
+            <div class="kw-garment-full">
+              <img src="knitwear/2000/collection_page5.jpeg" alt="Collection illustration" />
+            </div>
+          </div>
+          <button class="kw-carousel-side-btn kw-carousel-side-btn--prev" id="kw20Prev" aria-label="Previous">&#8592;</button>
+          <button class="kw-carousel-side-btn kw-carousel-side-btn--next" id="kw20Next" aria-label="Next">&#8594;</button>
+          <div class="kw-photo-nav">
+            <span class="kw-photo-counter" id="kw20Counter">1 / 5</span>
+          </div>
+        </div>
+
+        <div class="sub-divider"></div>
+
+        <!-- Process section -->
+        <div class="sub-heading fade-up">
+          <span class="eyebrow">behind the work</span>
+          <h2>Process</h2>
+        </div>
+        <div class="kw-photo-carousel fade-up">
+          <div class="kw-photo-slide" id="kw20PrSlide0">
+            <div class="kw-garment-full">
+              <img src="knitwear/2000/progress.png" alt="Process — pattern pieces, knitting machine, technical notes" />
+            </div>
+          </div>
+          <div class="kw-photo-slide" id="kw20PrSlide1" style="display:none">
+            <div class="kw-garment-full">
+              <img src="knitwear/2000/detail.jpeg" alt="Sleeve intarsia detail" />
+            </div>
+          </div>
+          <button class="kw-carousel-side-btn kw-carousel-side-btn--prev" id="kw20PrPrev" aria-label="Previous">&#8592;</button>
+          <button class="kw-carousel-side-btn kw-carousel-side-btn--next" id="kw20PrNext" aria-label="Next">&#8594;</button>
+          <div class="kw-photo-nav">
+            <span class="kw-photo-counter" id="kw20PrCounter">1 / 2</span>
+          </div>
+        </div>
+
+        <!-- Closing -->
+        <div class="kw-closing fade-up">
+          <img src="knitwear/2000/final%20garment.png" alt="2000 — final garment, front and back" />
+          <span class="kw-closing-caption">nails of the 2000s.</span>
+        </div>
+
+        <script>
+        (function () {
+          function makeCarousel(prefix, total) {
+            var current = 0;
+            var counter = document.getElementById(prefix + 'Counter');
+            function show(idx) {
+              document.getElementById(prefix + 'Slide' + current).style.display = 'none';
+              current = (idx + total) % total;
+              document.getElementById(prefix + 'Slide' + current).style.display = '';
+              counter.textContent = (current + 1) + ' / ' + total;
+            }
+            document.getElementById(prefix + 'Prev').addEventListener('click', function () { show(current - 1); });
+            document.getElementById(prefix + 'Next').addEventListener('click', function () { show(current + 1); });
+          }
+          makeCarousel('kw20', 5);
+          makeCarousel('kw20Pr', 2);
+        })();
+        </script>
+
         <div style="display:flex;justify-content:space-between;margin-top:2.5rem;padding-bottom:4rem;">
           <button class="kw-col-next-btn" id="kwToSw">&#8592; Swatches</button>
           <span></span>
