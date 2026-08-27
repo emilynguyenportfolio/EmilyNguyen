@@ -63,39 +63,35 @@
       </div>
       <span class="footer-copy">© 2026 Emily Nguyen</span>
     </footer>
+    <!-- scroll space: panel needs scrollY = 1vh to be fully raised -->
+    <div style="height:120vh;"></div>
 
-    <!-- senior thesis fades in as it scrolls into view -->
-    <div id="snWrapper" style="opacity:0;">
-      <iframe id="snFrame" src="speak-nearby.html?embed" scrolling="no" frameborder="0"
-        style="width:100%;border:none;display:block;height:7000px;"></iframe>
-    </div>
+  </div>
 
+  <!-- fixed panel that rises from below as user scrolls -->
+  <div id="snPanel" style="position:fixed;top:0;left:0;right:0;bottom:0;transform:translateY(100%);opacity:0;z-index:300;overflow:hidden;background:#f2f1ee;">
+    <iframe src="speak-nearby.html" scrolling="no" frameborder="0"
+      style="width:100%;height:100%;border:none;display:block;pointer-events:none;"></iframe>
   </div>
 
   <script src="script.js"></script>
   <script src="editor.js?v=6"></script>
   <script>
   (function () {
-    var snWrapper = document.getElementById('snWrapper');
+    var panel = document.getElementById('snPanel');
     var navigating = false;
+    var vh = window.innerHeight;
+    window.addEventListener('resize', function () { vh = window.innerHeight; });
     window.addEventListener('scroll', function () {
-      var rect = snWrapper.getBoundingClientRect();
-      var vh = window.innerHeight;
-      /* t: 0 when wrapper top hits viewport bottom, 1 when wrapper top hits viewport top */
-      var t = Math.max(0, Math.min(1, (vh - rect.top) / vh));
-      snWrapper.style.opacity = t;
-      /* navigate once fully in view and aligned at top */
-      if (!navigating && t >= 0.98) {
+      var progress = Math.min(1, window.scrollY / vh);
+      panel.style.transform = 'translateY(' + ((1 - progress) * 100) + '%)';
+      panel.style.opacity = progress;
+      if (!navigating && progress >= 0.96) {
         navigating = true;
         sessionStorage.setItem('fromHome', '1');
         window.location.href = 'speak-nearby.html';
       }
     }, { passive: true });
-    window.addEventListener('message', function (e) {
-      if (e.data && e.data.type === 'snHeight') {
-        document.getElementById('snFrame').style.height = e.data.height + 'px';
-      }
-    });
   })();
   </script>
   <button id="backTop" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
