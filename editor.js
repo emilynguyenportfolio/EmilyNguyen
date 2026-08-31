@@ -95,6 +95,7 @@
       enableSplitters();
       enablePhotoHandles();
       enableLogoHandle();
+      freezeFreeImgs();
       updatePanel();
     } else {
       disableSplitters();
@@ -264,6 +265,7 @@
     el.style.height    = s.height + 'px';
     el.style.transform = `rotate(${s.angle.toFixed(2)}deg)`;
     updatePanel();
+    if (el.classList.contains('kw-free-img')) saveFreeImgPositions();
   }
 
   // ── Move ──────────────────────────────────────────────────────────────
@@ -999,7 +1001,12 @@
         <b style="color:#aba6a2;">splits</b><br>
         drag ┃ vertical divider → resize columns<br>
         drag ━ horizontal divider → resize section height<br><br>
-        copy css → paste into style.css
+        copy css → paste into style.css<br><br>
+        <b style="color:#aba6a2;">2000 images</b><br>
+        drag/resize each image freely<br>
+        positions auto-save to browser<br>
+        copy css → paste style="" into html<br>
+        to reset: run _resetFreeImgPositions()
       </p>`;
 
     return p;
@@ -1097,6 +1104,15 @@
     }
     if (logoLines.length) lines.push('/* logo */\n' + logoLines.join('\n'));
 
+    // 2000 knitwear image positions
+    const freeImgLines = [];
+    document.querySelectorAll('.kw-free-img').forEach((el, i) => {
+      const s = rectState.get(el);
+      if (!s || el.style.position !== 'absolute') return;
+      freeImgLines.push(`[${i+1}] left:${Math.round(s.left)}px; top:${Math.round(s.top)}px; width:${Math.round(s.width)}px;`);
+    });
+    if (freeImgLines.length) lines.push('/* 2000 image positions\n   paste as style="" on each .kw-free-img in knitwear.html */\n' + freeImgLines.join('\n'));
+
     // About photo
     const photoWVal  = getComputedStyle(document.documentElement).getPropertyValue('--about-photo-w').trim();
     const photoMTVal = getComputedStyle(document.documentElement).getPropertyValue('--about-photo-mt').trim();
@@ -1143,10 +1159,59 @@
   function off(t, e, fn)  { t.removeEventListener(e, fn); }
   function pct(px, total) { return ((px / total) * 100).toFixed(1) + '%'; }
 
+  // ── Free-form image helpers (2000 knitwear panel) ─────────────────────
+
+  // Converts .kw-free-img elements from document flow to position:absolute
+  // at their current visual positions, so the rect editor can drag/resize them.
+  // Must be called while all images are visible (panel not display:none).
+  function freezeFreeImgs() {
+    const canvas = document.querySelector('.kw-free-canvas');
+    if (!canvas || !canvas.offsetWidth) return;
+
+    // Measure ALL positions before any element leaves the flow
+    const toFreeze = [];
+    document.querySelectorAll('.kw-free-img').forEach(el => {
+      if (!el.offsetWidth) return; // hidden panel
+      if (el.style.position === 'absolute') return; // already frozen
+      toFreeze.push({ el, left: el.offsetLeft, top: el.offsetTop, width: el.offsetWidth });
+    });
+    if (!toFreeze.length) return;
+
+    // Lock canvas height so it doesn't collapse when children leave flow
+    canvas.style.minHeight = canvas.offsetHeight + 'px';
+
+    // Apply absolute positions all at once
+    toFreeze.forEach(({ el, left, top, width }) => {
+      el.style.position   = 'absolute';
+      el.style.left       = left + 'px';
+      el.style.top        = top + 'px';
+      el.style.width      = width + 'px';
+      el.style.margin     = '0';
+      el.style.flexShrink = '';
+    });
+  }
+
+  function saveFreeImgPositions() {
+    const positions = [];
+    document.querySelectorAll('.kw-free-img').forEach(el => {
+      const s = rectState.get(el);
+      positions.push(s ? { left: Math.round(s.left), top: Math.round(s.top), width: Math.round(s.width), height: Math.round(s.height) } : null);
+    });
+    try { localStorage.setItem('kw2000-img-positions', JSON.stringify(positions)); } catch (e) {}
+  }
+
   // Called by knitwear tab-switch when the 2000 panel becomes visible in edit mode
   window._editorEnableFreeImgs = function () {
     if (!editMode || activeTool !== 'rects') return;
+    freezeFreeImgs();
     document.querySelectorAll('.kw-free-img').forEach(enableRect);
+    updatePanel();
+  };
+
+  // Expose reset so the user can clear saved positions from the browser console
+  window._resetFreeImgPositions = function () {
+    try { localStorage.removeItem('kw2000-img-positions'); } catch (e) {}
+    location.reload();
   };
 
 })();

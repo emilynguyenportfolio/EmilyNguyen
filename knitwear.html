@@ -902,5 +902,30 @@
     window.addEventListener('scroll', function () { btn.classList.toggle('visible', window.scrollY > 300); }, { passive: true });
   })();
   </script>
+  <script>
+  // Restore saved 2000 image positions from localStorage
+  (function () {
+    try {
+      var saved = JSON.parse(localStorage.getItem('kw2000-img-positions') || 'null');
+      if (!saved || !saved.length) return;
+      var canvas = document.querySelector('.kw-free-canvas');
+      var imgs   = document.querySelectorAll('.kw-free-img');
+      if (!canvas || !imgs.length) return;
+      var maxBottom = 0;
+      imgs.forEach(function (el, i) {
+        var pos = saved[i];
+        if (!pos) return;
+        el.style.position   = 'absolute';
+        el.style.left       = pos.left + 'px';
+        el.style.top        = pos.top  + 'px';
+        el.style.width      = pos.width + 'px';
+        el.style.margin     = '0';
+        el.style.flexShrink = '';
+        maxBottom = Math.max(maxBottom, pos.top + (pos.height || 500));
+      });
+      canvas.style.minHeight = (maxBottom + 120) + 'px';
+    } catch (e) {}
+  })();
+  </script>
 </body>
 </html>
