@@ -362,43 +362,44 @@
         <h3 class="kw-col-panel-title">2000</h3>
         <p class="kw-col-panel-eyebrow">nails of the 2000s · knitwear</p>
 
-        <!-- 3-column uniform grid; drag any image in ?edit mode to reposition freely -->
-        <div class="kw-free-canvas" style="position:relative;margin-top:2rem;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+        <!-- Uncropped grid layout; drag any image in ?edit mode to reposition freely -->
+        <div class="kw-free-canvas" style="position:relative;margin-top:2rem;">
 
-          <div class="kw-free-img" style="aspect-ratio:4/3;overflow:hidden;">
-            <img src="knitwear/2000/collection_page1.jpeg" alt="Mood board" style="width:100%;height:100%;object-fit:cover;display:block;" />
+          <!-- Collection pages + process overview: 3-column grid, all same landscape ratio -->
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px;">
+            <div class="kw-free-img">
+              <img src="knitwear/2000/collection_page1.jpeg" alt="Mood board" style="width:100%;display:block;" />
+            </div>
+            <div class="kw-free-img">
+              <img src="knitwear/2000/collection_page2.jpeg" alt="Color and fabric" style="width:100%;display:block;" />
+            </div>
+            <div class="kw-free-img">
+              <img src="knitwear/2000/collection_page3.jpeg" alt="History" style="width:100%;display:block;" />
+            </div>
+            <div class="kw-free-img">
+              <img src="knitwear/2000/collection_page4.jpeg" alt="Ideation" style="width:100%;display:block;" />
+            </div>
+            <div class="kw-free-img">
+              <img src="knitwear/2000/collection_page5.jpeg" alt="Collection illustration" style="width:100%;display:block;" />
+            </div>
+            <div class="kw-free-img">
+              <img src="knitwear/2000/progress.png" alt="Process overview" style="width:100%;display:block;" />
+            </div>
           </div>
 
-          <div class="kw-free-img" style="aspect-ratio:4/3;overflow:hidden;">
-            <img src="knitwear/2000/collection_page2.jpeg" alt="Color and fabric" style="width:100%;height:100%;object-fit:cover;display:block;" />
+          <!-- WIP + detail: portrait pair side by side -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+            <div class="kw-free-img">
+              <img src="knitwear/2000/progress.jpeg" alt="Garment in progress" style="width:100%;display:block;" />
+            </div>
+            <div class="kw-free-img">
+              <img src="knitwear/2000/detail.jpeg" alt="Sleeve intarsia detail" style="width:100%;display:block;" />
+            </div>
           </div>
 
-          <div class="kw-free-img" style="aspect-ratio:4/3;overflow:hidden;">
-            <img src="knitwear/2000/collection_page3.jpeg" alt="History" style="width:100%;height:100%;object-fit:cover;display:block;" />
-          </div>
-
-          <div class="kw-free-img" style="aspect-ratio:4/3;overflow:hidden;">
-            <img src="knitwear/2000/collection_page4.jpeg" alt="Ideation" style="width:100%;height:100%;object-fit:cover;display:block;" />
-          </div>
-
-          <div class="kw-free-img" style="aspect-ratio:4/3;overflow:hidden;">
-            <img src="knitwear/2000/collection_page5.jpeg" alt="Collection illustration" style="width:100%;height:100%;object-fit:cover;display:block;" />
-          </div>
-
-          <div class="kw-free-img" style="aspect-ratio:4/3;overflow:hidden;">
-            <img src="knitwear/2000/progress.png" alt="Process overview" style="width:100%;height:100%;object-fit:cover;display:block;" />
-          </div>
-
-          <div class="kw-free-img" style="aspect-ratio:4/3;overflow:hidden;">
-            <img src="knitwear/2000/progress.jpeg" alt="Garment in progress" style="width:100%;height:100%;object-fit:cover;display:block;" />
-          </div>
-
-          <div class="kw-free-img" style="aspect-ratio:4/3;overflow:hidden;">
-            <img src="knitwear/2000/detail.jpeg" alt="Sleeve intarsia detail" style="width:100%;height:100%;object-fit:cover;display:block;" />
-          </div>
-
-          <div class="kw-free-img" style="aspect-ratio:4/3;overflow:hidden;">
-            <img src="knitwear/2000/final%20garment.png" alt="Final garment" style="width:100%;height:100%;object-fit:cover;display:block;" />
+          <!-- Final garment: full-width closing image -->
+          <div class="kw-free-img">
+            <img src="knitwear/2000/final%20garment.png" alt="Final garment — front and back" style="width:100%;display:block;" />
           </div>
 
         </div>
